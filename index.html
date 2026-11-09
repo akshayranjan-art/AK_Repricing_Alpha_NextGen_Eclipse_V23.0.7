@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha NextGen Eclipse — Repricing V23.0.7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@600;700&display=swap">
+<style>
+:root{
+  --bg:#fff8ef;--surf:#ffffff;--surf2:#fff1e0;--bd:#f1d8bb;--tx:#2b1a0e;--mu:#6b4a33;
+  --ac:#c2410c;--ac-d:#8a2d07;--ac2:#9d174d;--acsoft:#ffedd5;--r:22px;
+  --good-b:#dcfce7;--good-f:#14532d;--warn-b:#ffedd5;--warn-f:#9a3412;--bad-b:#fce7f3;--bad-f:#9d174d;
+  --press:#86efac;--press-glow:rgba(74,222,128,.55);
+  --sh:0 12px 28px rgba(194,65,12,.10);
+  --font:'Plus Jakarta Sans',system-ui,'Segoe UI',sans-serif;--digi:'Orbitron','Plus Jakarta Sans',sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px}
+body.nosel *:not(input):not(textarea):not([contenteditable="true"]){user-select:none}
+a{color:var(--ac)}
+button,input,select,textarea{font-family:inherit;font-size:14px;color:var(--tx)}
+.hidden{display:none!important}
+
+/* ---------- DIGITAL 3D BUTTONS ---------- */
+.b3{--top:#ffffff;--side:#e9cfae;--txc:var(--tx);
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 16px;min-height:42px;border-radius:14px;border:1px solid var(--side);cursor:pointer;
+  background:linear-gradient(180deg,var(--top) 0%,var(--top) 55%,rgba(0,0,0,.03) 100%);color:var(--txc);
+  font-weight:700;letter-spacing:.01em;white-space:nowrap;
+  box-shadow:0 5px 0 var(--side),0 9px 16px rgba(120,53,15,.16),inset 0 1px 0 rgba(255,255,255,.9);
+  transform:translateY(0);transition:transform .08s,box-shadow .08s,background .15s}
+.b3:hover{filter:brightness(1.03)}
+.b3:active,.b3.on,.b3[aria-pressed="true"]{transform:translateY(4px);
+  box-shadow:0 1px 0 var(--side),0 3px 0 var(--press),0 6px 14px var(--press-glow),inset 0 2px 5px rgba(0,0,0,.18)}
+.b3:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.b3.pri{--top:#ea580c;--side:#8a2d07;--txc:#fff;background:linear-gradient(180deg,#f97316 0%,#c2410c 100%);border-color:#9a3412}
+.b3.mag{--top:#be185d;--side:#6b0f35;--txc:#fff;background:linear-gradient(180deg,#db2777 0%,#9d174d 100%);border-color:#831843}
+.b3.dan{--top:#fce7f3;--side:#f0abcf;--txc:#9d174d}
+.b3.sm{padding:6px 11px;min-height:34px;font-size:12.5px;border-radius:11px;box-shadow:0 3px 0 var(--side),0 6px 10px rgba(120,53,15,.12),inset 0 1px 0 rgba(255,255,255,.9)}
+.b3.sm:active,.b3.sm.on{transform:translateY(3px);box-shadow:0 0 0 var(--side),0 2px 0 var(--press),0 4px 10px var(--press-glow),inset 0 2px 4px rgba(0,0,0,.18)}
+.b3.ico{padding:0;width:42px;min-width:42px}
+.b3 svg{flex:0 0 auto}
+
+/* toggle (3D) */
+.tg{width:56px;height:30px;border-radius:999px;border:1px solid #e9cfae;background:#f3e3cf;position:relative;cursor:pointer;flex:0 0 auto;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.15)}
+.tg::after{content:"";position:absolute;top:2px;left:3px;width:24px;height:24px;border-radius:50%;background:linear-gradient(180deg,#fff,#f1e4d4);box-shadow:0 3px 0 #d6b48f,0 4px 8px rgba(0,0,0,.18);transition:left .15s}
+.tg[aria-pressed="true"]{background:#bbf7d0;border-color:#4ade80;box-shadow:inset 0 2px 5px rgba(0,0,0,.12),0 0 10px var(--press-glow)}
+.tg[aria-pressed="true"]::after{left:28px;box-shadow:0 1px 0 #16a34a,0 2px 6px rgba(0,0,0,.15)}
+
+/* ---------- LAYOUT ---------- */
+header.top{padding:16px 28px 0;display:flex;flex-direction:column;gap:14px;align-items:center}
+.toprow{width:100%;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .t1{font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.brand .t2{font-size:12.5px;color:var(--mu);font-weight:600}
+.ver{font-family:var(--digi);font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--ac2);color:#fff;letter-spacing:.06em}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:10px 12px 14px;background:var(--surf);border:1px solid var(--bd);border-radius:999px;box-shadow:var(--sh)}
+.nav .b3{border-radius:999px;font-size:13px;padding:8px 14px;min-height:38px}
+main{padding:24px 28px;max-width:1440px;margin:0 auto;width:100%}
+footer{padding:16px;text-align:center;font-size:12px;color:var(--mu)}
+.ph{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+.ph h1{margin:0;font-size:26px;font-weight:800}
+.ph p{margin:4px 0 0;color:var(--mu)}
+.row{display:flex;flex-wrap:wrap;gap:18px}
+.grow{flex:999 1 600px;min-width:0}.side{flex:1 1 300px;min-width:0}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);padding:20px;min-width:0}
+.card h3{margin:0;font-size:16px;font-weight:800}.card .sub{font-size:12.5px;color:var(--mu);margin-top:2px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:18px}
+.kpi .ic{width:42px;height:42px;border-radius:12px;background:var(--acsoft);color:var(--ac);display:flex;align-items:center;justify-content:center}
+.kpi .v{font-family:var(--digi);font-size:28px;font-weight:700;margin-top:12px;color:var(--tx)}
+.kpi .l{font-size:13px;color:var(--mu);font-weight:600}.kpi .s{font-size:12.5px;color:var(--mu);margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;background:var(--surf2);color:var(--mu)}
+.chip.good{background:var(--good-b);color:var(--good-f)}.chip.warn{background:var(--warn-b);color:var(--warn-f)}.chip.bad{background:var(--bad-b);color:var(--bad-f)}.chip.soft{background:var(--acsoft);color:var(--ac)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;align-items:center}
+.line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--bd)}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld label{font-size:13px;font-weight:700}
+.inp{display:flex;align-items:center;gap:10px;background:#fffaf4;border:1px solid var(--bd);border-radius:14px;padding:0 14px;min-height:46px;box-shadow:inset 0 2px 4px rgba(120,53,15,.06)}
+.inp input,.inp select{flex:1;min-width:0;border:0;outline:0;background:transparent;height:44px}
+.inp:focus-within{border-color:var(--ac);box-shadow:0 0 0 3px rgba(234,88,12,.15)}
+input.plain,select.plain{border:1px solid var(--bd);border-radius:10px;padding:8px 10px;background:#fffaf4;min-height:38px}
+.msg{padding:10px 14px;border-radius:14px;font-size:13px;font-weight:600;display:flex;gap:8px;align-items:center}
+.msg.bad{background:var(--bad-b);color:var(--bad-f)}.msg.good{background:var(--good-b);color:var(--good-f)}.msg.warn{background:var(--warn-b);color:var(--warn-f)}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--bd);border-radius:14px}
+table.t{width:100%;border-collapse:collapse}
+table.t th{background:var(--acsoft);color:#7c2d12;font-size:12px;font-weight:800;text-align:left;padding:10px 12px;white-space:nowrap}
+table.t td{padding:9px 12px;border-top:1px solid var(--bd);font-size:13.5px}
+table.t td.n,table.t th.n{text-align:right}table.t td.c,table.t th.c{text-align:center}
+.cell{display:inline-block;min-width:78px;text-align:center;padding:4px 8px;border-radius:8px;font-weight:800;font-size:13px}
+.cell.good{background:var(--good-b);color:var(--good-f)}.cell.warn{background:var(--warn-b);color:var(--warn-f)}.cell.bad{background:var(--bad-b);color:var(--bad-f)}
+
+/* excel grid */
+.xl{overflow:auto;max-height:560px;border:1px solid var(--bd);border-radius:14px;background:#fffaf4}
+table.g{border-collapse:collapse;min-width:100%}
+table.g td,table.g th{border:1px solid var(--bd);padding:7px 10px;font-size:13px;white-space:nowrap;min-width:90px;height:34px}
+table.g th.ltr{background:var(--surf2);color:var(--mu);font-size:11px;font-weight:600;height:24px;padding:2px;position:sticky;top:0;z-index:2}
+table.g td.rn{background:var(--surf2);color:var(--mu);font-size:11px;text-align:center;min-width:40px;width:40px}
+table.g td.hd{background:var(--acsoft);color:#7c2d12;font-weight:800;position:sticky;top:24px;z-index:1}
+table.g td[contenteditable="true"]:focus{outline:2px solid var(--ac);outline-offset:-2px;background:#fff}
+.fbar{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.fbar .ref{font-family:monospace;padding:7px 12px;border-radius:8px;background:var(--surf2);border:1px solid var(--bd);min-width:56px;text-align:center}
+.fbar .val{flex:1;min-width:200px;padding:7px 12px;border-radius:8px;background:#fff;border:1px solid var(--bd);min-height:34px}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.cal .wd{text-align:center;font-size:12px;font-weight:800;color:var(--mu);text-transform:uppercase;padding:4px}
+.cal .d{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;min-height:76px;padding:10px;border-radius:14px;border:1px solid var(--bd);background:#fff;cursor:pointer;text-align:left;box-shadow:0 3px 0 #ecd2b2}
+.cal .d:active,.cal .d.sel{transform:translateY(3px);box-shadow:0 0 0 #ecd2b2,0 2px 0 var(--press),0 4px 10px var(--press-glow)}
+.cal .d b{font-size:16px}.cal .d span{font-size:11px;font-weight:700}
+.cal .d.good{background:var(--good-b);color:var(--good-f)}.cal .d.bad{background:var(--bad-b);color:var(--bad-f)}.cal .d.we{background:transparent;color:var(--mu);box-shadow:none}
+.cal .d.today{outline:2px solid var(--ac)}.cal .d.pick{outline:3px dashed var(--ac2)}
+
+/* login */
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
+.lbox{width:100%;max-width:900px;display:flex;flex-wrap:wrap;background:#fff;border-radius:36px;box-shadow:0 30px 70px rgba(194,65,12,.15);overflow:hidden}
+.lleft{flex:1 1 320px;background:var(--surf2);padding:44px;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px}
+.sun{width:120px;height:120px;border-radius:50%;margin-bottom:14px;background:radial-gradient(circle at 40% 35%,#fdba74,#ea580c 60%,#9d174d);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px rgba(234,88,12,.35)}
+.lright{flex:1 1 380px;padding:40px;display:flex;flex-direction:column;gap:14px}
+.lright h2{margin:0;font-size:26px;font-weight:800}
+
+/* modal + toast */
+.ov{position:fixed;inset:0;background:rgba(43,26,14,.45);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal{background:#fff;border-radius:26px;max-width:720px;width:100%;max-height:90vh;overflow:auto;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+.toast{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;flex-direction:column;gap:8px}
+.toast div{background:#2b1a0e;color:#fff;padding:12px 16px;border-radius:14px;font-weight:600;box-shadow:0 10px 24px rgba(0,0,0,.25);max-width:360px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.perm{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.perm label{display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--bd);border-radius:12px;font-size:13px;font-weight:600}
+.perm input{width:18px;height:18px;accent-color:#16a34a}
+.mailbox{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:18px;font-family:Calibri,Arial,sans-serif;color:#000}
+.ring{width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ring>div{width:74px;height:74px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--digi);font-weight:700;font-size:15px}
+@media (max-width:700px){main{padding:16px}header.top{padding:12px 14px 0}.lright,.lleft{padding:26px}}
+</style>
+</head>
+<body class="nosel">
+<div id="app"></div>
+<div class="toast" id="toast" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* =========================================================
+   Alpha NextGen Eclipse — Repricing  V23.0.7
+   Single file. Data lives in the connected server folder.
+   ========================================================= */
+const APP = { ver:'V23.0.7', name:'Repricing', build:'Build 1 · Nov 2026', defaultExpiry:'2027-12-31' };
+const ADMIN_MSID = 'aranja14', ADMIN_EMP = '001328467', ADMIN_PC_END = '2rjj';
+const ADMIN_PW0 = '00dcb9f336caaa235697f9b0242da315b6d74753897d1f563244858e59b3db14'; /* master password (hash only) */
+const isAdminPC = pc => String(pc||'').trim().toLowerCase().endsWith(ADMIN_PC_END);
+const PERMS = [
+  ['paste','Paste data'],['headers','Edit headers'],['save','Master save'],['del','Delete date'],
+  ['mail','Mail report'],['comments','Default comments'],['export','Excel export'],['admin','Admin panel']
+];
+const DEF_HEAD = {
+  prod:['Name','Volume','Utilization','Efficiency','LC Efficiency','O/U'],
+  rep:['Date','Name','Processed- Reprice','Down Time Comments']
+};
+const DEF_CFG = () => ({
+  app:APP.ver, expiry:APP.defaultExpiry, target:344,
+  th:{utilBad:85, effBad:90, effWarn:110},
+  mail:{to:'Kumar, Vinesh', cc:'Chandra, Praveen; M S, Sanketh; Selvarasu, Raja', subject:'Repricing Summary — {date}'},
+  sec:{requireLogin:false, requireServer:false, f12:true, ctrlU:true, rightClick:true, ctrlPS:true, copyBlock:false, onePC:true, rememberPw:true, pwPlainInExcel:false, autoLogout:0, maxFails:3},
+  guest:{paste:true,headers:true,save:true,del:false,mail:true,comments:true,export:true,admin:false},
+  keep:{logs:30, backups:30},
+  headers:JSON.parse(JSON.stringify(DEF_HEAD)),
+  lib:[['NDM issue',30],['NDM freeze + manual resolving',30],['Meeting with manager',30],['One to one',20],['QVC meeting',35],['Doing reports',15],['System restart',15],['Self evaluation',15],['NDM slowness',20]]
+});
+const allPerms = v => Object.fromEntries(PERMS.map(p=>[p[0],v]));
+const DEF_ADMIN = () => ({msid:ADMIN_MSID, empId:ADMIN_EMP, name:'Akshay Ranjan', pc:'', role:'Admin', pw:ADMIN_PW0, pwPlain:'', validTill:APP.defaultExpiry, active:true, perms:allPerms(true)});
+const GUEST = () => ({msid:'guest', empId:'', name:'Guest', pc:localStorage.getItem('rp23_pc')||'', role:'Guest', perms:Object.assign({},cfg.guest,{admin:false}), guest:true});
+
+let dir = null, cfg = null, users = [], me = null, view = 'home', adminTab = 'users';
+let cur = { date: todayISO(), prod: [], rep: [], savedAt: null, savedBy: null, dirty:false };
+let gridKind = 'rep', savedDates = new Set(), calMonth = null, calPick = new Set(), calPickMode = false;
+let idleTimer = null;
+
+/* ---------------- utils ---------------- */
+function todayISO(d=new Date()){const z=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate());}
+function parseISO(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+function fmtD(s){const d=parseISO(s);return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});}
+function usD(s){const d=parseISO(s);return (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function num(v){if(v==null)return NaN;const s=String(v).replace(/[,%\s]/g,'');if(s==='')return NaN;return Number(s);}
+function pct(v){const raw=String(v??'');let n=num(v);if(isNaN(n))return NaN;if(!raw.includes('%')&&Math.abs(n)<=3)n*=100;return n;}
+function f2(n){return isNaN(n)?'':n.toFixed(2);}
+function mins(txt){let t=0;String(txt||'').replace(/(\d+(?:\.\d+)?)\s*(?:mins?|minutes?|m)\b/gi,(_,n)=>{t+=Number(n);});return t;}
+function hm(minsLeft){const h=Math.floor(minsLeft/60),m=Math.round(minsLeft%60);return h+'.'+String(m).padStart(2,'0');}
+function toast(t){const el=document.createElement('div');el.textContent=t;$('#toast').appendChild(el);setTimeout(()=>el.remove(),3600);}
+function $(s,r=document){return r.querySelector(s);} function $$(s,r=document){return [...r.querySelectorAll(s)];}
+function can(p){if(!me)return false;const adm=me.role==='Admin'&&String(me.msid).toLowerCase()===ADMIN_MSID&&!me.viewAs;if(p==='admin')return adm;return adm||!!(me.perms&&me.perms[p]);}
+function daysAgo(iso){return Math.floor((parseISO(todayISO())-parseISO(iso))/864e5);}
+async function sha(s){
+  try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rp23|'+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+  catch(e){let h=5381;for(const c of 'rp23|'+s)h=((h<<5)+h+c.charCodeAt(0))|0;return 'x'+(h>>>0).toString(16);}
+}
+function weekMonday(iso){const d=parseISO(iso);const wd=(d.getDay()+6)%7;d.setDate(d.getDate()-wd);return d;}
+function weekDays(iso){const m=weekMonday(iso);return [...Array(7)].map((_,i)=>{const d=new Date(m);d.setDate(m.getDate()+i);return todayISO(d);});}
+function weekNo(iso){return Math.ceil(weekMonday(iso).getDate()/7);}
+
+/* ---------------- icons ---------------- */
+const IC={
+ home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',paste:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/>',
+ chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16M15 4v16"/>',
+ week:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M7 14h3M12 14h5"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+ server:'<rect x="4" y="3" width="16" height="7" rx="2"/><rect x="4" y="14" width="16" height="7" rx="2"/><path d="M8 6.5h.01M8 17.5h.01"/>',
+ shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5 6.5-5s5.7 1.5 6.5 5"/><circle cx="17" cy="9" r="2.5"/>',
+ plug:'<path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',pc:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+ edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',save:'<path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/>',
+ check:'<path d="M5 12l5 5 9-10"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',download:'<path d="M12 4v12M7 11l5 5 5-5M4 18v2h16v-2"/>',upload:'<path d="M12 16V4M7 9l5-5 5 5M4 16v4h16v-4"/>',
+ bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',plus:'<path d="M12 5v14M5 12h14"/>',copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/>',
+ eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',logout:'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h11"/>',
+ history:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/>',smile:'<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>'
+};
+const ic=(n,s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
+const logo=(s=40)=>`<svg width="${s}" height="${s}" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="#c2410c"/><circle cx="31" cy="19" r="17" fill="#fff8ef"/><circle cx="24" cy="24" r="21.5" fill="none" stroke="#9d174d" stroke-width="1.5" stroke-dasharray="3 4"/></svg>`;
+const B=(label,{k='',icon='',id='',act='',sm=false,dis=false,title='',arg=''}={})=>`<button type="button" class="b3 ${k} ${sm?'sm':''}" ${id?`id="${id}"`:''} ${act?`data-act="${act}"`:''} ${arg!==''?`data-arg="${esc(arg)}"`:''} ${dis?'disabled':''} ${title?`title="${esc(title)}" aria-label="${esc(title)}"`:''}>${icon?ic(icon,sm?15:17):''}${label}</button>`;
+
+/* ---------------- IndexedDB (keeps folder link) ---------------- */
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('rp23',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
+async function idbSet(k,v){const d=await idb();return new Promise(r=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=()=>r();});}
+async function idbGet(k){const d=await idb();return new Promise(r=>{const q=d.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r(null);});}
+
+/* ---------------- storage: server folder, or this PC (local) when not connected ---------------- */
+async function lget(k){const d=await idb();return new Promise(r=>{const q=d.transaction('kv').objectStore('kv').get('F:'+k);q.onsuccess=()=>r(q.result??null);q.onerror=()=>r(null);});}
+async function lset(k,v){const d=await idb();return new Promise(r=>{const t=d.transaction('kv','readwrite');const s=t.objectStore('kv');v===null?s.delete('F:'+k):s.put(v,'F:'+k);t.oncomplete=()=>r();});}
+async function lkeys(){const d=await idb();return new Promise(r=>{const q=d.transaction('kv').objectStore('kv').getAllKeys();q.onsuccess=()=>r(q.result.filter(k=>String(k).startsWith('F:')).map(k=>k.slice(2)));q.onerror=()=>r([]);});}
+async function dh(path,create=true){let h=dir;for(const p of path.split('/').filter(Boolean))h=await h.getDirectoryHandle(p,{create});return h;}
+async function readText(path){if(!dir)return await lget(path);try{const parts=path.split('/');const f=parts.pop();const d=await dh(parts.join('/'),false);const fh=await d.getFileHandle(f);return await (await fh.getFile()).text();}catch(e){return null;}}
+async function readJSON(path,def){const t=await readText(path);if(t==null)return def;try{return JSON.parse(t);}catch(e){return def;}}
+async function writeFile(path,content){if(!dir)return lset(path,content);const parts=path.split('/');const f=parts.pop();const d=await dh(parts.join('/'),true);const fh=await d.getFileHandle(f,{create:true});const w=await fh.createWritable();await w.write(content);await w.close();}
+const writeJSON=(p,o)=>writeFile(p,JSON.stringify(o,null,1));
+async function listNames(path){if(!dir){const pre=path.replace(/\/$/,'')+'/';return (await lkeys()).filter(k=>k.startsWith(pre)&&!k.slice(pre.length).includes('/')).map(k=>k.slice(pre.length)).sort();}
+  try{const d=await dh(path,true);const out=[];for await(const [n,h] of d.entries())if(h.kind==='file')out.push(n);return out.sort();}catch(e){return [];}}
+async function delFile(path){if(!dir)return lset(path,null);const parts=path.split('/');const f=parts.pop();const d=await dh(parts.join('/'),false);await d.removeEntry(f);}
+const storeName=()=>dir?('Server: '+dir.name):'Local: this PC';
+
+async function pickFolder(){
+  if(!window.showDirectoryPicker){toast('Ye browser folder connect support nahi karta. Chrome ya Edge mein kholo.');return;}
+  try{const h=await window.showDirectoryPicker({id:'repricing23',mode:'readwrite'});await idbSet('dir',h);await useFolder(h);}catch(e){if(e.name!=='AbortError')toast('Connect failed: '+e.message);}
+}
+async function reconnect(){
+  const h=await idbGet('dir');if(!h)return pickFolder();
+  try{let p=await h.queryPermission({mode:'readwrite'});if(p!=='granted')p=await h.requestPermission({mode:'readwrite'});if(p==='granted')await useFolder(h);else toast('Permission nahi mili');}catch(e){pickFolder();}
+}
+async function useFolder(h){
+  dir=h;const wasMe=me;await loadStore();
+  if(wasMe&&!wasMe.guest){const u=users.find(x=>x.msid.toLowerCase()===wasMe.msid.toLowerCase());me=u&&u.active?u:null;}
+  else me=null;
+  await refreshSaved();await loadDate(cur.date);render();toast('Server folder connected: '+h.name);await log('SERVER CONNECT',h.name);
+}
+async function loadStore(){
+  cfg=Object.assign(DEF_CFG(),await readJSON('Repricing_Config.json',{}));
+  const d=DEF_CFG();for(const k of ['th','mail','sec','keep','headers','guest'])cfg[k]=Object.assign(d[k],cfg[k]||{});
+  delete cfg.sec.adminPw;
+  users=await readJSON('Repricing_Users.json',null);
+  if(!users||!users.length)users=[DEF_ADMIN()];
+  let a=users.find(u=>u.msid.toLowerCase()===ADMIN_MSID);if(!a){a=DEF_ADMIN();users.unshift(a);}
+  users.forEach(u=>{if(u!==a&&u.role==='Admin')u.role='Lead';});a.role='Admin';a.active=true;a.perms=allPerms(true);a.empId=a.empId||ADMIN_EMP;if(!a.pw)a.pw=ADMIN_PW0;if(a.validTill<cfg.expiry)a.validTill=cfg.expiry;
+  await writeJSON('Repricing_Config.json',cfg);await saveUsers(false);
+  localStorage.setItem('rp23_sec',JSON.stringify(cfg.sec));
+  await purgeOld();
+}
+async function purgeOld(){
+  for(const [folder,keep] of [['Logs',cfg.keep.logs],['Backups',cfg.keep.backups]]){
+    for(const n of await listNames(folder)){const m=n.match(/(\d{4}-\d{2}-\d{2})/);if(m&&daysAgo(m[1])>keep){try{await delFile(folder+'/'+n);}catch(e){}}}
+  }
+}
+
+/* ---------------- logs & backup ---------------- */
+async function log(action,detail=''){
+  if(!cfg)return;const day=todayISO(),p='Logs/Repricing_Log_'+day+'.json';
+  try{const arr=await readJSON(p,[]);arr.push({t:new Date().toLocaleTimeString('en-GB'),msid:me?me.msid:(detail.msid||'-'),pc:localStorage.getItem('rp23_pc')||'',action,detail:typeof detail==='string'?detail:JSON.stringify(detail)});await writeJSON(p,arr);}catch(e){}
+}
+async function backup(reason){
+  if(!cfg)return;const day=todayISO(),p='Backups/Repricing_Backup_'+day+'.json';
+  const b=await readJSON(p,{day,snapshots:[]});
+  const data=await readJSON('Data/'+cur.date+'.json',null);
+  b.snapshots.push({t:new Date().toLocaleTimeString('en-GB'),by:me?me.msid:'-',reason,cfg,users,data});
+  if(b.snapshots.length>40)b.snapshots=b.snapshots.slice(-40);
+  await writeJSON(p,b);
+}
+
+/* ---------------- users + Excel mirror ---------------- */
+async function saveUsers(doBackup=true){
+  await writeJSON('Repricing_Users.json',users);
+  const head=['Name','MSID','Employee ID','PC Name','Role','Password','Valid Till','Active',...PERMS.map(p=>p[1])];
+  const rows=users.map(u=>[u.name,u.msid,u.empId||'',u.role==='Admin'&&u.msid===ADMIN_MSID?'…'+ADMIN_PC_END.toUpperCase():u.pc,u.role,u.msid.toLowerCase()===ADMIN_MSID?'(protected)':(cfg&&cfg.sec.pwPlainInExcel?(u.pwPlain||''):(u.pw?'#'+u.pw:'')),u.validTill,u.active?'Yes':'No',...PERMS.map(p=>(u.role==='Admin'||u.perms[p[0]])?'Yes':'No')]);
+  await writeFile('Repricing_Users.xls',xlsXML([{name:'Users',rows:[head,...rows]}]));
+  if(doBackup)await backup('users');
+}
+async function saveCfg(){await writeJSON('Repricing_Config.json',cfg);localStorage.setItem('rp23_sec',JSON.stringify(cfg.sec));await backup('settings');}
+
+/* ---------------- Excel (SpreadsheetML) ---------------- */
+function xlsXML(sheets){
+  const x=s=>esc(s);
+  let o='<?xml version="1.0"?>\n<?mso-application progid="Excel.Sheet"?>\n<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'+
+   '<Styles><Style ss:ID="h"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#16A34A" ss:Pattern="Solid"/></Style>'+
+   '<Style ss:ID="g"><Interior ss:Color="#92D050" ss:Pattern="Solid"/></Style><Style ss:ID="o"><Interior ss:Color="#FFA500" ss:Pattern="Solid"/></Style><Style ss:ID="p"><Interior ss:Color="#FF99CC" ss:Pattern="Solid"/></Style></Styles>';
+  const used=new Set();
+  for(const s of sheets){let nm=String(s.name).replace(/[\\\/\?\*\[\]:]/g,'-').slice(0,31);while(used.has(nm))nm=nm.slice(0,28)+'_'+used.size;used.add(nm);
+    o+=`<Worksheet ss:Name="${x(nm)}"><Table>`;
+    s.rows.forEach((r,i)=>{o+='<Row>'+r.map((c,j)=>{const st=i===0?' ss:StyleID="h"':(s.styles&&s.styles[i]&&s.styles[i][j]?` ss:StyleID="${s.styles[i][j]}"`:'');const n=typeof c==='number'&&isFinite(c);return `<Cell${st}><Data ss:Type="${n?'Number':'String'}">${x(c)}</Data></Cell>`;}).join('')+'</Row>';});
+    o+='</Table></Worksheet>';}
+  return o+'</Workbook>';
+}
+function download(name,content,type='application/vnd.ms-excel'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);}
+
+/* ---------------- data model ---------------- */
+function kindOf(v,type){const t=cfg?cfg.th:DEF_CFG().th;if(isNaN(v))return '';if(type==='util')return v<t.utilBad?'bad':'good';return v<t.effBad?'bad':(v>t.effWarn?'warn':'good');}
+function prodRows(){return cur.prod.filter(r=>r&&String(r[0]||'').trim()).map(r=>({name:String(r[0]).trim(),vol:num(r[1]),util:pct(r[2]),eff:pct(r[3]),lc:pct(r[4]),ou:num(r[5])}));}
+function repRowsOf(rows,date){return (rows||[]).filter(r=>r&&String(r[1]||'').trim()).map(r=>{const p=num(r[2]);const tg=cfg.target;return {date:String(r[0]||'').trim()||usD(date),name:String(r[1]).trim(),proc:isNaN(p)?0:p,ach:isNaN(p)?0:p,target:tg,def:tg-(isNaN(p)?0:p),comment:String(r[3]||''),mins:mins(r[3])};});}
+async function loadDate(iso){
+  cur.date=iso;const d=dir?await readJSON('Data/'+iso+'.json',null):null;
+  cur.prod=d?d.prod:[];cur.rep=d?d.rep:[];cur.savedAt=d?d.savedAt:null;cur.savedBy=d?d.savedBy:null;cur.dirty=false;
+}
+async function refreshSaved(){savedDates=new Set((await listNames('Data')).filter(n=>/^\d{4}-\d{2}-\d{2}\.json$/.test(n)).map(n=>n.slice(0,10)));}
+
+/* ---------------- security ---------------- */
+function secNow(){return cfg?cfg.sec:JSON.parse(localStorage.getItem('rp23_sec')||'null')||DEF_CFG().sec;}
+document.addEventListener('keydown',e=>{
+  const s=secNow(),k=e.key.toLowerCase(),c=e.ctrlKey||e.metaKey;
+  if(s.f12&&(e.key==='F12'||(c&&e.shiftKey&&['i','j','c'].includes(k)))){e.preventDefault();toast('Ye shortcut band hai');return;}
+  if(s.ctrlU&&c&&k==='u'){e.preventDefault();return;}
+  if(s.ctrlPS&&c&&(k==='p'||k==='s')){e.preventDefault();return;}
+  if(s.copyBlock&&c&&k==='c'&&!e.target.closest('.xl')&&!e.target.closest('input,textarea')){e.preventDefault();toast('Copy sirf grid ke andar allowed hai');}
+},true);
+document.addEventListener('contextmenu',e=>{if(secNow().rightClick&&!e.target.closest('.xl')&&!e.target.closest('input,textarea'))e.preventDefault();});
+function armIdle(){clearTimeout(idleTimer);const m=cfg&&cfg.sec.autoLogout;if(me&&m>0)idleTimer=setTimeout(()=>{logout('Auto logout (idle)');},m*60000);}
+['mousemove','keydown','click'].forEach(ev=>document.addEventListener(ev,()=>armIdle(),{passive:true}));
+
+/* ---------------- login ---------------- */
+function cachedPw(msid){const s=localStorage.getItem('rp23_pw_'+String(msid).toLowerCase());if(!s)return '';try{return decodeURIComponent(escape(atob(s)));}catch(e){return '';}}
+async function tryLogin(pc,msid,pw,remember,say){
+  if(cfg.sec.requireServer&&!dir)return say('Pehle server folder connect karo — bina connect login nahi hoga.');
+  pc=pc.trim();msid=msid.trim();
+  if(!pc||!msid)return say('PC name aur MSID dono bharo.');
+  const lockKey='rp23_lock_'+msid.toLowerCase(),lock=Number(localStorage.getItem(lockKey)||0);
+  if(Date.now()<lock)return say('Bahut galat try ho gaye. '+Math.ceil((lock-Date.now())/60000)+' min baad try karo.');
+  const u=users.find(x=>x.msid.toLowerCase()===msid.toLowerCase());
+  const isAdm=!!u&&u.msid.toLowerCase()===ADMIN_MSID;
+  if(!isAdm&&todayISO()>cfg.expiry)return say('Tool ki validity khatam ('+fmtD(cfg.expiry)+'). Admin se contact karo.');
+  const fail=async(t)=>{const fk='rp23_fail_'+msid.toLowerCase();const n=Number(localStorage.getItem(fk)||0)+1;localStorage.setItem(fk,n);
+    await log('LOGIN FAILED',{msid,pc,reason:t});if(n>=cfg.sec.maxFails){localStorage.setItem(lockKey,Date.now()+5*60000);localStorage.setItem(fk,0);await log('LOCKED 5 MIN',{msid,pc});}
+    say(t+(n<cfg.sec.maxFails?` (${cfg.sec.maxFails-n} try baaki)`:' — 5 min lock'));};
+  if(!u)return fail('Ye MSID access list mein nahi hai.');
+  if(isAdm){
+    if(!isAdminPC(pc))return fail('Admin sirf apne PC se login ho sakta hai.');
+    if(await sha(pw)!==u.pw)return fail('Master password galat hai.');
+  }else{
+    if(!u.active)return fail('Access band hai. Admin se baat karo.');
+    if(u.validTill&&todayISO()>u.validTill)return fail('Aapka access '+fmtD(u.validTill)+' ko khatam ho gaya.');
+    if(u.pc&&cfg.sec.onePC&&u.pc.toLowerCase()!==pc.toLowerCase())return fail('Ye MSID dusre PC se locked hai.');
+    if(!u.pw){if(pw.length<4)return say('Pehli baar login: naya password banao (kam se kam 4 letters).','warn');u.pw=await sha(pw);if(cfg.sec.pwPlainInExcel)u.pwPlain=pw;}
+    else if(await sha(pw)!==u.pw)return fail('Password galat hai.');
+  }
+  let bound=false;if(!isAdm&&!u.pc){u.pc=pc;bound=true;}
+  u.lastLogin=new Date().toISOString();await saveUsers(false);
+  localStorage.setItem('rp23_pc',pc);localStorage.setItem('rp23_msid',msid);localStorage.removeItem('rp23_fail_'+msid.toLowerCase());
+  const keepPw=remember&&(isAdm?isAdminPC(pc):cfg.sec.rememberPw);
+  if(keepPw)localStorage.setItem('rp23_pw_'+msid.toLowerCase(),btoa(unescape(encodeURIComponent(pw))));else localStorage.removeItem('rp23_pw_'+msid.toLowerCase());
+  if(isAdm)localStorage.setItem('rp23_adminpc','1');
+  me=Object.assign(u,{pcNow:pc});await log(isAdm?'ADMIN LOGIN':'LOGIN',bound?'PC bound: '+pc:pc);
+  await refreshSaved();armIdle();toast('Welcome, '+u.name);return true;
+}
+async function doLogin(){
+  const msg=$('#lmsg');msg.classList.remove('hidden');const say=(t,k='bad')=>{msg.className='msg '+k;msg.innerHTML=ic(k==='bad'?'x':'check',16)+esc(t);};
+  if(await tryLogin($('#lpc').value,$('#lmsid').value,$('#lpw').value,$('#lrem')&&$('#lrem').checked,say)===true){await loadDate(todayISO());view='home';render();}
+}
+function adminLoginModal(){
+  const pc=localStorage.getItem('rp23_pc')||'';
+  const ov=document.createElement('div');ov.className='ov';
+  ov.innerHTML=`<div class="modal" role="dialog" aria-modal="true" aria-label="Admin login" style="max-width:440px"><div class="tools" style="justify-content:space-between"><h3 style="margin:0;font-size:20px;display:flex;gap:8px;align-items:center">${ic('shield',20)} Admin</h3>${B('',{icon:'x',act:'mx',title:'Close'})}</div>
+   <div style="display:flex;flex-direction:column;gap:12px">
+   <div class="fld"><label for="apc">PC name</label><div class="inp">${ic('pc')}<input id="apc" value="${esc(pc)}" autocomplete="off"></div></div>
+   <div class="fld"><label for="amsid">MSID</label><div class="inp">${ic('user')}<input id="amsid" value="${ADMIN_MSID}" autocomplete="off"></div></div>
+   <div class="fld"><label for="apw">Master password</label><div class="inp">${ic('lock')}<input id="apw" type="password" value="${esc(isAdminPC(pc)?cachedPw(ADMIN_MSID):'')}" autocomplete="off"></div></div>
+   <label style="display:flex;align-items:center;gap:8px;font-size:13px"><input type="checkbox" id="arem" checked style="width:18px;height:18px;accent-color:#16a34a">Password sirf is PC pe yaad rakho</label>
+   <div id="amsg" class="msg hidden"></div>${B('Open Admin',{k:'pri',icon:'shield',act:'ago'})}</div></div>`;
+  document.body.appendChild(ov);const q=s=>ov.querySelector(s);const close=()=>ov.remove();
+  q('[data-act="mx"]').onclick=close;ov.onclick=e=>{if(e.target===ov)close();};
+  const go=async()=>{const m=q('#amsg');m.classList.remove('hidden');const say=(t,k='bad')=>{m.className='msg '+k;m.textContent=t;};
+    const prev=me;if(await tryLogin(q('#apc').value,q('#amsid').value,q('#apw').value,q('#arem').checked,say)===true){if(me.role!=='Admin'){me=prev;return say('Ye admin ID nahi hai.');}close();view='admin';render();}};
+  q('[data-act="ago"]').onclick=go;ov.querySelectorAll('input').forEach(i=>i.onkeydown=e=>{if(e.key==='Enter')go();});
+  setTimeout(()=>q(isAdminPC(pc)&&q('#apw').value?'[data-act="ago"]':'#apw').focus(),50);
+}
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.altKey&&e.key.toLowerCase()==='a'&&cfg&&!(me&&me.role==='Admin')){e.preventDefault();adminLoginModal();}});
+async function logout(reason='Logout'){if(me&&!me.guest)await log('LOGOUT',reason);me=null;asUser=null;clearTimeout(idleTimer);
+  if(!cfg.sec.requireLogin){me=GUEST();view='home';}render();}
+let asUser=null; /* admin viewing as another user */
+function startAs(u){asUser={admin:me};me=Object.assign({},u,{pcNow:asUser.admin.pcNow,viewAs:true});log('VIEW AS',u.msid);view='home';render();toast('Ab aap '+u.name+' ki tarah dekh rahe ho');}
+function stopAs(){if(asUser){me=asUser.admin;asUser=null;view='admin';render();}}
+
+/* ---------------- RENDER ---------------- */
+function render(){
+  const app=$('#app');
+  if(!cfg){app.innerHTML='<div class="login"><div class="card">Loading…</div></div>';return;}
+  if(!me&&!cfg.sec.requireLogin)me=GUEST();
+  if(me&&me.guest&&cfg.sec.requireLogin)me=null;
+  if(me&&cfg.sec.requireServer&&!dir&&!me.guest&&me.role!=='Admin')me=null;
+  if(!me){app.innerHTML=loginView();bindLogin();return;}
+  const NAV=[['home','Home','home',''],['paste','Paste Data','paste','paste'],['summary','Daily Summary','chart',''],['tracker','Reprice Tracker','table',''],
+    ['weekly','Weekly Target','week',''],['downtime','Downtime','clock',''],['calendar','Calendar','cal',''],['mail','Mail Report','mail','mail'],['master','Master Save','server','save']];
+  if(!can('admin')&&view==='admin')view='home';
+  const nav=NAV.filter(n=>!n[3]||can(n[3])).map(n=>`<button type="button" class="b3 ${view===n[0]?'on':''}" aria-pressed="${view===n[0]}" data-nav="${n[0]}">${ic(n[2],16)}${n[1]}</button>`).join('');
+  const showShield=can('admin')||(!asUser&&localStorage.getItem('rp23_adminpc')==='1'&&isAdminPC(localStorage.getItem('rp23_pc')));
+  const shield=showShield?`<button type="button" class="b3 ico ${view==='admin'?'on':''}" aria-pressed="${view==='admin'}" ${can('admin')?'data-nav="admin"':'data-act="alogin"'} title="Admin" aria-label="Admin">${ic('shield',19)}</button>`:'';
+  app.innerHTML=`${asUser?`<div style="background:#9d174d;color:#fff;padding:8px 16px;display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;font-weight:700">${ic('eye',16)} Admin view-as: ${esc(me.name)} (${esc(me.msid)}) ${B('Back to Admin',{sm:1,act:'stopas',icon:'shield'})}</div>`:''}
+   <header class="top"><div class="toprow">
+    <div class="brand" id="brand">${logo(42)}<div><div class="t1">Alpha NextGen Eclipse <span class="ver">${APP.ver}</span></div><div class="t2">Repricing</div></div></div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      ${dir?`<span class="chip good"><span class="dot"></span>${esc(storeName())}</span>`:`<button type="button" class="b3 sm" data-act="connect" title="Server folder connect karo">${ic('plug',15)}Local: this PC · Connect</button>`}
+      <label class="chip soft" style="gap:8px">${ic('cal',14)}<input type="date" id="gdate" value="${cur.date}" aria-label="Report date" style="border:0;background:transparent;color:inherit;font-weight:700"></label>
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,#f97316,#c2410c);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 3px 0 #8a2d07">${esc((me.name||me.msid).split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase())}</div>
+      <div style="line-height:1.2"><div style="font-weight:700">${esc(me.guest?'Test mode':me.msid)}</div><div style="font-size:11.5px;color:var(--mu)">${esc(me.guest?'Login off':me.role)}${me.empId?' · '+esc(me.empId):''}</div></div></div>
+      ${shield}
+      ${me.guest?'':`<button type="button" class="b3 ico" data-act="logout" title="Logout" aria-label="Logout">${ic('logout',18)}</button>`}
+    </div></div><nav class="nav" aria-label="Main">${nav}</nav></header>
+    <main id="main"></main><footer>®® Alpha NextGen Eclipse · Repricing ${APP.ver} · ${APP.build} · Valid till ${fmtD(cfg.expiry)}</footer>`;
+  $$('[data-nav]').forEach(b=>b.onclick=()=>{view=b.dataset.nav;render();});
+  const lo=$('[data-act="logout"]');if(lo)lo.onclick=()=>logout();
+  const al=$('[data-act="alogin"]');if(al)al.onclick=adminLoginModal;
+  const cn=$('header [data-act="connect"]');if(cn)cn.onclick=pickFolder;
+  const sa=$('[data-act="stopas"]');if(sa)sa.onclick=stopAs;
+  let taps=0,tt=null;$('#brand').onclick=()=>{taps++;clearTimeout(tt);tt=setTimeout(()=>taps=0,900);if(taps>=5&&!can('admin')){taps=0;adminLoginModal();}};
+  $('#gdate').onchange=async e=>{if(cur.dirty&&!confirm('Is date ka data save nahi hua. Phir bhi date badlein?')){e.target.value=cur.date;return;}await loadDate(e.target.value);render();};
+  const V={home:vHome,paste:vPaste,summary:vSummary,tracker:vTracker,weekly:vWeekly,downtime:vDowntime,calendar:vCalendar,mail:vMail,master:vMaster,admin:vAdmin}[view];
+  Promise.resolve(V()).then(()=>{});
+}
+const head=(t,s,actions='')=>`<div class="ph"><div><h1>${t}</h1><p>${s}</p></div><div class="tools" style="margin:0">${actions}</div></div>`;
+
+function loginView(){
+  const pc=localStorage.getItem('rp23_pc')||'',msid=localStorage.getItem('rp23_msid')||'';
+  const pw=msid?cachedPw(msid):'';
+  const connected=!!dir,needSrv=cfg.sec.requireServer,locked=needSrv&&!connected;
+  return `<div class="login"><div class="lbox">
+   <div class="lleft"><div class="sun">${ic('bolt',50)}</div><div style="font-weight:800;font-size:22px">Alpha NextGen Eclipse</div><div><span class="ver">${APP.ver}</span></div>
+   <div style="font-size:15px;font-weight:700;margin-top:10px;color:var(--ac)">Repricing</div><div style="font-size:13.5px;color:var(--mu);line-height:1.6">Paste · Summarise · Save · Mail</div></div>
+   <div class="lright"><div><h2>Welcome back</h2><div style="color:var(--mu);margin-top:4px">One screen sign-in · sab kuch server pe save</div></div>
+   <div class="msg ${connected?'good':(needSrv?'bad':'warn')}">${ic(connected?'check':'plug',16)}${connected?esc(storeName()):(needSrv?'Server not connected — login locked':'Local mode — data isi PC pe')}</div>
+   <div style="display:flex;gap:10px;flex-wrap:wrap">${B(connected?'Change folder':'Connect server',{k:connected?'':'pri',icon:'plug',act:'connect'})}${!connected?B('Reconnect last',{icon:'history',act:'reconnect'}):''}</div>
+   <div class="fld"><label for="lpc">PC name</label><div class="inp">${ic('pc')}<input id="lpc" value="${esc(pc)}" placeholder="e.g. WINBLR-12345" autocomplete="off"></div></div>
+   <div class="fld"><label for="lmsid">MSID</label><div class="inp">${ic('user')}<input id="lmsid" value="${esc(msid)}" placeholder="Your MSID" autocomplete="username"></div></div>
+   <div class="fld"><label for="lpw">Password</label><div class="inp">${ic('lock')}<input id="lpw" type="password" value="${esc(pw)}" placeholder="Pehli baar: naya password banao" autocomplete="current-password"></div></div>
+   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:13px">
+     <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="lrem" ${pw||!msid?'checked':''} ${cfg.sec.rememberPw?'':'disabled'} style="width:18px;height:18px;accent-color:#16a34a">Is PC pe password yaad rakho</label>
+     <span style="color:var(--mu)">Need any assistance? Contact your Admin</span></div>
+   <div id="lmsg" class="msg hidden"></div>
+   <button type="button" class="b3 pri" id="lgo" ${locked?'disabled':''} style="min-height:52px;font-size:15px">${ic(locked?'lock':'bolt',17)}${locked?'Login (pehle server connect karo)':'Login'}</button>
+   <div style="font-size:12px;color:var(--mu);text-align:center">®® Alpha NextGen Eclipse · ${APP.ver}</div></div></div></div>`;
+}
+function bindLogin(){
+  $('[data-act="connect"]').onclick=pickFolder;const r=$('[data-act="reconnect"]');if(r)r.onclick=reconnect;
+  $('#lgo').onclick=doLogin;
+  $$('#lpc,#lmsid,#lpw').forEach(i=>i.onkeydown=e=>{if(e.key==='Enter')$('#lgo').click();});
+  $('#lmsid').onchange=e=>{const p=cachedPw(e.target.value.trim());if(p)$('#lpw').value=p;};
+}
+
+/* ---------- HOME ---------- */
+function vHome(){
+  const P=prodRows(),R=repRowsOf(cur.rep,cur.date);
+  const vol=P.reduce((a,r)=>a+(r.vol||0),0),au=P.length?P.reduce((a,r)=>a+(r.util||0),0)/P.length:NaN,ae=P.length?P.reduce((a,r)=>a+(r.eff||0),0)/P.length:NaN;
+  const def=R.reduce((a,r)=>a+r.def,0),dm=R.reduce((a,r)=>a+r.mins,0),miss=R.filter(r=>!r.comment.trim()).length;
+  const k=(l,v,s,i)=>`<div class="card kpi"><div style="display:flex;gap:12px;align-items:center"><div class="ic">${ic(i,20)}</div><div class="l">${l}</div></div><div class="v">${v}</div><div class="s">${s}</div></div>`;
+  const step=(l,ok,txt,kind)=>`<div class="line"><span style="font-weight:600">${l}</span><span class="chip ${kind}">${txt}</span></div>`;
+  const leaders=[...P].sort((a,b)=>b.eff-a.eff).slice(0,6).map(r=>`<div style="display:flex;align-items:center;gap:12px;padding:7px 0"><span style="width:150px;font-weight:700;font-size:13px">${esc(r.name)}</span><div style="flex:1;height:12px;border-radius:8px;background:var(--surf2);box-shadow:inset 0 1px 3px rgba(0,0,0,.1)"><div style="width:${Math.min(r.eff/140*100,100)}%;height:12px;border-radius:8px;background:${({good:'#16a34a',warn:'#ea580c',bad:'#db2777'})[kindOf(r.eff,'eff')]||'#c2410c'}"></div></div><span style="width:72px;text-align:right;font-weight:800">${f2(r.eff)}%</span></div>`).join('')||`<div class="sub" style="margin-top:12px">Productivity data paste karo, yahan leaders dikhenge.</div>`;
+  const qa=[['paste','Paste data','paste','paste'],['summary','Open summary','chart',''],['mail','Build mail','mail','mail'],['master','Master save','save','save'],['calendar','Pick a date','cal',''],['weekly','Weekly target','week','']].filter(q=>!q[3]||can(q[3]))
+    .map(q=>`<button type="button" class="b3" data-go="${q[0]}" style="flex-direction:column;align-items:flex-start;min-height:92px;padding:14px">${ic(q[2],22)}${q[1]}</button>`).join('');
+  $('#main').innerHTML=head(`Namaste, ${esc((me.name||me.msid).split(' ')[0])}`,`Report date ${fmtD(cur.date)} · ${cur.savedAt?'saved on server by '+esc(cur.savedBy):'not saved yet'}`,
+     can('paste')?B('Paste data',{k:'pri',icon:'paste',act:'go',arg:'paste'}):'')+
+   `<div class="kpis">${k('Team volume',P.length?vol.toLocaleString('en-IN'):'—',P.length+' members','chart')}${k('Avg utilization',isNaN(au)?'—':f2(au)+'%','Pink below '+cfg.th.utilBad+'%','bolt')}${k('Avg efficiency',isNaN(ae)?'—':f2(ae)+'%','Orange above '+cfg.th.effWarn+'%','smile')}${k('Reprice deficit',R.length?(def>0?'+':'')+def:'—',`Target ${cfg.target} × ${R.length} · ${dm} min downtime`,'clock')}</div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px">
+    <div class="card"><h3>Today's checklist</h3><div class="sub">${fmtD(cur.date)}</div><div style="margin-top:8px">
+     ${step('Productivity data',P.length,P.length?P.length+' rows':'Pending',P.length?'good':'warn')}${step('Reprice data',R.length,R.length?R.length+' rows':'Pending',R.length?'good':'warn')}
+     ${step('Downtime comments',!miss,R.length?(miss?miss+' missing':'Complete'):'—',miss?'warn':'good')}${step('Master save',cur.savedAt,cur.savedAt?'Saved':'Not saved',cur.savedAt?'good':'bad')}</div></div>
+    <div class="card"><h3>Quick actions</h3><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px">${qa}</div></div>
+    <div class="card"><h3>Efficiency leaders</h3><div class="sub">Colour follows report rules</div><div style="margin-top:10px">${leaders}</div></div></div>`;
+  $$('[data-go]').forEach(b=>b.onclick=()=>{view=b.dataset.go;render();});
+  const g=$('[data-act="go"]');if(g)g.onclick=()=>{view='paste';render();};
+}
+
+/* ---------- PASTE (Excel grid) ---------- */
+function vPaste(){
+  const hdr=cfg.headers[gridKind],data=cur[gridKind],canP=can('paste'),canH=can('headers');
+  const L='ABCDEFGHIJKLMNOP';const total=Math.max(data.length+6,14);
+  let rows='';for(let r=0;r<total;r++){const row=data[r]||[];rows+=`<tr><td class="rn">${r+2}</td>${hdr.map((_,c)=>`<td contenteditable="${canP}" data-r="${r}" data-c="${c}">${esc(row[c]??'')}</td>`).join('')}</tr>`;}
+  $('#main').innerHTML=head('Paste Data','Excel se copy karo → kisi bhi cell pe click → Ctrl+V. Header pe click karke naam badlo.',
+    `<span class="chip soft">${ic('cal',14)} ${fmtD(cur.date)}</span>${B('Build summary',{k:'pri',icon:'bolt',act:'build'})}`)+
+   `<div class="row"><div class="grow"><div class="card">
+    <div class="tabs">${B('Reprice data',{act:'gk',arg:'rep',k:gridKind==='rep'?'on':''})}${B('Productivity data',{act:'gk',arg:'prod',k:gridKind==='prod'?'on':''})}</div>
+    <div class="tools">${B('Paste from clipboard',{k:'pri',icon:'paste',act:'clip',sm:1,dis:!canP})}${B('Add 10 rows',{icon:'plus',act:'addrows',sm:1,dis:!canP})}${B('Add column',{icon:'plus',act:'addcol',sm:1,dis:!canH})}${B('Clear screen',{icon:'x',act:'clear',sm:1,dis:!canP})}${B('Reset headers',{icon:'history',act:'rhead',sm:1,dis:!canH})}</div>
+    <div class="fbar"><span class="ref" id="fref">—</span><div class="val" id="fval"></div><span class="chip soft">${data.filter(r=>r&&r.some(x=>String(x||'').trim())).length} rows · ${hdr.length} columns</span>${cur.dirty?'<span class="chip warn">Unsaved</span>':''}</div>
+    <div class="xl" tabindex="-1"><table class="g"><thead><tr><th class="ltr"></th>${hdr.map((_,i)=>`<th class="ltr">${L[i]}</th>`).join('')}</tr></thead>
+     <tbody><tr><td class="rn">1</td>${hdr.map((h,i)=>`<td class="hd" contenteditable="${canH}" data-h="${i}">${esc(h)}</td>`).join('')}</tr>${rows}</tbody></table></div>
+   </div></div><div class="side"><div class="card"><h3>Column map</h3><div class="sub">${gridKind==='rep'?'Reprice: position se kaam karta hai':'Productivity: position se kaam karta hai'}</div>
+    ${(gridKind==='rep'?[['A','Date (khali ho to report date)'],['B','Name'],['C','Processed = Achieved'],['D','Down Time Comments']]:[['A','Name'],['B','Volume'],['C','Utilization %'],['D','Efficiency %'],['E','LC Efficiency %'],['F','O/U']]).map(x=>`<div class="line"><span class="chip soft">${x[0]}</span><span style="font-weight:600;font-size:13px">${x[1]}</span></div>`).join('')}
+    <div class="line"><span style="color:var(--mu);font-size:13px">Daily target</span><b>${cfg.target}</b></div>
+    <div style="font-size:12.5px;color:var(--mu);margin-top:10px">${ic('lock',13)} Header edit aur paste access Admin deta hai.</div></div></div></div>`;
+  const tb=$('table.g');
+  tb.addEventListener('focusin',e=>{const td=e.target.closest('td[data-r]');if(td){$('#fref').textContent=L[+td.dataset.c]+(+td.dataset.r+2);$('#fval').textContent=td.textContent;}});
+  tb.addEventListener('input',e=>{const td=e.target.closest('td[data-r]');if(td){const r=+td.dataset.r,c=+td.dataset.c;while(data.length<=r)data.push([]);data[r][c]=td.textContent;cur.dirty=true;$('#fval').textContent=td.textContent;}});
+  tb.addEventListener('blur',async e=>{const th=e.target.closest('td[data-h]');if(th){hdr[+th.dataset.h]=th.textContent.trim()||hdr[+th.dataset.h];await saveCfg();await log('HEADER EDIT',gridKind+': '+hdr.join(' | '));}},true);
+  tb.addEventListener('paste',e=>{const td=e.target.closest('td[data-r]');if(!td||!canP)return;e.preventDefault();pasteText(e.clipboardData.getData('text/plain'),+td.dataset.r,+td.dataset.c);});
+  tb.addEventListener('keydown',e=>{const td=e.target.closest('td[data-r]');if(!td)return;const r=+td.dataset.r,c=+td.dataset.c;let nr=r,nc=c;
+    if(e.key==='Enter'||e.key==='ArrowDown'&&!e.shiftKey)nr++;else if(e.key==='ArrowUp')nr--;else if(e.key==='Tab'){nc+=e.shiftKey?-1:1;}else return;
+    const n=$(`td[data-r="${nr}"][data-c="${nc}"]`);if(n){e.preventDefault();n.focus();}});
+  $$('[data-act="gk"]').forEach(b=>b.onclick=()=>{gridKind=b.dataset.arg;render();});
+  $('[data-act="clip"]').onclick=async()=>{try{pasteText(await navigator.clipboard.readText(),0,0,true);}catch(e){toast('Clipboard blocked — cell pe click karke Ctrl+V karo');}};
+  $('[data-act="addrows"]').onclick=()=>{for(let i=0;i<10;i++)data.push([]);render();};
+  $('[data-act="addcol"]').onclick=async()=>{hdr.push('Column '+(hdr.length+1));await saveCfg();render();};
+  $('[data-act="clear"]').onclick=()=>{if(confirm('Screen ka data clear karein? (Server pe saved data safe rahega)')){cur[gridKind]=[];cur.dirty=true;render();}};
+  $('[data-act="rhead"]').onclick=async()=>{cfg.headers[gridKind]=[...DEF_HEAD[gridKind]];await saveCfg();render();};
+  $('[data-act="build"]').onclick=()=>{view='summary';render();};
+}
+function pasteText(txt,r0,c0,replace=false){
+  let lines=String(txt).replace(/\r/g,'').split('\n');while(lines.length&&!lines[lines.length-1].trim())lines.pop();
+  let grid=lines.map(l=>l.split('\t'));
+  const hdr=cfg.headers[gridKind].map(h=>h.toLowerCase().replace(/\s/g,''));
+  if(grid.length&&grid[0].some(x=>/name|date|volume|processed/i.test(x))&&grid[0].some(x=>hdr.includes(String(x).toLowerCase().replace(/\s/g,''))||/name/i.test(x)))grid.shift();
+  const data=replace?(cur[gridKind]=[]):cur[gridKind];
+  grid.forEach((row,i)=>{const r=r0+i;while(data.length<=r)data.push([]);row.forEach((v,j)=>{data[r][c0+j]=v.trim();});});
+  const need=Math.max(...grid.map(r=>r.length+c0),0);while(cfg.headers[gridKind].length<need)cfg.headers[gridKind].push('Column '+(cfg.headers[gridKind].length+1));
+  cur.dirty=true;toast(grid.length+' rows paste ho gaye');render();
+}
+
+/* ---------- SUMMARY ---------- */
+function summaryTable(P){
+  return `<div class="tw"><table class="t"><thead><tr><th>Name</th><th class="n">Volume</th><th class="c">Utilization</th><th class="c">Efficiency</th><th class="c">LC Efficiency</th><th class="n">O/U</th></tr></thead><tbody>${
+   P.map(r=>`<tr><td style="font-weight:700">${esc(r.name)}</td><td class="n">${isNaN(r.vol)?'':r.vol}</td><td class="c"><span class="cell ${kindOf(r.util,'util')}">${f2(r.util)}%</span></td><td class="c"><span class="cell ${kindOf(r.eff,'eff')}">${f2(r.eff)}%</span></td><td class="c"><span class="cell ${kindOf(r.lc,'eff')}">${f2(r.lc)}%</span></td><td class="n">${f2(r.ou)}</td></tr>`).join('')||'<tr><td colspan="6" style="color:var(--mu)">Productivity data paste nahi hua.</td></tr>'}</tbody></table></div>`;
+}
+function vSummary(){
+  const P=prodRows();const watch=[];
+  P.forEach(r=>{if(kindOf(r.util,'util')==='bad')watch.push([r.name,'Util '+f2(r.util)+'%','bad']);['eff','lc'].forEach(k=>{const kk=kindOf(r[k],'eff');if(kk!=='good'&&kk)watch.push([r.name,(k==='eff'?'Eff ':'LC ')+f2(r[k])+'%',kk]);});});
+  $('#main').innerHTML=head('Daily Summary','Paste data se apne aap banta hai · colour rules Admin settings mein',(can('mail')?B('Send in mail',{k:'pri',icon:'mail',act:'tomail'}):''))+
+  `<div class="row"><div class="grow"><div class="card"><div class="tools" style="justify-content:space-between"><div><h3>${parseISO(cur.date).getDate()}-${parseISO(cur.date).toLocaleString('en',{month:'short'})}</h3><div class="sub">${P.length} members · Repricing</div></div>
+   ${can('export')?B('Excel',{icon:'download',act:'xl',sm:1}):''}</div>${summaryTable(P)}
+   <div class="pills" style="margin-top:14px"><span class="chip good">Green · on target</span><span class="chip warn">Orange · above ${cfg.th.effWarn}%</span><span class="chip bad">Pink · util below ${cfg.th.utilBad}% / eff below ${cfg.th.effBad}%</span></div></div></div>
+   <div class="side"><div class="card"><h3>Watch list</h3><div class="sub">Colour se auto flag</div>${watch.map(w=>`<div class="line"><b style="font-size:13.5px">${esc(w[0])}</b><span class="chip ${w[2]}">${w[1]}</span></div>`).join('')||'<div class="sub" style="margin-top:10px">Sab green hai 🙂</div>'.replace('🙂','')}</div></div></div>`;
+  const m=$('[data-act="tomail"]');if(m)m.onclick=()=>{view='mail';render();};
+  const x=$('[data-act="xl"]');if(x)x.onclick=exportDay;
+}
+
+/* ---------- TRACKER & WEEKLY ---------- */
+async function weekData(){
+  const days=weekDays(cur.date),out=[];
+  for(const d of days){let rows=null;if(d===cur.date)rows=cur.rep;else if(savedDates.has(d)){const f=await readJSON('Data/'+d+'.json',null);rows=f?f.rep:null;}
+    if(rows&&rows.length)out.push({date:d,rows:repRowsOf(rows,d)});}
+  return out;
+}
+async function vTracker(){
+  $('#main').innerHTML=head('Reprice Tracker',`Is hafte ka date-wise processed vs daily target ${cfg.target}`,'');
+  const W=await weekData();const all=W.flatMap(w=>w.rows);
+  $('#main').innerHTML=head('Reprice Tracker',`Week ${weekNo(cur.date)} · date-wise processed vs daily target ${cfg.target}`,can('export')?B('Excel',{icon:'download',act:'xl'}):'')+
+   `<div class="card"><div class="tw"><table class="t"><thead><tr><th>Date</th><th>Name</th><th class="n">Processed- Reprice</th><th class="n">Total/ Achieved</th><th class="n">Daily Target</th><th class="c">Deficit</th><th>Down Time Comments</th></tr></thead><tbody>${
+   all.map(r=>`<tr><td>${esc(r.date)}</td><td style="font-weight:700">${esc(r.name)}</td><td class="n">${r.proc}</td><td class="n">${r.ach}</td><td class="n">${r.target}</td><td class="c"><span class="cell ${r.def>0?'bad':'good'}">${r.def}</span></td><td>${esc(r.comment)}</td></tr>`).join('')||'<tr><td colspan="7" style="color:var(--mu)">Is hafte ka reprice data nahi mila.</td></tr>'}</tbody></table></div>
+   <div class="sub" style="margin-top:12px">Deficit = Daily Target − Achieved. Minus (green) = target se upar · plus (pink) = target se kam.</div></div>`;
+  const x=$('[data-act="xl"]');if(x)x.onclick=exportDay;
+}
+function weeklyRows(W){
+  const map={};W.forEach((w,di)=>w.rows.forEach(r=>{const k=r.name.toLowerCase();map[k]=map[k]||{name:r.name,days:0,ach:0,mins:0};map[k].days++;map[k].ach+=r.ach;map[k].mins+=r.mins;}));
+  return Object.values(map).map(m=>({...m,target:cfg.target*m.days,def:cfg.target*m.days-m.ach}));
+}
+async function vWeekly(){
+  $('#main').innerHTML=head('Weekly Target','Loading…','');
+  const W=await weekData();const rows=weeklyRows(W);const dayN=W.length;
+  const rings=rows.map(r=>{const p=r.target?r.ach/r.target*100:0;return `<div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px"><div class="ring" style="background:conic-gradient(${p>=100?'#16a34a':'#c2410c'} ${Math.min(p,120)/120*360}deg,var(--surf2) 0)"><div>${p.toFixed(0)}%</div></div><b style="font-size:13px;text-align:center">${esc(r.name)}</b><span class="sub">${r.ach} / ${r.target}</span></div>`;}).join('');
+  $('#main').innerHTML=head('Weekly Target',`Week ${weekNo(cur.date)} · Day ${dayN} · target ${cfg.target}/day · har Monday reset`,'')+
+   `<div class="card"><h3>Progress</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:8px">${rings||'<div class="sub">Data nahi hai.</div>'}</div></div><div style="height:18px"></div>
+   <div class="card"><div class="tw"><table class="t"><thead><tr><th>Week${weekNo(cur.date)}</th><th>Name</th><th class="n">Weekly Target- Reprice</th><th class="n">Achieved prod</th><th class="c">Deficit</th><th class="n">Down Time</th></tr></thead><tbody>${
+   rows.map(r=>`<tr><td><span class="chip soft">Day ${r.days}</span></td><td style="font-weight:700">${esc(r.name)}</td><td class="n">${r.target}</td><td class="n">${r.ach}</td><td class="c"><span class="cell ${r.def>0?'bad':'good'}">${r.def}</span></td><td class="n">${r.mins} Mins</td></tr>`).join('')}</tbody></table></div></div>`;
+}
+
+/* ---------- DOWNTIME ---------- */
+let dtSel=0;
+function vDowntime(){
+  const R=cur.rep,canC=can('comments'),canP=can('paste');
+  const people=R.map((r,i)=>[r,i]).filter(([r])=>r&&String(r[1]||'').trim());
+  const opts=cfg.lib.map(l=>`<option value="${esc(l[1]+' Mins - '+l[0])}">`).join('');
+  const list=people.map(([r,i])=>{const m=mins(r[3]);return `<div class="line" style="flex-wrap:wrap"><button type="button" class="b3 sm ${dtSel===i?'on':''}" data-sel="${i}" style="flex:1 1 150px;justify-content:flex-start">${esc(r[1])}</button>
+    <input class="plain" list="dtl" data-dt="${i}" value="${esc(r[3]||'')}" ${canP?'':'disabled'} aria-label="Downtime for ${esc(r[1])}" style="flex:2 1 260px">
+    <span class="chip soft" style="min-width:64px;justify-content:center">${m} min</span><span class="chip" title="Hours = 8 − downtime (clock time)">${hm(480-m)} h</span></div>`;}).join('');
+  const total=people.reduce((a,[r])=>a+mins(r[3]),0);
+  $('#main').innerHTML=head('Downtime Comments','Naam chuno → default comment pe click · ya khud likho (minutes apne aap ginti)',`<span class="chip soft">${ic('cal',14)} ${fmtD(cur.date)}</span>`)+
+  `<datalist id="dtl">${opts}</datalist><div class="row"><div class="grow"><div class="card"><h3>${fmtD(cur.date)} · per person</h3><div class="sub">Hours clock time mein (8 − 1.45 = 6.15)</div><div style="margin-top:8px">${list||'<div class="sub" style="margin-top:10px">Pehle Reprice data paste karo.</div>'}</div></div></div>
+   <div class="side"><div class="card"><h3>Default comments</h3><div class="sub">${canC?'Aap add/remove kar sakte ho':'Sirf use kar sakte ho'}</div>
+   <div class="pills" style="margin-top:12px">${cfg.lib.map((l,i)=>`<button type="button" class="b3 sm" data-lib="${i}">${esc(l[0])} <span style="color:var(--ac)">${l[1]}m</span></button>${canC?`<button type="button" class="b3 sm dan ico" data-libdel="${i}" aria-label="Remove ${esc(l[0])}" style="width:34px;min-width:34px">${ic('x',14)}</button>`:''}`).join('')}</div>
+   ${canC?`<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap"><input class="plain" id="nlt" placeholder="Comment" style="flex:2 1 140px" aria-label="New comment"><input class="plain" id="nlm" type="number" placeholder="Min" style="flex:1 1 70px" aria-label="Minutes">${B('Add',{k:'pri',icon:'plus',act:'libadd',sm:1})}</div>`:''}
+   </div><div style="height:18px"></div><div class="card kpi"><div class="l">Team downtime</div><div class="v">${total} min</div><div class="s">${people.length} members</div></div></div></div>`;
+  $$('[data-sel]').forEach(b=>b.onclick=()=>{dtSel=+b.dataset.sel;render();});
+  $$('[data-dt]').forEach(i=>i.onchange=()=>{cur.rep[+i.dataset.dt][3]=i.value;cur.dirty=true;render();});
+  $$('[data-lib]').forEach(b=>b.onclick=()=>{if(!canP)return;const l=cfg.lib[+b.dataset.lib];const r=cur.rep[dtSel];if(!r)return toast('Pehle naam chuno');const t=l[1]+' Mins - '+l[0];r[3]=r[3]&&r[3].trim()?r[3]+' + '+t:t;cur.dirty=true;render();});
+  $$('[data-libdel]').forEach(b=>b.onclick=async()=>{cfg.lib.splice(+b.dataset.libdel,1);await saveCfg();render();});
+  const a=$('[data-act="libadd"]');if(a)a.onclick=async()=>{const t=$('#nlt').value.trim(),m=Number($('#nlm').value);if(!t||!m)return toast('Comment aur minutes dono do');cfg.lib.push([t,m]);await saveCfg();await log('COMMENT ADD',t);render();};
+}
+
+/* ---------- CALENDAR ---------- */
+async function vCalendar(){
+  await refreshSaved();if(!calMonth){const d=parseISO(cur.date);calMonth=new Date(d.getFullYear(),d.getMonth(),1);}
+  const y=calMonth.getFullYear(),m=calMonth.getMonth(),first=new Date(y,m,1),nd=new Date(y,m+1,0).getDate(),lead=(first.getDay()+6)%7,today=todayISO();
+  let cells=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="wd">${d}</div>`).join('')+'<div></div>'.repeat(lead);
+  for(let d=1;d<=nd;d++){const iso=todayISO(new Date(y,m,d)),wd=new Date(y,m,d).getDay(),has=savedDates.has(iso);
+    let cls='',lab='';if(has){cls='good';lab='Saved';}else if(wd===0||wd===6){cls='we';lab='';}else if(iso<today){cls='bad';lab='Missing';}else if(iso===today)lab='Today';
+    cells+=`<button type="button" class="d ${cls} ${iso===today?'today':''} ${iso===cur.date?'sel':''} ${calPick.has(iso)?'pick':''}" data-day="${iso}"><b>${d}</b><span>${lab}</span></button>`;}
+  const sd=[...savedDates].filter(d=>d.startsWith(y+'-'+String(m+1).padStart(2,'0'))).length;
+  $('#main').innerHTML=head('Data Calendar','Green = server pe data · Pink = working day, data nahi',B('‹',{act:'pm',title:'Previous month'})+B('›',{act:'nm',title:'Next month'}))+
+  `<div class="row"><div class="grow"><div class="card"><div class="tools" style="justify-content:space-between"><h3>${calMonth.toLocaleString('en',{month:'long',year:'numeric'})}</h3><div class="pills"><span class="chip good">Saved ${sd}</span><span class="chip bad">Missing</span><span class="chip soft">Today</span></div></div><div class="cal">${cells}</div></div></div>
+   <div class="side"><div class="card"><h3>${fmtD(cur.date)}</h3><div class="sub">${savedDates.has(cur.date)?'Server pe saved':'Is date ka data nahi'}</div>
+   <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">${B('Open this date',{k:'pri',icon:'eye',act:'open'})}
+   ${can('export')?B('Download all dates (sheet per date)',{icon:'download',act:'dlall'}):''}
+   ${can('del')?B(calPickMode?'Selecting… click dates':'Tick dates to delete',{icon:'check',act:'pick',k:calPickMode?'on':''})+(calPick.size?B('Delete '+calPick.size+' date(s)',{k:'dan',icon:'trash',act:'delpick'}):''):''}</div></div></div></div>`;
+  $$('[data-day]').forEach(b=>b.onclick=async()=>{const d=b.dataset.day;if(calPickMode){if(!savedDates.has(d))return;calPick.has(d)?calPick.delete(d):calPick.add(d);render();return;}
+    if(cur.dirty&&!confirm('Unsaved data hai. Date badlein?'))return;await loadDate(d);render();});
+  $('[data-act="pm"]').onclick=()=>{calMonth=new Date(y,m-1,1);render();};$('[data-act="nm"]').onclick=()=>{calMonth=new Date(y,m+1,1);render();};
+  $('[data-act="open"]').onclick=()=>{view=can('paste')?'paste':'summary';render();};
+  const dl=$('[data-act="dlall"]');if(dl)dl.onclick=exportAll;
+  const pk=$('[data-act="pick"]');if(pk)pk.onclick=()=>{calPickMode=!calPickMode;if(!calPickMode)calPick.clear();render();};
+  const dp=$('[data-act="delpick"]');if(dp)dp.onclick=async()=>{if(!confirm(calPick.size+' date(s) server se hamesha ke liye delete honge. Pakka?'))return;for(const d of calPick){await backup('before delete '+d);await delFile('Data/'+d+'.json');await log('DELETE DATE',d);}
+    toast(calPick.size+' date(s) deleted');calPick.clear();calPickMode=false;await refreshSaved();render();};
+}
+
+/* ---------- MAIL ---------- */
+function mailHTML(){
+  const P=prodRows(),R=repRowsOf(cur.rep,cur.date);
+  const col={good:'#92D050',warn:'#FFA500',bad:'#FF99CC','':'#ffffff'};
+  const th=s=>`<th style="background:#4CAF19;color:#000;border:1px solid #000;padding:6px 10px;font-family:'Times New Roman';font-size:14px">${s}</th>`;
+  const td=(s,bg='#ffffff',al='center')=>`<td style="background:${bg};border:1px solid #000;padding:5px 10px;text-align:${al};font-family:'Times New Roman';font-size:14px">${esc(s)}</td>`;
+  const d=parseISO(cur.date);
+  let h=`<p style="font-family:Calibri,Arial;font-size:14px">Hi ${esc((cfg.mail.to||'Team').split(',').reverse().join(' ').trim().split(' ')[0]||'Team')},<br><br>Please find the Repricing summary for ${fmtD(cur.date)}.</p>`;
+  if(P.length){h+=`<table style="border-collapse:collapse"><tr><th colspan="6" style="background:#A9D08E;border:1px solid #000;padding:6px;font-family:'Times New Roman';font-size:15px">${d.getDate()}-${d.toLocaleString('en',{month:'short'})}</th></tr><tr>${['Name','Volume','Utilization','Efficiency','LC Efficiency','O/U'].map(th).join('')}</tr>`+
+    P.map(r=>`<tr>${td(r.name.toUpperCase(),'#fff','left')}${td(isNaN(r.vol)?'':r.vol)}${td(f2(r.util)+'%',col[kindOf(r.util,'util')])}${td(f2(r.eff)+'%',col[kindOf(r.eff,'eff')])}${td(f2(r.lc)+'%',col[kindOf(r.lc,'eff')])}${td(f2(r.ou))}</tr>`).join('')+'</table><br>';}
+  if(R.length){const thb=s=>`<th style="background:#0070C0;color:#fff;border:1px solid #000;padding:6px 10px;font-family:'Times New Roman';font-size:14px">${s}</th>`;
+    h+=`<table style="border-collapse:collapse"><tr>${['Date','Name','Processed- Reprice','Total/ Achieved','Daily Target','Deficit','Down Time Comments'].map(thb).join('')}</tr>`+
+    R.map(r=>`<tr>${td(r.date)}${td(r.name,'#fff','left')}${td(r.proc)}${td(r.ach)}${td(r.target,'#DDEBF7')}${td(r.def)}${td(r.comment,'#fff','left')}</tr>`).join('')+'</table><br>';}
+  h+=`<p style="font-family:Calibri,Arial;font-size:14px">Warm Regards<br><b>${esc(me.name)}</b></p>`;
+  return h;
+}
+function vMail(){
+  const subj=(cfg.mail.subject||'Repricing — {date}').replace('{date}',fmtD(cur.date));
+  $('#main').innerHTML=head('Mail Report','Copy dabao → Outlook kholo → body mein Ctrl+V. Excel alag se download.',B('Copy for Outlook',{k:'pri',icon:'copy',act:'copy'})+B('Open Outlook',{k:'mag',icon:'mail',act:'outlook'}))+
+  `<div class="row"><div class="grow"><div class="card"><div class="line" style="border:0"><span style="color:var(--mu);width:70px">To</span><input class="plain" id="mto" value="${esc(cfg.mail.to)}" style="flex:1" aria-label="To"></div>
+   <div class="line"><span style="color:var(--mu);width:70px">Cc</span><input class="plain" id="mcc" value="${esc(cfg.mail.cc)}" style="flex:1" aria-label="Cc"></div>
+   <div class="line"><span style="color:var(--mu);width:70px">Subject</span><input class="plain" id="msub" value="${esc(subj)}" style="flex:1" aria-label="Subject"></div>
+   <div class="mailbox" id="mbody" style="margin-top:14px;overflow-x:auto">${mailHTML()}</div></div></div>
+   <div class="side"><div class="card"><h3>Attachment</h3><div class="sub">Browser se mail mein file apne aap attach nahi hoti — download karke drag kar do.</div><div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+   ${can('export')?B('Download Excel (3 sheets)',{icon:'download',act:'xl'}):''}${B('Save To/Cc as default',{icon:'save',act:'savemail'})}</div></div></div></div>`;
+  $('[data-act="copy"]').onclick=async()=>{const html=$('#mbody').innerHTML;try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([$('#mbody').innerText],{type:'text/plain'})})]);}
+    catch(e){const r=document.createRange();r.selectNodeContents($('#mbody'));const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');s.removeAllRanges();}
+    toast('Copied — Outlook body mein Ctrl+V');await log('MAIL COPY',cur.date);};
+  $('[data-act="outlook"]').onclick=()=>{const q=s=>encodeURIComponent(s);location.href=`mailto:${q($('#mto').value)}?cc=${q($('#mcc').value)}&subject=${q($('#msub').value)}&body=${q('(Ctrl+V — report paste karo)')}`;};
+  const x=$('[data-act="xl"]');if(x)x.onclick=exportDay;
+  $('[data-act="savemail"]').onclick=async()=>{cfg.mail.to=$('#mto').value;cfg.mail.cc=$('#mcc').value;await saveCfg();toast('Default saved');};
+}
+
+/* ---------- EXPORT ---------- */
+function dayRows(prod,rep,date){
+  const P=(prod||[]).filter(r=>r&&String(r[0]||'').trim()).map(r=>({name:String(r[0]).trim(),vol:num(r[1]),util:pct(r[2]),eff:pct(r[3]),lc:pct(r[4]),ou:num(r[5])}));
+  const st={good:'g',warn:'o',bad:'p'};
+  const s1={name:'Summary '+date,rows:[['Name','Volume','Utilization','Efficiency','LC Efficiency','O/U'],...P.map(r=>[r.name,r.vol,f2(r.util)+'%',f2(r.eff)+'%',f2(r.lc)+'%',isNaN(r.ou)?'':r.ou])],styles:[[],...P.map(r=>[0,0,st[kindOf(r.util,'util')],st[kindOf(r.eff,'eff')],st[kindOf(r.lc,'eff')],0])]};
+  const R=repRowsOf(rep,date);
+  const s2={name:'Tracker '+date,rows:[['Date','Name','Processed- Reprice','Total/ Achieved','Daily Target','Deficit','Down Time Comments'],...R.map(r=>[r.date,r.name,r.proc,r.ach,r.target,r.def,r.comment])]};
+  return [s1,s2];
+}
+async function exportDay(){const [a,b]=dayRows(cur.prod,cur.rep,cur.date);const W=weeklyRows(await weekData());
+  const c={name:'Weekly',rows:[['Week'+weekNo(cur.date),'Name','Weekly Target- Reprice','Achieved prod','Deficit','Down Time'],...W.map(r=>['Day '+r.days,r.name,r.target,r.ach,r.def,r.mins+' Mins'])]};
+  download(`Repricing_${cur.date}.xls`,xlsXML([a,b,c]));await log('EXPORT',cur.date);}
+async function exportAll(){await refreshSaved();const sheets=[];for(const d of [...savedDates].sort()){const f=await readJSON('Data/'+d+'.json',null);if(!f)continue;const [a,b]=dayRows(f.prod,f.rep,d);
+  sheets.push({name:d,rows:[...b.rows,[],...a.rows]});}
+  if(!sheets.length)return toast('Server pe koi date nahi');download('Repricing_All_Dates.xls',xlsXML(sheets));await log('EXPORT ALL',sheets.length+' dates');}
+
+/* ---------- MASTER SAVE ---------- */
+async function masterSave(){
+  if(!can('save'))return;const p=cur.prod.filter(r=>r&&r.some(x=>String(x||'').trim())),r=cur.rep.filter(x=>x&&x.some(y=>String(y||'').trim()));
+  if(!p.length&&!r.length)return toast('Save karne ko kuch nahi hai');
+  const obj={date:cur.date,prod:p,rep:r,savedBy:me.msid,savedAt:new Date().toISOString(),app:APP.ver};
+  await writeJSON('Data/'+cur.date+'.json',obj);cur.prod=p;cur.rep=r;cur.savedAt=obj.savedAt;cur.savedBy=me.msid;cur.dirty=false;
+  await backup('master save '+cur.date);await log('MASTER SAVE',cur.date+' · '+p.length+'/'+r.length+' rows');await refreshSaved();toast('Server pe save ho gaya: '+fmtD(cur.date));render();
+}
+async function vMaster(){
+  await refreshSaved();const list=[...savedDates].sort().reverse();
+  const rows=[];for(const d of list.slice(0,40)){const f=await readJSON('Data/'+d+'.json',{});rows.push([d,f]);}
+  $('#main').innerHTML=head('Master Save',`${esc(storeName())} · Data · har save ke saath backup`,B('Master Save · '+fmtD(cur.date),{k:'pri',icon:'save',act:'msave'}))+
+  `<div class="kpis"><div class="card kpi"><div class="l">Dates on server</div><div class="v">${savedDates.size}</div><div class="s">Delete sirf permission wale</div></div>
+   <div class="card kpi"><div class="l">This date</div><div class="v" style="font-size:20px">${cur.savedAt?'Saved':'Not saved'}</div><div class="s">${cur.savedAt?new Date(cur.savedAt).toLocaleString('en-GB')+' · '+esc(cur.savedBy):'Master Save dabao'}</div></div>
+   <div class="card kpi"><div class="l">Backups & logs</div><div class="v">${cfg.keep.backups}d</div><div class="s">Purani files apne aap hatti hain</div></div></div>
+   <div class="card"><div class="tw"><table class="t"><thead><tr><th>Date</th><th class="n">Summary rows</th><th class="n">Reprice rows</th><th>Saved by</th><th>Time</th><th class="n">Actions</th></tr></thead><tbody>${
+   rows.map(([d,f])=>`<tr><td style="font-weight:700">${fmtD(d)}</td><td class="n">${(f.prod||[]).length}</td><td class="n">${(f.rep||[]).length}</td><td>${esc(f.savedBy||'')}</td><td>${f.savedAt?new Date(f.savedAt).toLocaleTimeString('en-GB'):''}</td>
+   <td class="n" style="white-space:nowrap">${B('Load',{icon:'eye',sm:1,act:'load',arg:d})} ${can('del')?B('Delete',{k:'dan',icon:'trash',sm:1,act:'del',arg:d}):''}</td></tr>`).join('')||'<tr><td colspan="6" style="color:var(--mu)">Abhi kuch save nahi hua.</td></tr>'}</tbody></table></div></div>`;
+  $('[data-act="msave"]').onclick=masterSave;
+  $$('[data-act="load"]').forEach(b=>b.onclick=async()=>{await loadDate(b.dataset.arg);view='summary';render();});
+  $$('[data-act="del"]').forEach(b=>b.onclick=async()=>{const d=b.dataset.arg;const t=prompt(`${fmtD(d)} server se delete hoga (sab users ke liye). Confirm ke liye date likho: ${d}`);if(t!==d)return toast('Delete cancel');
+    await backup('before delete '+d);await delFile('Data/'+d+'.json');await log('DELETE DATE',d);if(d===cur.date){cur.savedAt=null;}toast('Deleted '+fmtD(d));render();});
+}
+
+/* ---------- ADMIN ---------- */
+async function vAdmin(){
+  const tabs=[['users','Users & access','users'],['settings','Settings','gear'],['security','Security','shield'],['logs','Logs','history'],['backups','Backups','server']];
+  const T=tabs.map(t=>B(t[1],{icon:t[2],act:'at',arg:t[0],k:adminTab===t[0]?'on':''})).join('');
+  let body='';
+  if(adminTab==='users'){
+    const gRow=`<tr style="background:var(--surf2)"><td><b>Test mode (login off)</b><div class="sub">Jab login band ho, sab ko ye access</div></td><td>—</td><td><span class="chip">Guest</span></td><td>—</td>
+      ${PERMS.map(p=>p[0]==='admin'?'<td class="c">—</td>':`<td class="c"><button type="button" class="tg" aria-pressed="${!!cfg.guest[p[0]]}" data-gperm="${p[0]}" aria-label="${p[1]} for test mode"></button></td>`).join('')}<td></td></tr>`;
+    body=`<div class="card"><div class="tools" style="justify-content:space-between"><div><h3>Access matrix</h3><div class="sub">Tick = allowed · Admin ke paas sab · default valid till ${fmtD(cfg.expiry)} · ${cfg.sec.requireLogin?'<b style="color:var(--good-f)">Login ON</b>':'<b style="color:var(--warn-f)">Login OFF (test mode)</b>'}</div></div>
+     <div class="tools" style="margin:0">${B('Add user',{k:'pri',icon:'plus',act:'uadd',sm:1})}${B('Users Excel',{icon:'download',act:'uxl',sm:1})}${B('Import CSV',{icon:'upload',act:'uimp',sm:1})}</div></div>
+     <div class="tw"><table class="t"><thead><tr><th>User</th><th>PC name</th><th>Role</th><th>Valid till</th>${PERMS.map(p=>`<th class="c">${p[1]}</th>`).join('')}<th class="n"></th></tr></thead><tbody>${
+     users.map((u,i)=>{const adm=u.msid.toLowerCase()===ADMIN_MSID;return `<tr><td><b>${esc(u.name)}</b><div class="sub">${esc(u.msid)}${u.empId?' · '+esc(u.empId):''}${u.active?'':' · <span style="color:var(--bad-f)">blocked</span>'}</div></td>
+      <td>${adm?'<span class="chip soft">'+ic('lock',12)+' Admin PC only</span>':(esc(u.pc)||'<span class="chip warn">First login pe bind</span>')}</td>
+      <td><span class="chip ${u.role==='Admin'?'soft':u.role==='Lead'?'warn':''}">${esc(u.role)}</span></td><td>${esc(u.validTill)}</td>
+      ${PERMS.map(p=>{const on=u.role==='Admin'||(p[0]!=='admin'&&!!u.perms[p[0]]);return `<td class="c"><button type="button" class="tg" aria-pressed="${on}" ${u.role==='Admin'||p[0]==='admin'?'disabled':''} data-perm="${i}|${p[0]}" aria-label="${p[1]} for ${esc(u.name)}"></button></td>`;}).join('')}
+      <td class="n" style="white-space:nowrap">${adm?'':B('',{icon:'eye',sm:1,act:'uas',arg:i,title:'View as '+u.name})+' '}${B('',{icon:'edit',sm:1,act:'uedit',arg:i,title:'Edit '+u.name})}</td></tr>`;}).join('')}${gRow}</tbody></table></div></div>`;
+  }
+  if(adminTab==='settings'){
+    body=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px">
+    <div class="card"><h3>Report rules</h3><div style="display:grid;gap:12px;margin-top:14px">
+      ${[['target','Daily target (reprice)',cfg.target],['utilBad','Utilization pink below %',cfg.th.utilBad],['effBad','Efficiency pink below %',cfg.th.effBad],['effWarn','Efficiency orange above %',cfg.th.effWarn]].map(f=>`<div class="fld"><label for="s_${f[0]}">${f[1]}</label><input class="plain" type="number" id="s_${f[0]}" value="${f[2]}"></div>`).join('')}</div></div>
+    <div class="card"><h3>Mail defaults</h3><div style="display:grid;gap:12px;margin-top:14px">
+      <div class="fld"><label for="s_to">To</label><input class="plain" id="s_to" value="${esc(cfg.mail.to)}"></div><div class="fld"><label for="s_cc">Cc</label><input class="plain" id="s_cc" value="${esc(cfg.mail.cc)}"></div>
+      <div class="fld"><label for="s_sub">Subject ({date} = report date)</label><input class="plain" id="s_sub" value="${esc(cfg.mail.subject)}"></div></div></div>
+    <div class="card"><h3>Validity & retention</h3><div style="display:grid;gap:12px;margin-top:14px">
+      <div class="fld"><label for="s_exp">Tool valid till</label><input class="plain" type="date" id="s_exp" value="${cfg.expiry}"></div>
+      <div class="fld"><label for="s_kl">Logs rakho (din)</label><input class="plain" type="number" id="s_kl" value="${cfg.keep.logs}"></div>
+      <div class="fld"><label for="s_kb">Backups rakho (din)</label><input class="plain" type="number" id="s_kb" value="${cfg.keep.backups}"></div></div></div></div>
+    <div style="margin-top:18px">${B('Save settings',{k:'pri',icon:'save',act:'ssave'})}</div>`;
+  }
+  if(adminTab==='security'){
+    const S=[['requireLogin','Login ON (sab ke liye)','Off = test mode, tool seedha khulta hai (Guest access)'],['requireServer','Server connect zaroori','On = bina folder connect login nahi hoga · Off = data isi PC pe bhi chal jaata hai'],['f12','Block F12 / DevTools keys','F12, Ctrl+Shift+I/J/C band'],['ctrlU','Block Ctrl+U','View source band'],['rightClick','Right-click band','Grid ke bahar'],['ctrlPS','Block Ctrl+P / Ctrl+S','Print / save page band'],
+      ['copyBlock','Copy sirf grid ke andar','Bahar Ctrl+C band'],['onePC','One user · one PC','MSID apne PC name se lock'],
+      ['rememberPw','Password PC pe yaad rakhne do','Login screen pe tick option'],['pwPlainInExcel','Users Excel mein password plain text','Off = sirf code (hash) dikhega · On = jo bhi folder khole wo padh sakta hai']];
+    body=`<div class="card"><h3>Security switches</h3><div class="sub">Browser mein ye rok-tok hai, 100% lock nahi — asli suraksha server folder ki permission hai.</div>
+     ${S.map(s=>`<div class="line"><div><b>${s[1]}</b><div class="sub">${s[2]}</div></div><button type="button" class="tg" aria-pressed="${!!cfg.sec[s[0]]}" data-sec="${s[0]}" aria-label="${s[1]}"></button></div>`).join('')}
+     <div class="line"><div><b>Auto logout (minutes, 0 = off)</b></div><input class="plain" type="number" id="s_al" value="${cfg.sec.autoLogout}" style="width:90px" aria-label="Auto logout minutes"></div>
+     <div class="line"><div><b>Galat try limit</b><div class="sub">Itne galat try ke baad 5 min lock + log</div></div><input class="plain" type="number" id="s_mf" value="${cfg.sec.maxFails}" style="width:90px" aria-label="Max fails"></div>
+     <div style="margin-top:14px">${B('Save security',{k:'pri',icon:'save',act:'secsave'})}</div></div><div style="height:18px"></div>
+     <div class="card"><h3>${ic('shield',18)} Admin protection</h3><div class="sub">Admin login = PC name …${ADMIN_PC_END.toUpperCase()} + MSID ${ADMIN_MSID} + master password · password sirf aapke PC pe cache hota hai</div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:flex-end"><div class="fld" style="flex:1 1 180px"><label for="s_op">Current master password</label><input class="plain" type="password" id="s_op"></div>
+     <div class="fld" style="flex:1 1 180px"><label for="s_np">New master password</label><input class="plain" type="password" id="s_np"></div>${B('Change',{k:'mag',icon:'lock',act:'mpchg'})}</div></div>`;
+  }
+  if(adminTab==='logs'){
+    const files=(await listNames('Logs')).reverse();const pick=window._logPick||files[0];const arr=pick?await readJSON('Logs/'+pick,[]):[];
+    body=`<div class="card"><div class="tools" style="justify-content:space-between"><div><h3>History log</h3><div class="sub">${cfg.keep.logs} din tak · login, save, delete, export, admin changes</div></div>
+     <select class="plain" id="logpick" aria-label="Log date">${files.map(f=>`<option ${f===pick?'selected':''}>${esc(f)}</option>`).join('')}</select></div>
+     <div class="tw"><table class="t"><thead><tr><th>Time</th><th>MSID</th><th>PC</th><th>Action</th><th>Detail</th></tr></thead><tbody>${
+     [...arr].reverse().map(l=>`<tr><td>${esc(l.t)}</td><td>${esc(l.msid)}</td><td>${esc(l.pc)}</td><td><span class="chip ${/FAIL|LOCK|DELETE/.test(l.action)?'bad':/SAVE|LOGIN$/.test(l.action)?'good':'soft'}">${esc(l.action)}</span></td><td style="font-size:12.5px">${esc(l.detail)}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--mu)">Log khali hai.</td></tr>'}</tbody></table></div></div>`;
+  }
+  if(adminTab==='backups'){
+    const files=(await listNames('Backups')).reverse();
+    const det=[];for(const f of files){const b=await readJSON('Backups/'+f,{snapshots:[]});det.push([f,b.snapshots||[]]);}
+    body=`<div class="card"><div class="tools" style="justify-content:space-between"><div><h3>Backups</h3><div class="sub">${cfg.keep.backups} din · har save/settings change pe snapshot (settings + users + us din ka data)</div></div>${B('Backup now',{k:'pri',icon:'save',act:'bnow',sm:1})}</div>
+     <div class="tw"><table class="t"><thead><tr><th>Day</th><th>Time</th><th>By</th><th>Reason</th><th class="n">Restore</th></tr></thead><tbody>${
+     det.flatMap(([f,s])=>s.map((x,i)=>[f,x,i]).reverse()).slice(0,120).map(([f,x,i])=>`<tr><td>${esc(f.match(/\d{4}-\d{2}-\d{2}/)[0])}</td><td>${esc(x.t)}</td><td>${esc(x.by)}</td><td>${esc(x.reason)}</td><td class="n">${B('Restore',{icon:'history',sm:1,act:'brest',arg:f+'|'+i})}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--mu)">Abhi koi backup nahi.</td></tr>'}</tbody></table></div></div>`;
+  }
+  $('#main').innerHTML=head('Admin','Kisko kya access — sab yahin se · changes server pe save hote hain',`<span class="chip soft">${users.length} users</span>`)+`<div class="tabs">${T}</div>`+body;
+  $$('[data-act="at"]').forEach(b=>b.onclick=()=>{adminTab=b.dataset.arg;render();});
+  // users
+  $$('[data-perm]').forEach(b=>b.onclick=async()=>{const [i,p]=b.dataset.perm.split('|');const u=users[+i];u.perms[p]=!u.perms[p];await saveUsers();await log('ACCESS',`${u.msid} ${p}=${u.perms[p]}`);render();});
+  $$('[data-act="uedit"]').forEach(b=>b.onclick=()=>userModal(+b.dataset.arg));
+  const ua=$('[data-act="uadd"]');if(ua)ua.onclick=()=>userModal(-1);
+  const ux=$('[data-act="uxl"]');if(ux)ux.onclick=async()=>{await saveUsers(false);download('Repricing_Users.xls',await readText('Repricing_Users.xls'));};
+  const ui=$('[data-act="uimp"]');if(ui)ui.onclick=importUsers;
+  // settings
+  const ss=$('[data-act="ssave"]');if(ss)ss.onclick=async()=>{cfg.target=Number($('#s_target').value)||344;cfg.th.utilBad=Number($('#s_utilBad').value);cfg.th.effBad=Number($('#s_effBad').value);cfg.th.effWarn=Number($('#s_effWarn').value);
+    cfg.mail.to=$('#s_to').value;cfg.mail.cc=$('#s_cc').value;cfg.mail.subject=$('#s_sub').value;cfg.expiry=$('#s_exp').value||cfg.expiry;cfg.keep.logs=Number($('#s_kl').value)||30;cfg.keep.backups=Number($('#s_kb').value)||30;
+    await saveCfg();await log('SETTINGS','rules/mail/validity');toast('Settings saved');render();};
+  $$('[data-sec]').forEach(b=>b.onclick=()=>{b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true');});
+  const sc=$('[data-act="secsave"]');if(sc)sc.onclick=async()=>{$$('[data-sec]').forEach(b=>cfg.sec[b.dataset.sec]=b.getAttribute('aria-pressed')==='true');cfg.sec.autoLogout=Number($('#s_al').value)||0;cfg.sec.maxFails=Math.max(1,Number($('#s_mf').value)||3);
+    if(!cfg.sec.pwPlainInExcel)users.forEach(u=>u.pwPlain='');await saveCfg();await saveUsers(false);await log('SECURITY',JSON.stringify(cfg.sec));armIdle();toast('Security saved');render();};
+  $$('[data-gperm]').forEach(b=>b.onclick=async()=>{const p=b.dataset.gperm;cfg.guest[p]=!cfg.guest[p];await saveCfg();await log('ACCESS','guest '+p+'='+cfg.guest[p]);render();});
+  $$('[data-act="uas"]').forEach(b=>b.onclick=()=>startAs(users[+b.dataset.arg]));
+  const mc=$('[data-act="mpchg"]');if(mc)mc.onclick=async()=>{const a=users.find(u=>u.msid.toLowerCase()===ADMIN_MSID);if(await sha($('#s_op').value)!==a.pw)return toast('Current password galat');
+    const np=$('#s_np').value;if(np.length<4)return toast('Naya password kam se kam 4 letters');a.pw=await sha(np);a.pwPlain='';await saveUsers();
+    if(isAdminPC(localStorage.getItem('rp23_pc'))&&localStorage.getItem('rp23_pw_'+ADMIN_MSID))localStorage.setItem('rp23_pw_'+ADMIN_MSID,btoa(unescape(encodeURIComponent(np))));
+    await log('ADMIN PASSWORD CHANGED','');toast('Master password badal gaya');render();};
+  const lp=$('#logpick');if(lp)lp.onchange=()=>{window._logPick=lp.value;render();};
+  const bn=$('[data-act="bnow"]');if(bn)bn.onclick=async()=>{await backup('manual');toast('Backup ho gaya');render();};
+  $$('[data-act="brest"]').forEach(b=>b.onclick=async()=>{const [f,i]=b.dataset.arg.split('|');const bk=await readJSON('Backups/'+f,null);const s=bk&&bk.snapshots[+i];if(!s)return;
+    if(!confirm(`Backup (${s.t}, ${s.reason}) se settings + users${s.data?' + '+s.data.date+' ka data':''} wapas laayein?`))return;
+    await backup('before restore');cfg=Object.assign(DEF_CFG(),s.cfg);users=s.users;await saveCfg();await saveUsers(false);if(s.data)await writeJSON('Data/'+s.data.date+'.json',s.data);
+    me=users.find(u=>u.msid===me.msid)||me;await log('RESTORE',f+' #'+i);toast('Restore ho gaya');render();});
+}
+function userModal(i){
+  const u=i>=0?JSON.parse(JSON.stringify(users[i])):{msid:'',name:'',pc:'',role:'Employee',pw:'',pwPlain:'',validTill:cfg.expiry,active:true,perms:Object.assign(allPerms(false),{paste:true,save:true,mail:true})};
+  const ov=document.createElement('div');ov.className='ov';
+  ov.innerHTML=`<div class="modal" role="dialog" aria-modal="true" aria-label="User"><div class="tools" style="justify-content:space-between"><h3 style="margin:0;font-size:20px">${i>=0?'Edit user':'Add user'}</h3>${B('',{icon:'x',act:'mx',title:'Close'})}</div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+   <div class="fld"><label for="u_name">Name</label><input class="plain" id="u_name" value="${esc(u.name)}"></div>
+   <div class="fld"><label for="u_msid">MSID</label><input class="plain" id="u_msid" value="${esc(u.msid)}" ${u.msid===ADMIN_MSID?'disabled':''}></div>
+   <div class="fld"><label for="u_emp">Employee ID</label><input class="plain" id="u_emp" value="${esc(u.empId||'')}" ${u.msid===ADMIN_MSID?'disabled':''}></div>
+   ${u.msid===ADMIN_MSID?'':`<div class="fld"><label for="u_pc">PC name (khali = pehle login pe bind)</label><input class="plain" id="u_pc" value="${esc(u.pc)}"></div>`}
+   <div class="fld"><label for="u_role">Role</label><select class="plain" id="u_role" ${u.msid===ADMIN_MSID?'disabled':''}>${(u.msid===ADMIN_MSID?['Admin']:['Employee','Lead']).map(r=>`<option ${u.role===r?'selected':''}>${r}</option>`).join('')}</select></div>
+   ${u.msid===ADMIN_MSID?'':`<div class="fld"><label for="u_pw">Naya password (khali = same rahega)</label><input class="plain" id="u_pw" type="text" placeholder="${u.pw?'set hai':'pehle login pe user khud banayega'}"></div>`}
+   <div class="fld"><label for="u_vt">Valid till</label><input class="plain" type="date" id="u_vt" value="${esc(u.validTill)}"></div></div>
+   <div style="margin:16px 0 8px;font-weight:800">Access</div><div class="perm">${PERMS.filter(p=>p[0]!=='admin').map(p=>`<label><input type="checkbox" data-up="${p[0]}" ${u.perms[p[0]]?'checked':''}>${p[1]}</label>`).join('')}</div>
+   <div class="line" style="margin-top:12px"><div><b>Active</b><div class="sub">Off = login band</div></div><button type="button" class="tg" id="u_act" aria-pressed="${u.active}" aria-label="Active"></button></div>
+   <div class="tools" style="margin-top:16px">${B('Save',{k:'pri',icon:'save',act:'msave2'})}${i>=0&&u.msid!==ADMIN_MSID?B('Reset PC',{icon:'pc',act:'mpc'})+B('Reset password',{icon:'lock',act:'mpw'}):''}${i>=0&&u.msid!==ADMIN_MSID&&u.msid!==me.msid?B('Delete user',{k:'dan',icon:'trash',act:'mdel'}):''}</div></div>`;
+  document.body.appendChild(ov);const close=()=>ov.remove();
+  ov.querySelector('[data-act="mx"]').onclick=close;ov.onclick=e=>{if(e.target===ov)close();};
+  ov.querySelector('#u_act').onclick=e=>e.currentTarget.setAttribute('aria-pressed',e.currentTarget.getAttribute('aria-pressed')!=='true');
+  const q=s=>ov.querySelector(s);
+  q('[data-act="msave2"]').onclick=async()=>{
+    const msid=q('#u_msid').value.trim();if(!msid||!q('#u_name').value.trim())return toast('Name aur MSID chahiye');
+    if(users.some((x,j)=>j!==i&&x.msid.toLowerCase()===msid.toLowerCase()))return toast('Ye MSID pehle se hai');
+    const adm=u.msid===ADMIN_MSID;
+    Object.assign(u,{name:q('#u_name').value.trim(),msid,empId:adm?ADMIN_EMP:q('#u_emp').value.trim(),pc:adm?'':q('#u_pc').value.trim(),role:u.msid===ADMIN_MSID?'Admin':q('#u_role').value,validTill:q('#u_vt').value||cfg.expiry,active:q('#u_act').getAttribute('aria-pressed')==='true'});
+    ov.querySelectorAll('[data-up]').forEach(c=>u.perms[c.dataset.up]=c.checked);
+    const np=adm?'':q('#u_pw').value;if(np){u.pw=await sha(np);u.pwPlain=cfg.sec.pwPlainInExcel?np:'';}if(adm){u.active=true;u.pwPlain='';}
+    if(i>=0)users[i]=u;else users.push(u);if(me.msid===u.msid)me=Object.assign(u,{pcNow:me.pcNow});
+    await saveUsers();await log(i>=0?'USER EDIT':'USER ADD',u.msid);close();toast('User saved');render();};
+  const rp=q('[data-act="mpc"]');if(rp)rp.onclick=async()=>{users[i].pc='';await saveUsers();await log('RESET PC',u.msid);close();toast('PC reset — agle login pe naya PC bind hoga');render();};
+  const rw=q('[data-act="mpw"]');if(rw)rw.onclick=async()=>{users[i].pw='';users[i].pwPlain='';await saveUsers();await log('RESET PASSWORD',u.msid);close();toast('Password reset — user agle login pe naya banayega');render();};
+  const rd=q('[data-act="mdel"]');if(rd)rd.onclick=async()=>{if(!confirm(u.name+' ko hatayein?'))return;users.splice(i,1);await saveUsers();await log('USER DELETE',u.msid);close();render();};
+}
+function importUsers(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.csv,.txt';
+  inp.onchange=async()=>{const t=await inp.files[0].text();const lines=t.replace(/\r/g,'').split('\n').filter(l=>l.trim());if(lines.length<2)return toast('CSV khali hai');
+    const sep=lines[0].includes('\t')?'\t':',';const H=lines[0].split(sep).map(h=>h.trim().toLowerCase());const ix=n=>H.findIndex(h=>h.includes(n));
+    let added=0,upd=0;for(const l of lines.slice(1)){const c=l.split(sep).map(x=>x.trim().replace(/^"|"$/g,''));const msid=c[ix('msid')];if(!msid)continue;
+      let u=users.find(x=>x.msid.toLowerCase()===msid.toLowerCase());const isNew=!u;if(!u){u={msid,name:'',pc:'',role:'Employee',pw:'',pwPlain:'',validTill:cfg.expiry,active:true,perms:Object.assign(allPerms(false),{paste:true,save:true,mail:true})};users.push(u);}
+      if(ix('name')>=0&&c[ix('name')])u.name=c[ix('name')];if(ix('employee')>=0&&c[ix('employee')]&&u.msid!==ADMIN_MSID)u.empId=c[ix('employee')];if(u.msid.toLowerCase()===ADMIN_MSID)continue;if(ix('pc')>=0&&c[ix('pc')])u.pc=c[ix('pc')];if(ix('role')>=0&&c[ix('role')]&&u.msid!==ADMIN_MSID)u.role=/lead/i.test(c[ix('role')])?'Lead':'Employee';
+      if(ix('valid')>=0&&c[ix('valid')])u.validTill=c[ix('valid')];const pw=ix('password')>=0?c[ix('password')]:'';if(pw&&!pw.startsWith('#')){u.pw=await sha(pw);u.pwPlain=cfg.sec.pwPlainInExcel?pw:'';}
+      isNew?added++:upd++;}
+    await saveUsers();await log('USERS IMPORT',`${added} new, ${upd} updated`);toast(`${added} naye, ${upd} update`);render();};
+  inp.click();
+}
+
+/* ---------------- boot ---------------- */
+window.addEventListener('beforeunload',e=>{if(me&&cur.dirty){e.preventDefault();e.returnValue='';}});
+(async()=>{render();await loadStore();await loadDate(todayISO());await refreshSaved();render();try{const h=await idbGet('dir');if(h&&(await h.queryPermission({mode:'readwrite'}))==='granted')await useFolder(h);}catch(e){}})();
+</script>
+</body>
+</html>
