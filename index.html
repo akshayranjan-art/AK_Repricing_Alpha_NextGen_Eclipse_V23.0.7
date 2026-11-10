@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Alpha NextGen Eclipse — Repricing UOM &amp; Productivity V23.0.7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@500;700;800&display=swap">
+
 <style>
 :root{
   --bg:#fbf6ef;--surf:#ffffff;--surf2:#fdf3e6;--bd:#eedcc6;--bd2:#e3c9a8;--tx:#24160c;--mu:#6a4c36;
@@ -13,7 +13,7 @@
   --esp1:#1d110a;--esp2:#2e1a0e;--esp3:#4a230c;
   --good-b:#dcfce7;--good-f:#14532d;--warn-b:#ffedd5;--warn-f:#9a3412;--bad-b:#fce7f3;--bad-f:#9d174d;
   --press:#86efac;--glow:rgba(74,222,128,.55);
-  --font:'Plus Jakarta Sans',system-ui,'Segoe UI',sans-serif;--digi:'Orbitron','Segoe UI',sans-serif;
+  --font:Arial,Helvetica,sans-serif;--digi:Arial,Helvetica,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--font);font-size:13.5px}
@@ -73,7 +73,7 @@ a{color:var(--ac)}
 .navwrap{display:flex;justify-content:center;margin-top:-24px;position:relative;z-index:2;padding:0 14px}
 .nav{display:flex;flex-wrap:wrap;gap:8px;padding:9px 10px 12px;background:#fff;border:1px solid var(--bd);border-radius:18px;box-shadow:0 12px 26px rgba(120,53,15,.12)}
 .nav .b3{min-width:132px}
-main{padding:18px 22px 10px;max-width:1500px;margin:0 auto}
+main{padding:16px 16px 8px;width:100%}
 footer{padding:12px;text-align:center;font-size:11.5px;color:var(--mu)}
 
 /* ===== blocks ===== */
@@ -81,7 +81,7 @@ footer{padding:12px;text-align:center;font-size:11.5px;color:var(--mu)}
 .ph h1{margin:0;font-size:22px;font-weight:800;display:flex;align-items:center;gap:10px}
 .ph h1::before{content:"";width:6px;height:22px;border-radius:4px;background:linear-gradient(180deg,#f59e0b,#c2410c)}
 .ph p{margin:3px 0 0 16px;color:var(--mu);font-size:12.5px}
-.row{display:flex;flex-wrap:wrap;gap:14px}.grow{flex:999 1 640px;min-width:0}.side{flex:1 1 260px;min-width:0;max-width:340px}
+.row{display:flex;flex-wrap:wrap;gap:14px}.grow{flex:999 1 640px;min-width:0}.side{flex:0 1 300px;min-width:260px}
 .card{background:var(--surf);border:1px solid var(--bd);border-radius:18px;box-shadow:0 6px 18px rgba(120,53,15,.07);padding:14px 16px;min-width:0}
 .cap{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ac);display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cap::before{content:"";width:14px;height:3px;border-radius:3px;background:var(--ac)}
@@ -110,7 +110,14 @@ input.in:focus,select.in:focus{outline:2px solid rgba(234,88,12,.35);border-colo
 .xl{overflow:auto;max-height:62vh;border:1px solid var(--bd2);border-radius:14px;background:#fff;outline:none;position:relative}
 .xl:focus{box-shadow:0 0 0 3px rgba(234,88,12,.18)}
 table.g{border-collapse:separate;border-spacing:0;min-width:100%}
-table.g td,table.g th{border-right:1px solid #f0e2cf;border-bottom:1px solid #f0e2cf;padding:0 9px;height:29px;font-size:12.5px;white-space:nowrap;max-width:420px;overflow:hidden;text-overflow:ellipsis}
+table.g{table-layout:fixed}table.g td,table.g th{border-right:1px solid #f0e2cf;border-bottom:1px solid #f0e2cf;padding:0 9px;height:29px;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rz{position:absolute;right:-3px;top:0;bottom:0;width:8px;cursor:col-resize;z-index:5}.rz:hover,.rz.on{background:linear-gradient(90deg,transparent 3px,#ea580c 3px,#ea580c 5px,transparent 5px)}
+table.g th.hd{position:sticky}
+.nm{cursor:pointer;text-decoration:underline dotted #c2410c}
+.pv{position:fixed;inset:0;z-index:70;background:var(--bg);overflow:auto}
+.wk{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:14px}
+.wkc{cursor:pointer}.wkc:hover{border-color:#fdba74}
+.lbtn{background:none;border:0;padding:0;font:inherit;font-weight:700;color:#7c2d12;cursor:pointer;text-align:left;text-decoration:underline dotted}
 table.g thead th{position:sticky;z-index:3}
 table.g th.lt{top:0;height:20px;background:#f7eadb;color:#8a6a52;font-size:10.5px;font-weight:600;text-align:center}
 table.g th.hd{top:20px;background:linear-gradient(180deg,#fff1e0,#ffe6c9);color:#6b2a0b;font-weight:800;text-align:left;height:32px;box-shadow:inset 0 -2px 0 #f2c79a}
@@ -189,11 +196,11 @@ table.t td{padding:7px 10px;border-top:1px solid var(--bd);font-size:12.5px;vert
    Alpha NextGen Eclipse — Repricing UOM & Productivity · V23.0.7
    Server folder = encrypted store (.rpx). Admin locked to aranja14 / PC …2RJJ.
    ===================================================================== */
-const APP={ver:'V23.0.7',build:'Build 2 · Nov 2026',expiry:'2027-12-31'};
+const APP={ver:'V23.0.7',build:'Build 4 · Nov 2026',expiry:'2027-12-31'};
 const ADMIN_MSID='aranja14',ADMIN_EMP='001328467',ADMIN_PC_END='2rjj';
 const ADMIN_PW0='00dcb9f336caaa235697f9b0242da315b6d74753897d1f563244858e59b3db14';
 const isAdminPC=pc=>String(pc||'').trim().toLowerCase().endsWith(ADMIN_PC_END);
-const PERMS=[['paste','Paste & edit'],['headers','Edit headers'],['save','Master save'],['edit','Edit saved date'],['del','Delete date'],['reports','Reports'],['mail','Mail report'],['export','Excel export'],['comments','Downtime library']];
+const PERMS=[['paste','Paste & edit'],['headers','Edit headers'],['save','Master save'],['edit','Edit saved date'],['reports','Reports'],['mail','Mail report'],['export','Excel export'],['comments','Downtime library']];
 const allPerms=v=>Object.fromEntries(PERMS.map(p=>[p[0],v]));
 const NEWPERMS=()=>Object.assign(allPerms(false),{paste:true,save:true,reports:true,mail:true,export:true});
 const DEF_HEAD={rep:['Date','Name','Processed- Reprice','Down Time Comments'],uom:['Name','Volume','Utilization','Efficiency','LC Efficiency','O/U']};
@@ -239,7 +246,7 @@ function anyDate(v){const s=String(v??'').trim();if(!s)return null;let m;
   return null;}
 function toast(t){const e=document.createElement('div');e.textContent=t;$('#toast').appendChild(e);setTimeout(()=>e.remove(),3800);}
 const isAdm=()=>!!me&&me.role==='Admin'&&String(me.msid).toLowerCase()===ADMIN_MSID&&!asUser;
-const can=p=>{if(!me)return false;if(p==='admin')return isAdm();if(me.role==='Admin'&&!asUser)return true;return !!(me.perms&&me.perms[p]);};
+const can=p=>{if(!me)return false;if(p==='admin')return isAdm();if(me.role==='Admin'&&!asUser)return true;if(p==='edit'&&me.role==='SME')return true;if(p==='del')return false;return !!(me.perms&&me.perms[p]);};
 const kind=(v,t)=>{const T=cfg.th;if(isNaN(v))return '';if(t==='u')return v<T.utilBad?'bad':'good';return v<T.effBad?'bad':(v>T.effWarn?'warn':'good');};
 async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rp23|'+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 
@@ -286,12 +293,13 @@ const dataP=d=>'Data/'+d+'.rpx';
 
 /* ---------------- folder ---------------- */
 async function pickFolder(){
-  if(!window.showDirectoryPicker)return toast('Chrome ya Edge mein kholo — folder connect isi mein chalta hai');
+  if(!window.showDirectoryPicker)return toast('Open in Chrome or Edge — folder connect works only there');
   try{const h=await showDirectoryPicker({id:'repricing23',mode:'readwrite'});await idbSet('dir',h);await useFolder(h);}catch(e){if(e.name!=='AbortError')toast('Connect failed: '+e.message);}
 }
 async function reconnect(){const h=await idbGet('dir');if(!h)return pickFolder();
-  try{let p=await h.queryPermission({mode:'readwrite'});if(p!=='granted')p=await h.requestPermission({mode:'readwrite'});if(p==='granted')await useFolder(h);else toast('Permission nahi mili');}catch(e){pickFolder();}}
-async function useFolder(h){dir=h;cache={};await loadStore();me=null;render();toast('Server connected: '+h.name);}
+  try{let p=await h.queryPermission({mode:'readwrite'});if(p!=='granted')p=await h.requestPermission({mode:'readwrite'});if(p==='granted')await useFolder(h);else toast('Permission not granted');}catch(e){pickFolder();}}
+let savedH=null;
+async function useFolder(h,silent){dir=h;savedH=h;cache={};await loadStore();if(silent)return;me=null;render();toast('Server connected: '+h.name);}
 async function loadStore(){
   tamper=new Set();
   const c=await rd(F.cfg,null);cfg=Object.assign(DEF_CFG(),c||{});const d=DEF_CFG();
@@ -305,8 +313,8 @@ async function loadStore(){
   if(!c&&!tamper.has(F.cfg))await wr(F.cfg,cfg);
   if(!u&&!usersBroken)await wr(F.users,users);
   if((await rawR(F.sec))==null)await wr(F.sec,secS);
-  if((await rawR('README_DO_NOT_EDIT.txt'))==null)await rawW('README_DO_NOT_EDIT.txt','Alpha NextGen Eclipse — Repricing UOM & Productivity server folder.\nSab files encrypted (.rpx) hain. Inhe edit karoge to tool use TAMPER maan lega aur Admin ko alert jaayega.\nKoi bhi file haath se mat kholo / badlo.');
-  for(const p of tamper)await alertA('TAMPER','-','File badli gayi / kharab: '+p);
+  if((await rawR('README_DO_NOT_EDIT.txt'))==null)await rawW('README_DO_NOT_EDIT.txt','Alpha NextGen Eclipse — Repricing UOM & Productivity server folder.\nAll files are encrypted (.rpx). Any manual edit is detected as TAMPER and Admin is alerted.\nDo not open or modify any file manually.');
+  for(const p of tamper)await alertA('TAMPER','-','File modified / corrupted: '+p);
   localStorage.setItem('rp23_sec',JSON.stringify(cfg.sec));
   await purge();
 }
@@ -328,44 +336,44 @@ async function backup(reason){if(!dir)return;const p='Backups/Backup_'+iso()+'.r
 /* ---------------- security ---------------- */
 const secNow=()=>cfg?cfg.sec:(JSON.parse(localStorage.getItem('rp23_sec')||'null')||DEF_CFG().sec);
 document.addEventListener('keydown',e=>{const s=secNow(),k=(e.key||'').toLowerCase(),c=e.ctrlKey||e.metaKey;
-  if(s.f12&&(e.key==='F12'||(c&&e.shiftKey&&['i','j','c'].includes(k)))){e.preventDefault();toast('Ye shortcut band hai');return;}
+  if(s.f12&&(e.key==='F12'||(c&&e.shiftKey&&['i','j','c'].includes(k)))){e.preventDefault();toast('This shortcut is disabled');return;}
   if(s.ctrlU&&c&&k==='u'){e.preventDefault();return;}
   if(s.ctrlPS&&c&&(k==='p'||k==='s')){e.preventDefault();return;}
-  if(s.copyBlock&&c&&k==='c'&&!e.target.closest('.xl,input,textarea,.mailbox')){e.preventDefault();toast('Copy sirf grid ke andar');}},true);
+  if(s.copyBlock&&c&&k==='c'&&!e.target.closest('.xl,input,textarea,.mailbox')){e.preventDefault();toast('Copy is allowed only inside the grid');}},true);
 document.addEventListener('contextmenu',e=>{if(secNow().rightClick&&!e.target.closest('input,textarea'))e.preventDefault();});
 function armIdle(){clearTimeout(idleTimer);const m=cfg&&cfg.sec.autoLogout;if(me&&m>0)idleTimer=setTimeout(()=>logout('Auto logout (idle)'),m*6e4);}
 ['mousedown','keydown'].forEach(ev=>document.addEventListener(ev,()=>armIdle(),{passive:true}));
 async function heartbeat(){if(!me||!dir)return;const p='Sessions/'+me.msid.toLowerCase()+'.rpx';const s=await rd(p,null);
-  if(!s||s.pc.toLowerCase()!==String(me.pcNow||'').toLowerCase()||s.sid!==me.sid){toast('Admin ne aapka session band kiya');return logout('Kicked',true);}
+  if(!s||s.pc.toLowerCase()!==String(me.pcNow||'').toLowerCase()||s.sid!==me.sid){toast('Your session was closed by Admin');return logout('Kicked',true);}
   s.at=Date.now();await wr(p,s);}
 
 /* ---------------- auth ---------------- */
 const cachedPw=m=>{const s=localStorage.getItem('rp23_pw_'+String(m).toLowerCase());if(!s)return '';try{return decodeURIComponent(escape(atob(s)));}catch(e){return '';}};
 async function tryLogin(pc,msid,pw,pw2,remember,say){
-  if(!dir)return say('Pehle server folder connect karo.');
+  if(!dir)return say('Connect the server folder first.');
   pc=pc.trim();msid=msid.trim();const k=msid.toLowerCase();
-  if(!pc||!msid)return say('PC name aur MSID dono bharo.');
+  if(!pc||!msid)return say('Enter both PC name and MSID.');
   const fresh=await rd(F.users,null);if(fresh&&fresh.length&&!tamper.has(F.users)){const keepA=users.find(x=>x.msid.toLowerCase()===ADMIN_MSID);users=fresh;if(!users.some(x=>x.msid.toLowerCase()===ADMIN_MSID))users.unshift(keepA);}
   await reloadSec();
   const u=users.find(x=>x.msid.toLowerCase()===k),adm=k===ADMIN_MSID;
   const L=secS.locked[k];
   if(L){if(adm&&Date.now()-L.at>15*6e4){delete secS.locked[k];secS.fails[k]=0;await saveSec();}else return {locked:true};}
   const fail=async t=>{secS.fails[k]=(secS.fails[k]||0)+1;const n=secS.fails[k];await log('LOGIN FAILED',{msid,pc,reason:t});
-    if(n>=cfg.sec.maxFails){secS.locked[k]={at:Date.now(),pc};secS.fails[k]=0;await saveSec();await alertA('LOCKED',msid,`${n} galat try — PC ${pc} — account locked`);return {locked:true};}
-    await saveSec();say(t+` (${cfg.sec.maxFails-n} try baaki)`);};
-  if(!u)return fail('Ye MSID access list mein nahi hai.');
-  if(!adm&&iso()>cfg.expiry)return say('Tool validity khatam ('+fmtD(cfg.expiry)+'). Admin se baat karo.');
-  if(adm){if(!isAdminPC(pc))return fail('Admin sirf apne PC se.');if(await sha(pw)!==u.pw)return fail('Master password galat.');}
+    if(n>=cfg.sec.maxFails){secS.locked[k]={at:Date.now(),pc};secS.fails[k]=0;await saveSec();await alertA('LOCKED',msid,`${n} failed attempts — PC ${pc} — account locked`);return {locked:true};}
+    await saveSec();say(t+` (${cfg.sec.maxFails-n} attempts left)`);};
+  if(!u)return fail('This MSID is not in the access list.');
+  if(!adm&&iso()>cfg.expiry)return say('Tool validity expired ('+fmtD(cfg.expiry)+'). Please contact Admin.');
+  if(adm){if(!isAdminPC(pc))return fail('Admin can sign in only from the admin PC.');if(await sha(pw)!==u.pw)return fail('Incorrect master password.');}
   else{
-    if(!u.active)return say('Aapka access band hai. Admin se baat karo.');
-    if(u.validTill&&iso()>u.validTill)return say('Access '+fmtD(u.validTill)+' ko khatam ho gaya.');
-    if(u.pc&&cfg.sec.onePC&&u.pc.toLowerCase()!==pc.toLowerCase())return fail('Ye ID dusre PC se bind hai.');
-    if(!u.pw){if(pw.length<4)return say('Pehli baar login: apna naya password banao (kam se kam 4).','warn');
-      if(pw!==pw2){$('#lpw2wrap')&&$('#lpw2wrap').classList.remove('hidden');return say('Pehli baar login: password Confirm box mein dobara likho.','warn');}
+    if(!u.active)return say('Your access is disabled. Please contact Admin.');
+    if(u.validTill&&iso()>u.validTill)return say('Access expired on '+fmtD(u.validTill)+'.');
+    if(u.pc&&cfg.sec.onePC&&u.pc.toLowerCase()!==pc.toLowerCase())return fail('This ID is bound to another PC.');
+    if(!u.pw){if(pw.length<4)return say('First sign-in: create a new password (minimum 4 characters).','warn');
+      if(pw!==pw2){$('#lpw2wrap')&&$('#lpw2wrap').classList.remove('hidden');return say('First sign-in: re-enter the password in the Confirm box.','warn');}
       u.pw=await sha(pw);}
-    else if(await sha(pw)!==u.pw)return fail('Password galat hai.');
+    else if(await sha(pw)!==u.pw)return fail('Incorrect password.');
   }
-  if(cfg.sec.oneSession){const s=await rd('Sessions/'+k+'.rpx',null);if(s&&Date.now()-s.at<3*6e4&&s.pc.toLowerCase()!==pc.toLowerCase())return say('Ye ID abhi dusre PC pe chal rahi hai. Ek ID pe ek hi banda.');}
+  if(cfg.sec.oneSession){const s=await rd('Sessions/'+k+'.rpx',null);if(s&&Date.now()-s.at<3*6e4&&s.pc.toLowerCase()!==pc.toLowerCase())return say('This ID is active on another PC. One ID, one user.');}
   let bound=false;if(!adm&&!u.pc){u.pc=pc;bound=true;}
   u.lastLogin=new Date().toISOString();secS.fails[k]=0;await saveSec();await wr(F.users,users);
   localStorage.setItem('rp23_pc',pc);localStorage.setItem('rp23_msid',msid);
@@ -379,10 +387,10 @@ async function tryLogin(pc,msid,pw,pw2,remember,say){
 async function logout(r='Logout',kicked=false){clearInterval(hbTimer);clearTimeout(idleTimer);
   const real=asUser||me;if(real){await log('LOGOUT',r);if(!kicked){const p='Sessions/'+real.msid.toLowerCase()+'.rpx';const s=await rd(p,null);if(s&&s.sid===real.sid)await rm(p);}}
   me=null;asUser=null;render();}
-async function askPw(title){return new Promise(res=>{const ov=modal(`<h3 style="margin:0 0 6px;font-size:18px">${ic('lock',18)} ${esc(title)}</h3><div class="sub">${isAdm()?'Master password':'Apna password'} daalo</div>
+async function askPw(title){return new Promise(res=>{const ov=modal(`<h3 style="margin:0 0 6px;font-size:18px">${ic('lock',18)} ${esc(title)}</h3><div class="sub">Enter ${isAdm()?'master password':'your password'}</div>
   <div class="fld" style="margin-top:12px"><input class="in" type="password" id="apw" aria-label="Password"></div><div id="apm" class="msg bad hidden" style="margin-top:8px"></div>
   <div class="tools" style="margin-top:14px">${B('Confirm',{k:'pri',i:'check',act:'ok'})}${B('Cancel',{act:'no'})}</div>`,()=>res(false));
-  const real=asUser||me;const go=async()=>{if(await sha($('#apw',ov).value)===real.pw){ov.remove();res(true);}else{const m=$('#apm',ov);m.classList.remove('hidden');m.textContent='Password galat';await log('PASSWORD CHECK FAILED',title);}};
+  const real=asUser||me;const go=async()=>{if(await sha($('#apw',ov).value)===real.pw){ov.remove();res(true);}else{const m=$('#apm',ov);m.classList.remove('hidden');m.textContent='Incorrect password';await log('PASSWORD CHECK FAILED',title);}};
   $('[data-act=ok]',ov).onclick=go;$('[data-act=no]',ov).onclick=()=>{ov.remove();res(false);};$('#apw',ov).onkeydown=e=>{if(e.key==='Enter')go();};setTimeout(()=>$('#apw',ov).focus(),40);});}
 function modal(html,onClose){const ov=document.createElement('div');ov.className='ov';ov.innerHTML=`<div class="modal" role="dialog" aria-modal="true">${html}</div>`;document.body.appendChild(ov);
   ov.addEventListener('mousedown',e=>{if(e.target===ov){ov.remove();onClose&&onClose();}});return ov;}
@@ -392,7 +400,8 @@ function modal(html,onClose){const ov=document.createElement('div');ov.className
    type to edit, double-click edit, combo dropdown, header filters + sort
    ===================================================================== */
 class Sheet{
-  constructor(el,o){this.el=el;Object.assign(this,{headers:[],data:[],combo:{},computed:[],ro:false,editHead:false,minRows:22,cls:null,num:[],onChange(){},onHead(){},name:'sheet'},o);
+  constructor(el,o){this.el=el;Object.assign(this,{headers:[],data:[],combo:{},computed:[],ro:false,editHead:false,minRows:22,cls:null,num:[],w:{},nameCol:-1,onName:null,onChange(){},onHead(){},name:'sheet'},o);
+    try{this.wd=JSON.parse(localStorage.getItem('rp23_w_'+this.name)||'{}');}catch(e){this.wd={};}
     this.filters={};this.a=[0,0];this.b=[0,0];this.drag=false;this.render();}
   get nH(){return this.headers.length;} get nC(){return this.nH+this.computed.length;}
   empty(r){return !r||!r.some(x=>String(x??'').trim());}
@@ -402,16 +411,18 @@ class Sheet{
     if(!this.ro&&!f){const n=Math.max(this.minRows-this.view.length,6);for(let k=0;k<n;k++)this.view.push(this.data.length+k);}}
   render(){
     this.build();const H=this.headers,L='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let h=`<thead><tr><th class="lt rn"></th>${[...Array(this.nC)].map((_,c)=>`<th class="lt">${L[c]||''}</th>`).join('')}</tr><tr><th class="hd rn">#</th>`;
-    for(let c=0;c<this.nC;c++){const nm=c<this.nH?H[c]:this.computed[c-this.nH].name;h+=`<th class="hd ${c>=this.nH?'cmp':''}" data-h="${c}"><span class="hn" title="${esc(nm)}">${esc(nm)}</span><button type="button" class="fb ${this.filters[c]?'on':''}" data-fc="${c}" aria-label="Filter ${esc(nm)}">▼</button></th>`;}
+    const W=c=>this.wd[c]||this.w[c]||(c>=this.nH?112:130);let tw=42;for(let c=0;c<this.nC;c++)tw+=W(c);
+    let h=`<colgroup><col style="width:42px">${[...Array(this.nC)].map((_,c)=>`<col data-cw="${c}" style="width:${W(c)}px">`).join('')}</colgroup><thead><tr><th class="lt rn"></th>${[...Array(this.nC)].map((_,c)=>`<th class="lt">${L[c]||''}</th>`).join('')}</tr><tr><th class="hd rn">#</th>`;
+    for(let c=0;c<this.nC;c++){const nm=c<this.nH?H[c]:this.computed[c-this.nH].name;h+=`<th class="hd ${c>=this.nH?'cmp':''}" data-h="${c}"><span class="hn" title="${esc(nm)}">${esc(nm)}</span><button type="button" class="fb ${this.filters[c]?'on':''}" data-fc="${c}" aria-label="Filter ${esc(nm)}">▼</button><span class="rz" data-rz="${c}" title="Drag to resize column"></span></th>`;}
     h+='</tr></thead><tbody>';
     this.view.forEach((di,vr)=>{const r=this.data[di]||[];h+=`<tr><td class="rn">${vr+1}</td>`;
       for(let c=0;c<this.nC;c++){let v,k='';if(c<this.nH){v=r[c]??'';if(this.cls&&!this.empty(r))k=this.cls(r,c)||'';}else if(!this.empty(r)){const x=this.computed[c-this.nH].fn(r);v=x.v;k='cmp '+(x.k||'');}else{v='';k='cmp';}
         if(this.num.includes(c)||(c>=this.nH&&this.computed[c-this.nH].n))k+=' n';
-        h+=`<td data-r="${vr}" data-c="${c}" class="${k}">${esc(v)}</td>`;}
+        if(c===this.nameCol&&this.onName&&String(v).trim())k+=' nm';
+        h+=`<td data-r="${vr}" data-c="${c}" class="${k}" ${String(v).length>18?`title="${esc(v)}"`:''}>${esc(v)}</td>`;}
       h+='</tr>';});
     h+='</tbody>';
-    this.el.innerHTML=`<div class="xl ${this.ro?'ro':''}" tabindex="0"><table class="g">${h}</table></div><div class="sbar"></div>`;
+    this.el.innerHTML=`<div class="xl ${this.ro?'ro':''}" tabindex="0"><table class="g" style="width:${tw}px">${h}</table></div><div class="sbar"></div>`;
     this.box=$('.xl',this.el);this.bind();this.paint();}
   td(r,c){return this.box.querySelector(`td[data-r="${r}"][data-c="${c}"]`);}
   rect(){return [Math.min(this.a[0],this.b[0]),Math.min(this.a[1],this.b[1]),Math.max(this.a[0],this.b[0]),Math.max(this.a[1],this.b[1])];}
@@ -429,13 +440,18 @@ class Sheet{
       if(e.shiftKey)this.b=p;else{this.a=p;this.b=p;}this.drag=true;this.paint();});
     B.addEventListener('mouseover',e=>{if(!this.drag)return;const t=e.target.closest('td[data-r]');if(!t)return;this.b=[+t.dataset.r,+t.dataset.c];this.paint();});
     B.addEventListener('mousedown',()=>{const up=()=>{this.drag=false;document.removeEventListener('mouseup',up);};document.addEventListener('mouseup',up);});
-    B.addEventListener('dblclick',e=>{const t=e.target.closest('td[data-r]');if(t)this.edit(+t.dataset.r,+t.dataset.c);});
+    B.addEventListener('dblclick',e=>{const t=e.target.closest('td[data-r]');if(!t)return;const c=+t.dataset.c;
+      if(this.onName&&c===this.nameCol&&(this.ro||e.ctrlKey)&&t.textContent.trim())return this.onName(t.textContent.trim());this.edit(+t.dataset.r,c);});
+    $$('.rz',B).forEach(z=>z.onmousedown=e=>{e.preventDefault();e.stopPropagation();const c=+z.dataset.rz,col=B.querySelector(`col[data-cw="${c}"]`),tb=$('table.g',B),x0=e.clientX,w0=col.getBoundingClientRect().width||parseFloat(col.style.width),t0=tb.offsetWidth;z.classList.add('on');
+      const mv=ev=>{const w=Math.max(50,w0+ev.clientX-x0);col.style.width=w+'px';tb.style.width=(t0+w-w0)+'px';this.wd[c]=Math.round(w);};
+      const up=()=>{z.classList.remove('on');document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);localStorage.setItem('rp23_w_'+this.name,JSON.stringify(this.wd));};
+      document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);});
     B.addEventListener('keydown',e=>this.key(e));
     B.addEventListener('paste',e=>{if(this.ed||this.ro)return;e.preventDefault();this.paste(e.clipboardData.getData('text/plain'));});
     B.addEventListener('copy',e=>{if(this.ed)return;e.preventDefault();e.clipboardData.setData('text/plain',this.tsv());toast('Copied');});
-    $$('.fb',B).forEach(b=>b.onmousedown=e=>{e.stopPropagation();});
+    $$('.fb,.rz',B).forEach(b=>b.addEventListener('mousedown',e=>e.stopPropagation()));
     $$('.fb',B).forEach(b=>b.onclick=e=>{e.stopPropagation();this.fpop(+b.dataset.fc,b);});
-    if(this.editHead)$$('th.hd[data-h]',B).forEach(th=>th.ondblclick=()=>{const c=+th.dataset.h;if(c>=this.nH)return;const nm=prompt('Header ka naya naam',this.headers[c]);if(nm&&nm.trim()){this.headers[c]=nm.trim();this.onHead();this.render();}});
+    if(this.editHead)$$('th.hd[data-h]',B).forEach(th=>th.ondblclick=()=>{const c=+th.dataset.h;if(c>=this.nH)return;const nm=prompt('New header name',this.headers[c]);if(nm&&nm.trim()){this.headers[c]=nm.trim();this.onHead();this.render();}});
   }
   tsv(){const [r1,c1,r2,c2]=this.rect();const o=[];for(let r=r1;r<=r2;r++){const row=[];for(let c=c1;c<=c2;c++){const t=this.td(r,c);row.push(t?t.textContent:'');}o.push(row.join('\t'));}return o.join('\n');}
   move(dr,dc,ext){const mr=this.view.length-1,mc=this.nC-1;const p=ext?this.b:this.a;const n=[Math.max(0,Math.min(mr,p[0]+dr)),Math.max(0,Math.min(mc,p[1]+dc))];
@@ -452,7 +468,7 @@ class Sheet{
     if(k==='F2'){e.preventDefault();return this.edit(...this.a);}
     if(k.length===1&&!c&&!e.altKey){e.preventDefault();this.edit(this.a[0],this.a[1],k);}}
   erase(){if(this.ro)return;const [r1,c1,r2,c2]=this.rect();let n=0;for(let r=r1;r<=r2;r++){const di=this.dr(r);if(di===undefined||di>=this.data.length)continue;for(let c=c1;c<=Math.min(c2,this.nH-1);c++){if(this.data[di][c]){this.data[di][c]='';n++;}}}
-    this.compact();this.onChange();this.render();toast(n+' cells erase');}
+    this.compact();this.onChange();this.render();toast(n+' cells cleared');}
   compact(){while(this.data.length&&this.empty(this.data[this.data.length-1]))this.data.pop();}
   edit(r,c,first){if(this.ro||c>=this.nH)return;const t=this.td(r,c);if(!t)return;const di=this.dr(r),cur=(this.data[di]||[])[c]??'';
     t.classList.add('ed');const lid=this.combo[c]?'dl_'+this.name+c:'';t.innerHTML=`<input ${lid?`list="${lid}"`:''} aria-label="Cell">${lid?`<datalist id="${lid}">${this.combo[c]().map(o=>`<option value="${esc(o)}">`).join('')}</datalist>`:''}`;
@@ -466,7 +482,7 @@ class Sheet{
     const [r0,c0]=this.rect();const tgt=g.map((_,i)=>{const di=this.view[r0+i];return di===undefined?null:di;});
     g.forEach((row,i)=>{let di=tgt[i];if(di===null)di=Math.max(this.data.length,...tgt.filter(x=>x!==null).map(x=>x+1));tgt[i]=di;const r=this.ensure(di);while(r.length<this.nH)r.push('');
       row.forEach((v,j)=>{if(c0+j<this.nH)r[c0+j]=String(v).trim();});});
-    this.compact();this.onChange();this.render();toast(g.length+' rows paste ho gaye');}
+    this.compact();this.onChange();this.render();toast(g.length+' rows pasted');}
   fpop(c,btn){$$('.fpop').forEach(p=>p.remove());const vals={};this.data.forEach(r=>{if(this.empty(r))return;const v=this.val(r,c);vals[v]=(vals[v]||0)+1;});
     const keys=Object.keys(vals).sort((x,y)=>{const a=num(x),b=num(y);return !isNaN(a)&&!isNaN(b)?a-b:x.localeCompare(y);});const cur=this.filters[c];
     const p=document.createElement('div');p.className='fpop';const rc=btn.getBoundingClientRect();p.style.left=Math.min(rc.left+scrollX-200,innerWidth-270)+'px';p.style.top=(rc.bottom+scrollY+6)+'px';
@@ -490,7 +506,7 @@ const uomRow=r=>({name:String(r[0]||'').trim(),vol:num(r[1]),util:pct(r[2]),eff:
 const filled=a=>(a||[]).filter(r=>r&&r.some(x=>String(x??'').trim()));
 async function savedDates(){return (await ls('Data')).filter(n=>/^\d{4}-\d{2}-\d{2}\.rpx$/.test(n)).map(n=>n.slice(0,10));}
 async function getDay(d){if(cache[d]!==undefined)return cache[d];cache[d]=await rd(dataP(d),null);return cache[d];}
-async function rangeData(){const S=new Set(await savedDates());const out=[];for(let d=range.from;d<=range.to;d=addD(d,1)){let x=S.has(d)?await getDay(d):null;
+async function rangeData(from=range.from,to=range.to){const S=new Set(await savedDates());const out=[];for(let d=from;d<=to;d=addD(d,1)){let x=S.has(d)?await getDay(d):null;
   if(d===cur.date&&(cur.dirty||!x))x={date:d,rep:filled(cur.rep),uom:filled(cur.uom),live:true};if(x)out.push(x);}return out;}
 async function loadWork(d){cur.date=d;const x=await getDay(d);cur.rep=x?JSON.parse(JSON.stringify(x.rep||[])):[];cur.uom=x?JSON.parse(JSON.stringify(x.uom||[])):[];
   cur.locked=!!(x&&x.locked);cur.unlocked=false;cur.dirty=false;cur.savedAt=x?x.savedAt:null;cur.savedBy=x?x.savedBy:null;}
@@ -501,7 +517,7 @@ function weekly(days){const W={};days.forEach(x=>filled(x.rep).forEach(r=>{const
 /* ---------------- RENDER ---------------- */
 function render(){const app=$('#app');
   if(!dir||!me){app.innerHTML=loginView();bindLogin();return;}
-  const NAV=[['dash','Dashboard','home',''],['ws','Workspace','grid','paste'],['rp','Reports','chart','reports'],['srv','Server','server','reports']];
+  const NAV=[['dash','Dashboard','home',''],['ws','Workspace','grid','paste'],['rp','Reports','chart','reports'],['ppl','People 360','users','reports'],['srv','Server','server','reports']];
   if(!can('admin')&&view==='admin')view='dash';const ok=NAV.filter(n=>!n[3]||can(n[3])||(n[0]==='ws'));if(!ok.some(n=>n[0]===view)&&view!=='admin')view='dash';
   const unread=isAdm()?secS.alerts.filter(a=>!a.read).length:0;
   app.innerHTML=`${asUser?`<div style="background:#9d174d;color:#fff;padding:7px 14px;display:flex;gap:10px;justify-content:center;align-items:center;font-weight:700">${ic('eye',15)} Admin view-as: ${esc(me.name)} (${esc(me.msid)}) ${B('Back to Admin',{sm:1,act:'stopas',i:'shield'})}</div>`:''}
@@ -512,7 +528,7 @@ function render(){const app=$('#app');
         <button type="button" class="qk" data-q="t">Today</button><button type="button" class="qk" data-q="w">Week</button><button type="button" class="qk" data-q="10">10 days</button><button type="button" class="qk" data-q="m">Month</button></div>
       <span class="srv"><i></i>${esc(dir.name)}</span>
       <div class="who"><div class="ava">${esc((me.name||me.msid).split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase())}</div><div><b>${esc(me.name)}</b><small>${esc(me.msid)} · ${esc(me.role)}${me.empId?' · '+esc(me.empId):''}</small></div></div>
-      ${isAdm()?`<button type="button" class="b3 ico ${view==='admin'?'on':''}" data-nav="admin" title="Admin" aria-label="Admin">${ic('shield',18)}${unread?`<span class="bdg">${unread}</span>`:''}</button>`:''}
+      ${isAdm()?`<button type="button" class="b3 ico ${view==='admin'?'on':''}" aria-pressed="${view==='admin'}" data-nav="admin" title="Admin" aria-label="Admin">${ic('shield',18)}${unread?`<span class="bdg">${unread}</span>`:''}</button>`:''}
       ${B('',{act:'logout',i:'logout',t:'Logout'})}
     </div></div></header>
   <div class="navwrap"><nav class="nav" aria-label="Main">${ok.map(n=>`<button type="button" class="b3 ${view===n[0]?'on':''}" aria-pressed="${view===n[0]}" data-nav="${n[0]}">${ic(n[2],16)}${n[1]}</button>`).join('')}</nav></div>
@@ -522,10 +538,10 @@ function render(){const app=$('#app');
   const setR=async(f,t)=>{if(f>t)[f,t]=[t,f];range={from:f,to:t};render();};
   $('#rf').onchange=e=>setR(e.target.value||range.from,range.to);$('#rt').onchange=e=>setR(range.from,e.target.value||range.to);
   $$('[data-q]').forEach(b=>b.onclick=()=>{const t=iso(),q=b.dataset.q;setR(q==='t'?t:q==='w'?monday(t):q==='10'?addD(t,-9):t.slice(0,8)+'01',t);});
-  const V={dash:vDash,ws:vWork,rp:vReports,srv:vServer,admin:vAdmin}[view];Promise.resolve(V()).catch(e=>{console.error(e);toast('Error: '+e.message);});
+  const V={dash:vDash,ws:vWork,rp:vReports,ppl:vPeople,srv:vServer,admin:vAdmin}[view];Promise.resolve(V()).catch(e=>{console.error(e);toast('Error: '+e.message);});
 }
 const head=(t,s,a='')=>`<div class="ph"><div><h1>${t}</h1><p>${s}</p></div><div class="tools">${a}</div></div>`;
-const tamperBanner=()=>isAdm()&&(tamper.size||usersBroken)?`<div class="banner tamper">${ic('shield',16)} Server file tamper / kharab: ${[...tamper].map(esc).join(', ')} — Admin → Backups se restore karo.</div>`:'';
+const tamperBanner=()=>isAdm()&&(tamper.size||usersBroken)?`<div class="banner tamper">${ic('shield',16)} Server file tampered / corrupted: ${[...tamper].map(esc).join(', ')} — restore from Admin → Backups.</div>`:'';
 
 /* ---------------- LOGIN ---------------- */
 function loginView(){
@@ -533,59 +549,124 @@ function loginView(){
   return `<div class="login"><div class="lbox">
    <div class="lleft"><div class="brand">${logo(54)}<div><div class="t1" style="font-size:20px"><span class="g" style="background:linear-gradient(90deg,#fff,#fde7c7);-webkit-background-clip:text;background-clip:text;color:transparent">Alpha NextGen Eclipse</span></div><div class="t2"><span>Repricing UOM &amp; Productivity</span></div></div></div>
     <div><div style="font-size:34px;font-weight:800;line-height:1.12">Paste. Track.<br><span style="background:linear-gradient(90deg,#fdba74,#fbbf24,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent">Report in one go.</span></div>
-    <div style="margin-top:12px;color:#f5d0b0;font-size:13px;line-height:1.6;max-width:360px">Repricing, UOM Summary, downtime aur weekly target — ek jagah. Sab encrypted server pe.</div></div>
+    <div style="margin-top:12px;color:#f5d0b0;font-size:13px;line-height:1.6;max-width:360px">Repricing, UOM Summary, downtime and weekly targets — in one place, on an encrypted server.</div></div>
     <div class="tools"><span class="ver">${APP.ver}</span><span style="font-size:12px;color:#f5d0b0">Valid till ${fmtD(APP.expiry)}</span></div></div>
-   <div class="lright"><h2>Sign in</h2><div class="sub" style="margin-top:-6px">Ek ID · ek banda · ek PC</div>
-    <div class="msg ${dir?'good':'bad'}">${ic(dir?'check':'plug',15)}${dir?'Server connected: '+esc(dir.name):'Server connect nahi — login band'}</div>
-    <div class="tools">${B(dir?'Change server':'Connect server',{k:dir?'':'pri',i:'plug',act:'connect'})}${dir?'':B('Reconnect last',{i:'history',act:'recon'})}</div>
-    <div class="fld"><label for="lpc">PC name</label><div class="inp">${ic('pc')}<input id="lpc" value="${esc(pc)}" placeholder="Aapke computer ka naam" autocomplete="off"></div></div>
+   <div class="lright"><h2>Sign in</h2><div class="sub" style="margin-top:-6px">One ID · one user · one PC</div>
+    <div class="msg ${dir?'good':savedH?'warn':'bad'}">${ic(dir?'check':'plug',15)}${dir?'Server connected: '+esc(dir.name):savedH?'Saved server: '+esc(savedH.name)+' — click Login, it reconnects automatically':'Server not connected — connect once, this PC will remember it'}</div>
+    <div class="tools">${B(dir||savedH?'Change server':'Connect server',{k:dir||savedH?'':'pri',i:'plug',act:'connect'})}</div>
+    <div class="fld"><label for="lpc">PC name</label><div class="inp">${ic('pc')}<input id="lpc" value="${esc(pc)}" placeholder="Your computer name" autocomplete="off"></div></div>
     <div class="fld"><label for="lmsid">MSID</label><div class="inp">${ic('user')}<input id="lmsid" value="${esc(msid)}" placeholder="Your MSID" autocomplete="off"></div></div>
     <div class="fld"><label for="lpw">Password</label><div class="inp">${ic('lock')}<input id="lpw" type="password" value="${esc(pw)}" placeholder="Password" autocomplete="off"></div></div>
-    <div class="fld hidden" id="lpw2wrap"><label for="lpw2">Confirm password (sirf pehli baar)</label><div class="inp">${ic('lock')}<input id="lpw2" type="password" autocomplete="off"></div></div>
-    <label style="display:flex;align-items:center;gap:8px;font-size:12.5px"><input type="checkbox" id="lrem" ${pw||!msid?'checked':''} style="width:17px;height:17px;accent-color:#16a34a">Is PC pe password yaad rakho</label>
+    <div class="fld hidden" id="lpw2wrap"><label for="lpw2">Confirm password (first sign-in only)</label><div class="inp">${ic('lock')}<input id="lpw2" type="password" autocomplete="off"></div></div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:12.5px"><input type="checkbox" id="lrem" checked style="width:17px;height:17px;accent-color:#16a34a">Remember password on this PC</label>
     <div id="lmsg" class="msg hidden"></div><div id="lhelp"></div>
-    <button type="button" class="b3 pri" id="lgo" ${dir?'':'disabled'} style="min-height:48px;font-size:15px">${ic(dir?'bolt':'lock',17)}${dir?'Login':'Login (pehle server connect)'}</button>
+    <button type="button" class="b3 pri" id="lgo" ${dir||savedH?'':'disabled'} style="min-height:48px;font-size:15px">${ic(dir||savedH?'bolt':'lock',17)}${dir||savedH?'Login':'Login (connect server first)'}</button>
     <div class="sub" style="text-align:center">®® Alpha NextGen Eclipse · ${APP.ver}</div></div></div></div>`;}
-function bindLogin(){on('[data-act=connect]',pickFolder);on('[data-act=recon]',reconnect);
+function bindLogin(){on('[data-act=connect]',pickFolder);
   const go=async()=>{const m=$('#lmsg');m.classList.remove('hidden');const say=(t,k='bad')=>{m.className='msg '+k;m.innerHTML=ic(k==='bad'?'x':'smile',15)+esc(t);};
+    if(!dir&&savedH){try{let p=await savedH.queryPermission({mode:'readwrite'});if(p!=='granted')p=await savedH.requestPermission({mode:'readwrite'});if(p!=='granted')return say('Server permission not granted — click Login again and choose “Allow”.');await useFolder(savedH,true);}catch(e){return say('Saved server not reachable — use Change server.');}}
     const r=await tryLogin($('#lpc').value,$('#lmsid').value,$('#lpw').value,$('#lpw2').value,$('#lrem').checked,say);
     if(r&&r.locked){m.classList.add('hidden');const ae=cfg.mail.adminEmail;
-      $('#lhelp').innerHTML=`<div class="card" style="background:#fff7ed;border-color:#fed7aa"><div style="font-weight:800;font-size:15px;display:flex;gap:8px;align-items:center">${ic('smile',20)} Arre dost, password yaad nahi aa raha?</div>
-       <div class="sub" style="margin:6px 0 10px">${cfg.sec.maxFails} galat try ke baad ID lock ho gayi hai. Admin ko alert chala gaya hai. Help chahiye to ek click mein mail bhejo.</div>
-       ${ae?`<a class="b3 mag" style="text-decoration:none" href="mailto:${esc(ae)}?subject=${encodeURIComponent('Repricing login help — '+$('#lmsid').value)}&body=${encodeURIComponent('Hi Akshay,\n\nMeri Repricing ID lock ho gayi hai. Please unlock / reset kar do.\n\nMSID: '+$('#lmsid').value+'\nPC: '+$('#lpc').value+'\n\nThanks')}">${ic('mail',16)}Haan, Admin ko help mail bhejo</a>`:'<div class="msg warn">Admin se seedha baat karo — ID unlock Admin hi karega.</div>'}</div>`;return;}
+      $('#lhelp').innerHTML=`<div class="card" style="background:#fff7ed;border-color:#fed7aa"><div style="font-weight:800;font-size:15px;display:flex;gap:8px;align-items:center">${ic('smile',20)} Having trouble signing in?</div>
+       <div class="sub" style="margin:6px 0 10px">Your ID is locked after ${cfg.sec.maxFails} failed attempts. Admin has been alerted. Need help? Send a mail in one click.</div>
+       ${ae?`<a class="b3 mag" style="text-decoration:none" href="mailto:${esc(ae)}?subject=${encodeURIComponent('Repricing login help — '+$('#lmsid').value)}&body=${encodeURIComponent('Hi Akshay,\n\nMy Repricing ID is locked. Please unlock / reset it.\n\nMSID: '+$('#lmsid').value+'\nPC: '+$('#lpc').value+'\n\nThanks')}">${ic('mail',16)}Send help request to Admin</a>`:'<div class="msg warn">Please contact Admin directly — only Admin can unlock the ID.</div>'}</div>`;return;}
     if(r===true){await loadWork(iso());view='dash';render();toast('Welcome, '+me.name);}};
   $('#lgo').onclick=go;$$('.lright input').forEach(i=>i.onkeydown=e=>{if(e.key==='Enter')go();});
   $('#lmsid').onchange=e=>{const p=cachedPw(e.target.value.trim());if(p&&!$('#lpw').value)$('#lpw').value=p;};}
 
+/* ---------------- people helpers ---------------- */
+const toks=n=>String(n||'').toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean);
+function nameMatch(a,b){const x=toks(a),y=toks(b);if(!x.length||!y.length||x[0]!==y[0])return false;const [s,l]=x.length<=y.length?[x,y]:[y,x];return s.every(t=>l.includes(t));}
+function team(days){const P=[];const find=n=>P.find(p=>nameMatch(p.name,n));
+  days.forEach(x=>{filled(x.rep).forEach(r=>{const R=repRow(r,x.date);if(!R.name)return;let p=find(R.name);if(!p){p={name:R.name,rep:[],uom:[]};P.push(p);}p.rep.push(R);});});
+  days.forEach(x=>{filled(x.uom).forEach(r=>{const U=uomRow(r);if(!U.name)return;U.date=x.date;let p=find(U.name);if(!p){p={name:U.name,rep:[],uom:[]};P.push(p);}p.uom.push(U);});});
+  return P.map(p=>{const proc=p.rep.reduce((a,r)=>a+r.ach,0),tg=p.rep.reduce((a,r)=>a+r.target,0),dm=p.rep.reduce((a,r)=>a+r.mins,0),avg=k=>{const v=p.uom.filter(u=>!isNaN(u[k]));return v.length?v.reduce((a,u)=>a+u[k],0)/v.length:NaN;};
+    return {...p,days:new Set([...p.rep.map(r=>r.date),...p.uom.map(u=>u.date)]).size,proc,tg,def:tg-proc,ach:tg?proc/tg*100:NaN,dm,util:avg('util'),eff:avg('eff'),lc:avg('lc'),vol:p.uom.reduce((a,u)=>a+(u.vol||0),0)};});}
+function barsSVG(pts,h=190){if(!pts.length)return '<div class="sub">No data.</div>';const W=Math.max(pts.length*56,900),mx=Math.max(...pts.map(p=>Math.max(p.v,p.t||0)),1)*1.12,bw=Math.min(30,W/pts.length*0.6);
+  let g='';pts.forEach((p,i)=>{const cx=(i+0.5)*W/pts.length,bh=p.v/mx*(h-40),y=h-24-bh,ok=!p.t||p.v>=p.t;
+    g+=`<rect x="${cx-bw/2}" y="${y}" width="${bw}" height="${Math.max(bh,1)}" rx="5" fill="${ok?'#22c55e':'#ec4899'}" opacity=".88"><title>${esc(p.l)}: ${p.v}${p.t?' / '+p.t:''}</title></rect>`;
+    if(p.t){const ty=h-24-p.t/mx*(h-40);g+=`<line x1="${cx-bw/2-5}" x2="${cx+bw/2+5}" y1="${ty}" y2="${ty}" stroke="#c2410c" stroke-width="2" stroke-dasharray="4 3"/>`;}
+    g+=`<text x="${cx}" y="${y-5}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#24160c">${p.v}</text><text x="${cx}" y="${h-8}" text-anchor="middle" font-size="10" fill="#6a4c36">${esc(p.l)}</text>`;});
+  return `<div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${h}" width="100%" height="${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Chart" style="min-width:${Math.min(W,700)}px"><line x1="0" x2="${W}" y1="${h-24}" y2="${h-24}" stroke="#e3c9a8"/>${g}</svg></div>`;}
+function weeksOf(from,to){const o=[];for(let w=monday(from);w<=to;w=addD(w,7)){const a=w<from?from:w,b=addD(w,6)>to?to:addD(w,6);o.push({wk:w,a,b});}return o;}
+const pctK=v=>isNaN(v)?'':(v>=100?'good':v>=90?'warn':'bad');
+
 /* ---------------- DASHBOARD ---------------- */
 async function vDash(){
-  const days=await rangeData(),S=new Set(await savedDates());
+  const days=await rangeData(),S=new Set(await savedDates()),T=team(days);
   const R=days.flatMap(x=>filled(x.rep).map(r=>repRow(r,x.date))).filter(r=>r.name);
   const U=days.flatMap(x=>filled(x.uom).map(uomRow)).filter(r=>r.name);
-  const proc=R.reduce((a,r)=>a+r.ach,0),tg=R.length*tgt(),dm=R.reduce((a,r)=>a+r.mins,0);
+  const proc=R.reduce((a,r)=>a+r.ach,0),tg=R.reduce((a,r)=>a+r.target,0),dm=R.reduce((a,r)=>a+r.mins,0),ach=tg?proc/tg*100:NaN;
   const au=U.length?U.reduce((a,r)=>a+(r.util||0),0)/U.length:NaN,ae=U.length?U.reduce((a,r)=>a+(r.eff||0),0)/U.length:NaN;
-  const per={};U.forEach(r=>{const k=r.name.toUpperCase();per[k]=per[k]||{n:r.name,e:0,u:0,c:0};per[k].e+=r.eff||0;per[k].u+=r.util||0;per[k].c++;});
-  const effB=Object.values(per).map(p=>({n:p.n,e:p.e/p.c})).sort((a,b)=>b.e-a.e).slice(0,10);
-  const pp={};R.forEach(r=>{const k=r.name.toLowerCase();pp[k]=pp[k]||{n:r.name,a:0,t:0};pp[k].a+=r.ach;pp[k].t+=r.target;});
-  const col={good:'linear-gradient(90deg,#4ade80,#16a34a)',warn:'linear-gradient(90deg,#fdba74,#ea580c)',bad:'linear-gradient(90deg,#f9a8d4,#db2777)'};
-  let strip='';for(let d=range.from;d<=range.to;d=addD(d,1)){const wd=pd(d).getDay(),h=S.has(d),k=h?'good':(wd===0||wd===6?'we':(d<iso()?'bad':''));strip+=`<button type="button" class="dy ${k}" data-day="${d}" title="${fmtD(d)}"><b>${pd(d).getDate()}</b>${pd(d).toLocaleString('en',{weekday:'short'})}</button>`;}
-  const K=(l,v,s,i)=>`<div class="card kpi"><div class="cap">${l}</div><div class="ic">${ic(i,18)}</div><div class="v">${v}</div><div class="s">${s}</div></div>`;
-  const nd=new Set(R.map(r=>r.date)).size;
-  $('#main').innerHTML=tamperBanner()+head(`Namaste, ${esc(me.name.split(' ')[0])}`,`${fmtD(range.from)} → ${fmtD(range.to)} · ${nd} din ka reprice data`,can('paste')?B('Open Workspace',{k:'pri',i:'grid',act:'ws'}):'')+
-  `<div class="kpis">${K('Processed',proc.toLocaleString('en-IN'),`Target ${tg.toLocaleString('en-IN')} · ${R.length} entries`,'bolt')}${K('Deficit',(tg-proc>0?'+':'')+(tg-proc),tg-proc>0?'Target se kam':'Target se upar','target')}
-   ${K('Avg utilization',isNaN(au)?'—':f2(au)+'%','Pink < '+cfg.th.utilBad+'%','chart')}${K('Avg efficiency',isNaN(ae)?'—':f2(ae)+'%','Orange > '+cfg.th.effWarn+'%','smile')}${K('Downtime',dm+' min',hm(dm)+' hrs total','clock')}</div>
-  <div class="row"><div class="grow"><div class="card"><div class="cap">Efficiency · UOM Summary</div>${effB.map(p=>`<div class="bar"><span class="n">${esc(p.n)}</span><span class="tr"><i style="width:${Math.min(p.e/150*100,100)}%;background:${col[kind(p.e,'e')]||col.good}"></i></span><span class="v">${f2(p.e)}%</span></div>`).join('')||'<div class="sub">Is range mein UOM Summary nahi hai.</div>'}</div>
-   <div style="height:14px"></div><div class="card"><div class="cap">Achieved vs target · Repricing</div>${Object.values(pp).sort((a,b)=>b.a/b.t-a.a/a.t).map(p=>{const r=p.a/p.t*100;return `<div class="bar"><span class="n">${esc(p.n)}</span><span class="tr"><i style="width:${Math.min(r/130*100,100)}%;background:${r>=100?col.good:col.bad}"></i></span><span class="v">${p.a}/${p.t}</span></div>`;}).join('')||'<div class="sub">Reprice data nahi hai.</div>'}</div></div>
+  const K=(l,v,s,i,k='')=>`<div class="card kpi"><div class="cap">${l}</div><div class="ic">${ic(i,18)}</div><div class="v" style="${k==='bad'?'color:#9d174d':k==='good'?'color:#15803d':''}">${v}</div><div class="s">${s}</div></div>`;
+  const wk=weeksOf(range.from,range.to).map((w,i)=>{const d=days.filter(x=>x.date>=w.a&&x.date<=w.b),r=d.flatMap(x=>filled(x.rep).map(z=>repRow(z,x.date))).filter(z=>z.name&&z.date>=w.a&&z.date<=w.b),u=d.flatMap(x=>filled(x.uom).map(uomRow)).filter(z=>z.name);
+    const p=r.reduce((a,z)=>a+z.ach,0),t=r.reduce((a,z)=>a+z.target,0),m=r.reduce((a,z)=>a+z.mins,0),e=u.length?u.reduce((a,z)=>a+(z.eff||0),0)/u.length:NaN,a=t?p/t*100:NaN;
+    let sv=0,wd=0;for(let x=w.a;x<=w.b;x=addD(x,1)){const g=pd(x).getDay();if(g&&g<6){wd++;if(S.has(x))sv++;}}
+    return `<div class="card wkc" data-wk="${w.a}|${w.b}" title="Set range to this week"><div class="tools" style="justify-content:space-between"><div class="cap" style="margin:0">Week ${weekNo(w.wk)} · ${shortD(w.a)} – ${shortD(w.b)}</div><span class="chip ${sv>=wd&&wd?'good':'warn'}">${sv}/${wd} days</span></div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-top:6px"><span style="font-size:24px;font-weight:800">${p.toLocaleString('en-IN')}</span><span class="sub">/ ${t.toLocaleString('en-IN')} target</span></div>
+      <div class="bar"><span class="tr"><i style="width:${Math.min(a||0,120)/120*100}%;background:${(a||0)>=100?'linear-gradient(90deg,#4ade80,#16a34a)':'linear-gradient(90deg,#f9a8d4,#db2777)'}"></i></span><span class="v">${isNaN(a)?'—':f2(a)+'%'}</span></div>
+      <div class="tools" style="gap:6px;margin-top:4px"><span class="chip ${t-p>0?'bad':'good'}">Deficit ${t-p}</span><span class="chip">DT ${m}m</span><span class="chip ${kind(e,'e')}">Eff ${isNaN(e)?'—':f2(e)+'%'}</span></div></div>`;}).join('');
+  const daily=[];for(let d=range.from;d<=range.to;d=addD(d,1)){const r=R.filter(z=>z.date===d);if(r.length)daily.push({l:shortD(d),v:r.reduce((a,z)=>a+z.ach,0),t:r.reduce((a,z)=>a+z.target,0)});}
+  let strip='';for(let d=range.from;d<=range.to&&strip.length<20000;d=addD(d,1)){const wd=pd(d).getDay(),h=S.has(d),k=h?'good':(wd===0||wd===6?'we':(d<iso()?'bad':''));strip+=`<button type="button" class="dy ${k}" data-day="${d}" title="${fmtD(d)}"><b>${pd(d).getDate()}</b>${pd(d).toLocaleString('en',{weekday:'short'})}</button>`;}
+  $('#main').innerHTML=tamperBanner()+head(`Welcome, ${esc(me.name.split(' ')[0])}`,`${fmtD(range.from)} → ${fmtD(range.to)} · ${(n=>n+' day'+(n===1?'':'s'))(new Set(R.map(r=>r.date)).size)} of repricing data · double-click a name for full details`,can('paste')?B('Open Workspace',{k:'pri',i:'grid',act:'ws'}):'')+
+  `<div class="kpis">${K('Processed',proc.toLocaleString('en-IN'),`${R.length} entries`,'bolt')}${K('Target',tg.toLocaleString('en-IN'),`${tgt()}/day per person`,'target')}
+   ${K('Achievement',isNaN(ach)?'—':f2(ach)+'%',tg-proc>0?`Deficit ${tg-proc}`:`${proc-tg} above target`,'chart',isNaN(ach)?'':ach>=100?'good':'bad')}
+   ${K('Avg utilization',isNaN(au)?'—':f2(au)+'%','Pink < '+cfg.th.utilBad+'%','clock',kind(au,'u'))}${K('Avg efficiency',isNaN(ae)?'—':f2(ae)+'%','Orange > '+cfg.th.effWarn+'%','smile')}${K('Downtime',dm+' min',hm(dm)+' hrs',`clock`)}</div>
+  <div class="cap">Week-wise breakdown</div><div class="wk">${wk}</div>
+  <div class="row"><div class="grow"><div class="card"><div class="tools" style="justify-content:space-between"><div class="cap" style="margin:0">Daily processed vs target</div><span class="sub">Green = target met · Pink = below · dash = target</span></div>${barsSVG(daily)}</div>
+   <div style="height:14px"></div><div class="card"><div class="tools" style="justify-content:space-between;margin-bottom:8px"><div class="cap" style="margin:0">Team leaderboard</div><span class="sub">Double-click a name for weekly / monthly details</span></div><div id="lb"></div></div></div>
    <div class="side"><div class="card"><div class="cap">Days in range</div><div class="strip">${strip}</div><div class="tools" style="margin-top:10px"><span class="chip good">Saved</span><span class="chip bad">Missing</span></div></div>
    <div style="height:14px"></div><div class="card"><div class="cap">Work date · ${fmtD(cur.date)}</div>
     <div class="line"><span>Repricing rows</span><span class="chip ${filled(cur.rep).length?'good':'warn'}">${filled(cur.rep).length||'Pending'}</span></div>
     <div class="line"><span>UOM Summary rows</span><span class="chip ${filled(cur.uom).length?'good':'warn'}">${filled(cur.uom).length||'Pending'}</span></div>
-    <div class="line"><span>Downtime missing</span><span class="chip ${filled(cur.rep).filter(r=>!String(r[3]||'').trim()).length?'warn':'good'}">${filled(cur.rep).filter(r=>!String(r[3]||'').trim()).length}</span></div>
     <div class="line"><span>Server</span><span class="chip ${cur.savedAt?'good':'bad'}">${cur.savedAt?'Saved · locked':'Not saved'}</span></div></div>
-   ${isAdm()?`<div style="height:14px"></div><div class="card"><div class="cap">Admin alerts</div>${secS.alerts.slice(0,4).map(a=>`<div class="line"><span style="font-size:12px"><b>${esc(a.type)}</b> · ${esc(a.msid)}<br><span class="sub">${esc(a.t)}</span></span><span class="chip ${a.read?'':'bad'}">${a.read?'seen':'new'}</span></div>`).join('')||'<div class="sub">Sab shaant hai.</div>'}</div>`:''}
+   <div style="height:14px"></div><div class="card"><div class="cap">Top & watch list</div>${(()=>{const t=T.filter(p=>!isNaN(p.ach)).sort((a,b)=>b.ach-a.ach);const w=T.filter(p=>kind(p.util,'u')==='bad'||kind(p.eff,'e')==='bad'||(p.ach<100));
+     return (t[0]?`<div class="line"><span>${ic('smile',14)} Top</span><button type="button" class="lbtn" data-p="${esc(t[0].name)}">${esc(t[0].name)} · ${f2(t[0].ach)}%</button></div>`:'')+w.slice(0,5).map(p=>`<div class="line"><button type="button" class="lbtn" data-p="${esc(p.name)}">${esc(p.name)}</button><span class="chip bad">${!isNaN(p.ach)&&p.ach<100?'Ach '+f2(p.ach)+'%':kind(p.util,'u')==='bad'?'Util '+f2(p.util)+'%':'Eff '+f2(p.eff)+'%'}</span></div>`).join('')||'<div class="sub">All good.</div>';})()}</div>
+   ${isAdm()?`<div style="height:14px"></div><div class="card"><div class="cap">Admin alerts</div>${secS.alerts.slice(0,4).map(a=>`<div class="line"><span style="font-size:12px"><b>${esc(a.type)}</b> · ${esc(a.msid)}<br><span class="sub">${esc(a.t)}</span></span><span class="chip ${a.read?'':'bad'}">${a.read?'seen':'new'}</span></div>`).join('')||'<div class="sub">No alerts.</div>'}</div>`:''}
    </div></div>`;
-  on('[data-act=ws]',()=>{view='ws';render();});
-  $$('[data-day]').forEach(b=>b.onclick=async()=>{if(cur.dirty&&!confirm('Workspace mein unsaved data hai. Date badlein?'))return;await loadWork(b.dataset.day);view=can('paste')?'ws':'rp';render();});
+  new Sheet($('#lb'),{name:'lb',ro:true,w:{0:200},nameCol:0,onName:n=>openPerson(n),headers:['Name','Days','Processed','Target','Deficit','Ach %','DT Mins','Volume','Utilization','Efficiency','LC Efficiency'],num:[1,2,3,4,5,6,7],
+    data:T.sort((a,b)=>(b.ach||0)-(a.ach||0)).map(p=>[p.name,p.days,p.proc||'',p.tg||'',p.tg?p.def:'',isNaN(p.ach)?'':f2(p.ach),p.dm||'',p.vol||'',isNaN(p.util)?'':f2(p.util)+'%',isNaN(p.eff)?'':f2(p.eff)+'%',isNaN(p.lc)?'':f2(p.lc)+'%']),
+    cls:(r,c)=>c===4&&r[4]!==''?(num(r[4])>0?'bad':'good'):c===5?pctK(num(r[5])):c===8?kind(pct(r[8]),'u'):(c===9||c===10)?kind(pct(r[c]),'e'):''});
+  on('[data-act=ws]',()=>{view='ws';render();});on('[data-p]',n=>openPerson(n));
+  $$('[data-wk]').forEach(c=>c.onclick=()=>{const [a,b]=c.dataset.wk.split('|');range={from:a,to:b};render();});
+  $$('[data-day]').forEach(b=>b.onclick=async()=>{if(cur.dirty&&!confirm('Workspace has unsaved data. Change date?'))return;await loadWork(b.dataset.day);view=can('paste')?'ws':'rp';render();});
+}
+
+/* ---------------- PEOPLE 360 ---------------- */
+let pv={name:'',mode:'month',anchor:null};
+function pvRange(){const a=pv.anchor||range.to;if(pv.mode==='week'){const m=monday(a);return [m,addD(m,6)];}if(pv.mode==='month'){const d=pd(a);return [iso(new Date(d.getFullYear(),d.getMonth(),1)),iso(new Date(d.getFullYear(),d.getMonth()+1,0))];}return [range.from,range.to];}
+async function allNames(){const S=await savedDates(),n=[];for(const d of S.slice(-62)){const x=await getDay(d);if(!x)continue;filled(x.rep).forEach(r=>{const v=String(r[1]||'').trim();if(v&&!n.some(z=>nameMatch(z,v)))n.push(v);});filled(x.uom).forEach(r=>{const v=String(r[0]||'').trim();if(v&&!n.some(z=>nameMatch(z,v)))n.push(v);});}
+  filled(cur.rep).forEach(r=>{const v=String(r[1]||'').trim();if(v&&!n.some(z=>nameMatch(z,v)))n.push(v);});return n.sort();}
+function openPerson(n){pv.name=n;pv.anchor=range.to;view='ppl';render();}
+async function vPeople(){
+  const names=await allNames();if(!pv.name)pv.name=names[0]||'';const [a,b]=pvRange();
+  const days=await rangeData(a,b),P=team(days).find(p=>nameMatch(p.name,pv.name))||{name:pv.name,rep:[],uom:[],days:0,proc:0,tg:0,def:0,ach:NaN,dm:0,util:NaN,eff:NaN,lc:NaN,vol:0};
+  const byD={};P.rep.forEach(r=>{(byD[r.date]=byD[r.date]||{d:r.date,r:[],u:null}).r.push(r);});P.uom.forEach(u=>{(byD[u.date]=byD[u.date]||{d:u.date,r:[],u:null}).u=u;});
+  const rows=Object.values(byD).sort((x,y)=>x.d.localeCompare(y.d));
+  const K=(l,v,s,k='')=>`<div class="card kpi"><div class="cap">${l}</div><div class="v" style="${k==='bad'?'color:#9d174d':k==='good'?'color:#15803d':''}">${v}</div><div class="s">${s}</div></div>`;
+  const wkRows=weeksOf(a,b).map(w=>{const r=P.rep.filter(z=>z.date>=w.a&&z.date<=w.b),u=P.uom.filter(z=>z.date>=w.a&&z.date<=w.b);const p=r.reduce((s,z)=>s+z.ach,0),t=r.reduce((s,z)=>s+z.target,0);
+    return ['Week '+weekNo(w.wk),shortD(w.a)+' – '+shortD(w.b),new Set(r.map(z=>z.date)).size,p,t,t-p,t?f2(p/t*100):'',r.reduce((s,z)=>s+z.mins,0),u.length?f2(u.reduce((s,z)=>s+(z.eff||0),0)/u.length)+'%':''];}).filter(x=>x[2]||x[8]);
+  const lbl=pv.mode==='week'?'Week '+weekNo(a)+' · '+shortD(a)+' – '+shortD(b):pv.mode==='month'?pd(a).toLocaleString('en',{month:'long',year:'numeric'}):fmtD(a)+' → '+fmtD(b);
+  $('#main').innerHTML=head(`${ic('user',22)} ${esc(P.name||'—')}`,`People 360 · ${lbl}`,
+    `<label class="sub" for="pvn" style="font-weight:700">Name</label><input class="in" id="pvn" list="pvl" value="${esc(pv.name)}" style="width:240px" aria-label="Person name"><datalist id="pvl">${names.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+     <div class="seg">${B('Week',{sm:1,act:'pm',arg:'week',on:pv.mode==='week'})}${B('Month',{sm:1,act:'pm',arg:'month',on:pv.mode==='month'})}${B('Range',{sm:1,act:'pm',arg:'range',on:pv.mode==='range'})}</div>
+     ${pv.mode!=='range'?B('',{sm:1,act:'pp',arg:'-1',t:'Pichla',i:'history'})+B('Next ›',{sm:1,act:'pp',arg:'1'}):''}${can('export')?B('Excel',{sm:1,i:'download',act:'pxl'}):''}`)+
+   `<div class="kpis">${K('Days worked',P.days,`${lbl}`)}${K('Processed',P.proc.toLocaleString('en-IN'),'Target '+P.tg.toLocaleString('en-IN'))}${K('Deficit',P.tg?P.def:'—',!P.tg?'No repricing data':P.def>0?'Below target':'Above target',P.tg?(P.def>0?'bad':'good'):'')}
+    ${K('Achievement',isNaN(P.ach)?'—':f2(P.ach)+'%','Avg/day '+(P.rep.length?Math.round(P.proc/new Set(P.rep.map(r=>r.date)).size):'—'),pctK(P.ach)==='good'?'good':P.ach?'bad':'')}${K('Downtime',P.dm+' min',hm(P.dm)+' hrs')}
+    ${K('Avg utilization',isNaN(P.util)?'—':f2(P.util)+'%','UOM Summary',kind(P.util,'u'))}${K('Avg efficiency',isNaN(P.eff)?'—':f2(P.eff)+'%','LC '+(isNaN(P.lc)?'—':f2(P.lc)+'%'))}</div>
+   <div class="row"><div class="grow"><div class="card"><div class="cap">Day-wise processed vs target</div>${barsSVG(rows.filter(x=>x.r.length).map(x=>({l:shortD(x.d),v:x.r.reduce((s,z)=>s+z.ach,0),t:x.r.reduce((s,z)=>s+z.target,0)})))}</div>
+    <div style="height:14px"></div><div class="card"><div class="cap">Day-wise full data</div><div id="pd"></div></div></div>
+    <div class="side"><div class="card"><div class="cap">Week-wise</div>${wkRows.map(w=>`<div class="line" style="flex-wrap:wrap"><span><b>${w[0]}</b> <span class="sub">${w[1]} · ${w[2]} days</span></span><span class="chip ${w[5]>0?'bad':'good'}">${w[3]}/${w[4]} · ${w[6]||'—'}%</span></div>`).join('')||'<div class="sub">No data in this period.</div>'}</div>
+    <div style="height:14px"></div><div class="card"><div class="cap">Downtime reasons</div>${(()=>{const m={};P.rep.forEach(r=>String(r.comment).split('+').forEach(c=>{const t=c.replace(/\d+\s*(mins?|minutes?|m)\b/ig,'').replace(/[-–]/g,' ').trim().toLowerCase();if(t)m[t]=(m[t]||0)+mins(c);}));
+      return Object.entries(m).sort((x,y)=>y[1]-x[1]).slice(0,8).map(([k,v])=>`<div class="line"><span style="text-transform:capitalize;font-size:12.5px">${esc(k)}</span><b>${v}m</b></div>`).join('')||'<div class="sub">No downtime.</div>';})()}</div></div></div>`;
+  new Sheet($('#pd'),{name:'pv',ro:true,w:{11:440},headers:['Date','Day','Processed','Target','Deficit','Ach %','DT Mins','Work Hrs','Utilization','Efficiency','LC Efficiency','Down Time Comments'],num:[2,3,4,5,6],
+    data:rows.map(x=>{const p=x.r.reduce((s,z)=>s+z.ach,0),t=x.r.reduce((s,z)=>s+z.target,0),m=x.r.reduce((s,z)=>s+z.mins,0),u=x.u||{};return [usD(x.d),pd(x.d).toLocaleString('en',{weekday:'short'}),x.r.length?p:'',x.r.length?t:'',x.r.length?t-p:'',t?f2(p/t*100):'',m||'',x.r.length?hm(480-m):'',isNaN(u.util)||u.util===undefined?'':f2(u.util)+'%',u.eff===undefined||isNaN(u.eff)?'':f2(u.eff)+'%',u.lc===undefined||isNaN(u.lc)?'':f2(u.lc)+'%',x.r.map(z=>z.comment).join(' | ')];}),
+    cls:(r,c)=>c===4&&r[4]!==''?(num(r[4])>0?'bad':'good'):c===5?pctK(num(r[5])):c===8?kind(pct(r[8]),'u'):(c===9||c===10)?kind(pct(r[c]),'e'):''});
+  $('#pvn').onchange=e=>{pv.name=e.target.value.trim();render();};
+  on('[data-act=pm]',m=>{pv.mode=m;render();});
+  on('[data-act=pp]',d=>{const n=+d,[x]=pvRange();if(pv.mode==='week')pv.anchor=addD(x,7*n);else{const t=pd(x);pv.anchor=iso(new Date(t.getFullYear(),t.getMonth()+n,1));}render();});
+  on('[data-act=pxl]',()=>{const h=['Date','Day','Processed','Target','Deficit','Ach %','DT Mins','Work Hrs','Utilization','Efficiency','LC Efficiency','Down Time Comments'];
+    dl(`Repricing_${P.name.replace(/\W+/g,'_')}_${a}_to_${b}.xls`,xlsXML([{name:'Day-wise',rows:[h,...$$('#pd tbody tr').map(tr=>[...tr.querySelectorAll('td[data-c]')].map(td=>{const v=td.textContent;return v!==''&&!isNaN(Number(v))?Number(v):v;}))]},{name:'Week-wise',rows:[['Week','Dates','Days','Processed','Target','Deficit','Ach %','DT Mins','Avg Eff'],...wkRows]}]));log('EXPORT PERSON',P.name);});
 }
 
 /* ---------------- WORKSPACE ---------------- */
@@ -594,69 +675,65 @@ async function vWork(){
   const ro=!can('paste')||(cur.locked&&!cur.unlocked);
   const lib=()=>cfg.lib.map(l=>l[1]+' Mins - '+l[0]);
   const tabs=`<div class="seg">${B('Repricing',{i:'bolt',act:'tab',arg:'rep',on:wsTab==='rep'})}${B('UOM Summary',{i:'chart',act:'tab',arg:'uom',on:wsTab==='uom'})}${B('Weekly Target',{i:'week',act:'tab',arg:'wk',on:wsTab==='wk'})}</div>`;
-  const lockB=cur.locked&&!cur.unlocked?`<div class="banner lock">${ic('lock',16)} ${fmtD(cur.date)} server pe saved & locked (by ${esc(cur.savedBy||'')}) — edit ke liye unlock karo ${can('edit')?B('Unlock to edit',{sm:1,k:'pri',i:'unlock',act:'unlock'}):'<span class="chip warn">“Edit saved date” access nahi</span>'}</div>`:'';
+  const lockB=cur.locked&&!cur.unlocked?`<div class="banner lock">${ic('lock',16)} ${fmtD(cur.date)} saved & locked on server (by ${esc(cur.savedBy||'')}) — unlock to edit ${can('edit')?B('Unlock to edit',{sm:1,k:'pri',i:'unlock',act:'unlock'}):'<span class="chip warn">No “Edit saved date” access</span>'}</div>`:'';
   const tb=wsTab==='wk'?'':`<div class="tools" style="margin:10px 0">
     ${B('Paste from clipboard',{k:'pri',sm:1,i:'copy',act:'clip',dis:ro})}${B('Dump selected (Del)',{sm:1,i:'eraser',act:'dump',dis:ro})}${B('Dump all',{sm:1,k:'dan',i:'trash',act:'dumpall',dis:ro})}
     ${B('+10 rows',{sm:1,i:'plus',act:'rows',dis:ro})}${B('Clear filters',{sm:1,i:'filter',act:'nof'})}${can('headers')?B('Reset headers',{sm:1,i:'history',act:'rhead'}):''}
     <span class="sp"></span>${cur.dirty?'<span class="chip warn">Unsaved</span>':cur.savedAt?'<span class="chip good">'+ic('check',13)+' Saved</span>':''}</div>`;
-  $('#main').innerHTML=tamperBanner()+head('Workspace','Excel jaisa: drag karke select · Delete se erase · Ctrl+C / Ctrl+V · double-click edit · ▼ se filter',
+  $('#main').innerHTML=tamperBanner()+head('Workspace','Excel-style: drag to select · Delete = clear · Ctrl+C / Ctrl+V · double-click = edit · Ctrl+double-click a name = person details · drag column edge = resize · ▼ = filter',
     `<div class="fld" style="flex-direction:row;align-items:center;gap:8px"><label for="wd" style="white-space:nowrap">Work date</label><input class="in" type="date" id="wd" value="${cur.date}" style="width:150px"></div>${can('save')?B('Master Save',{k:'pri',i:'save',act:'msave',dis:ro&&!cur.dirty}):''}`)+
-   `<div class="row"><div class="grow"><div class="card">${tabs}${lockB}${tb}<div id="sh"></div></div></div>
-    <div class="side" id="wside"></div></div>`;
+   `<div class="card">${tabs}${lockB}${tb}<div id="wside"></div><div id="sh"></div></div>`;
   on('[data-act=tab]',a=>{wsTab=a;render();});
-  $('#wd').onchange=async e=>{if(cur.dirty&&!confirm('Unsaved data hai. Date badlein?')){e.target.value=cur.date;return;}await loadWork(e.target.value||iso());render();};
+  $('#wd').onchange=async e=>{if(cur.dirty&&!confirm('Unsaved data. Change date?')){e.target.value=cur.date;return;}await loadWork(e.target.value||iso());render();};
   on('[data-act=msave]',masterSave);
   on('[data-act=unlock]',async()=>{if(await askPw('Unlock '+fmtD(cur.date))){cur.unlocked=true;await log('UNLOCK DATE',cur.date);render();}});
   const mark=(soft)=>{cur.dirty=true;if(!soft)sideW();const c=$('.tools .chip.good',$('#main'));};
   if(wsTab==='rep'){
-    sheet=new Sheet($('#sh'),{name:'rep',headers:cfg.headers.rep,data:cur.rep,ro,editHead:can('headers'),combo:{3:lib},num:[2],
+    sheet=new Sheet($('#sh'),{name:'rep',headers:cfg.headers.rep,data:cur.rep,ro,editHead:can('headers'),combo:{3:lib},num:[2],w:{0:100,1:170,2:130,3:520},nameCol:1,onName:n=>openPerson(n),
       computed:[{name:'Achieved',n:1,fn:r=>({v:isNaN(num(r[2]))?'':num(r[2])})},{name:'Daily Target',n:1,fn:()=>({v:tgt()})},
         {name:'Deficit',n:1,fn:r=>{const d=tgt()-(num(r[2])||0);return {v:d,k:d>0?'bad':'good'};}},{name:'DT Mins',n:1,fn:r=>({v:mins(r[3])||''})},{name:'Work Hrs',n:1,fn:r=>({v:hm(480-mins(r[3]))})}],
       onChange:()=>{cur.dirty=true;sideW();},onHead:async()=>{await saveCfg('headers');await log('HEADER EDIT','rep');}});
   }else if(wsTab==='uom'){
-    sheet=new Sheet($('#sh'),{name:'uom',headers:cfg.headers.uom,data:cur.uom,ro,editHead:can('headers'),num:[1,5],
+    sheet=new Sheet($('#sh'),{name:'uom',headers:cfg.headers.uom,data:cur.uom,ro,editHead:can('headers'),num:[1,5],w:{0:210},nameCol:0,onName:n=>openPerson(n),
       cls:(r,c)=>c===2?kind(pct(r[2]),'u'):(c===3||c===4)?kind(pct(r[c]),'e'):'',onChange:()=>{cur.dirty=true;sideW();},onHead:async()=>{await saveCfg('headers');await log('HEADER EDIT','uom');}});
   }else{
     const S=new Set(await savedDates()),wk=monday(cur.date),days=[];
     for(let i=0;i<7;i++){const d=addD(wk,i);if(d===cur.date)days.push({date:d,rep:filled(cur.rep)});else if(S.has(d)){const x=await getDay(d);if(x)days.push(x);}}
     const W=weekly(days).filter(w=>w.wk===wk);
-    sheet=new Sheet($('#sh'),{name:'wk',ro:true,headers:['Week'+weekNo(cur.date),'Name','Weekly Target- Reprice','Achieved prod','Deficit','Down Time'],num:[2,3,4],
+    sheet=new Sheet($('#sh'),{name:'wk',ro:true,w:{1:190},nameCol:1,onName:n=>openPerson(n),headers:['Week'+weekNo(cur.date),'Name','Weekly Target- Reprice','Achieved prod','Deficit','Down Time'],num:[2,3,4],
       data:W.map(w=>['Day '+w.days,w.name,w.target,w.ach,w.def,w.mins+' Mins']),cls:(r,c)=>c===4?(num(r[4])>0?'bad':'good'):''});
   }
-  on('[data-act=clip]',async()=>{try{sheet.paste(await navigator.clipboard.readText());}catch(e){toast('Clipboard blocked — grid pe click karke Ctrl+V karo');}});
+  on('[data-act=clip]',async()=>{try{sheet.paste(await navigator.clipboard.readText());}catch(e){toast('Clipboard blocked — click the grid and press Ctrl+V');}});
   on('[data-act=dump]',()=>sheet.erase());
-  on('[data-act=dumpall]',()=>{if(!confirm('Is tab ka poora data screen se hata dein? (Server pe saved data safe)'))return;sheet.data.splice(0);cur.dirty=true;sheet.render();sideW();});
+  on('[data-act=dumpall]',()=>{if(!confirm('Clear all data from this tab on screen? (Saved server data stays safe)'))return;sheet.data.splice(0);cur.dirty=true;sheet.render();sideW();});
   on('[data-act=rows]',()=>{sheet.minRows+=10;sheet.render();});
   on('[data-act=nof]',()=>{sheet.filters={};sheet.render();});
   on('[data-act=rhead]',async()=>{cfg.headers[wsTab]=[...DEF_HEAD[wsTab]];await saveCfg('headers');render();});
   sideW();
 }
 function sideW(){const el=$('#wside');if(!el)return;const R=filled(cur.rep).map(r=>repRow(r,cur.date)),canC=can('comments'),ro=!can('paste')||(cur.locked&&!cur.unlocked);
-  const dm=R.reduce((a,r)=>a+r.mins,0),miss=R.filter(r=>!r.comment.trim()).length,dates=[...new Set(R.map(r=>r.date))];
-  el.innerHTML=`<div class="card"><div class="cap">Live check</div>
-   <div class="line"><span>Rows</span><b>${R.length}</b></div><div class="line"><span>Dates in paste</span><b>${dates.map(shortD).join(', ')||'—'}</b></div>
-   <div class="line"><span>Processed</span><b>${R.reduce((a,r)=>a+r.ach,0)}</b></div><div class="line"><span>Downtime</span><b>${dm} min</b></div>
-   <div class="line"><span>Comment missing</span><span class="chip ${miss?'warn':'good'}">${miss}</span></div></div>
-   ${wsTab==='rep'?`<div style="height:12px"></div><div class="card"><div class="cap">Downtime quick pick</div><div class="sub" style="margin-bottom:8px">Rows select karo → comment pe click (Down Time column mein jud jaayega)</div>
-   <div style="display:flex;flex-direction:column;gap:7px">${cfg.lib.map((l,i)=>`<div style="display:flex;gap:6px"><button type="button" class="b3 sm" data-lib="${i}" ${ro?'disabled':''} style="flex:1;justify-content:space-between">${esc(l[0])} <b style="color:var(--ac)">${l[1]}m</b></button>${canC?`<button type="button" class="b3 sm dan ico" data-ld="${i}" aria-label="Remove ${esc(l[0])}">${ic('x',13)}</button>`:''}</div>`).join('')}</div>
-   ${canC?`<div class="tools" style="margin-top:10px;flex-wrap:nowrap"><input class="in" id="nlt" placeholder="New comment" aria-label="New comment"><input class="in" id="nlm" type="number" placeholder="Min" style="width:70px" aria-label="Minutes">${B('',{sm:1,k:'pri',i:'plus',act:'la',t:'Add comment'})}</div>`:''}</div>`:''}
-   <div style="height:12px"></div><div class="card"><div class="cap">Column map</div>${(wsTab==='uom'?['A Name','B Volume','C Utilization %','D Efficiency %','E LC Efficiency %','F O/U']:['A Date (khali = work date)','B Name','C Processed = Achieved','D Down Time (dropdown)','Grey = auto calc']).map(x=>`<div class="line" style="font-size:12px"><span>${x}</span></div>`).join('')}<div class="line" style="font-size:12px"><span>Daily target</span><b>${tgt()}</b></div></div>`;
-  $$('[data-lib]',el).forEach(b=>b.onclick=()=>{if(!sheet||sheet.name!=='rep')return;const l=cfg.lib[+b.dataset.lib],t=l[1]+' Mins - '+l[0];const [r1,,r2]=sheet.rect();
-    for(let r=r1;r<=r2;r++){const di=sheet.dr(r);if(di===undefined||di>=cur.rep.length||!String((cur.rep[di]||[])[1]||'').trim())continue;const row=cur.rep[di];while(row.length<4)row.push('');row[3]=row[3]&&row[3].trim()?row[3]+' + '+t:t;}
-    cur.dirty=true;sheet.render();sideW();});
+  const dm=R.reduce((a,r)=>a+r.mins,0),miss=R.filter(r=>!r.comment.trim()).length,dates=[...new Set(R.map(r=>r.date))],U=filled(cur.uom).length;
+  el.innerHTML=`<div class="tools" style="gap:6px;margin-bottom:8px;padding:8px 10px;border-radius:12px;background:var(--surf2);border:1px dashed var(--bd2)">
+    <span class="cap" style="margin:0">Live</span><span class="chip">Rows <b>&nbsp;${wsTab==='uom'?U:R.length}</b></span>${wsTab!=='uom'?`<span class="chip">Dates <b>&nbsp;${dates.map(shortD).join(', ')||'—'}</b></span><span class="chip">Processed <b>&nbsp;${R.reduce((a,r)=>a+r.ach,0)}</b></span><span class="chip">Downtime <b>&nbsp;${dm}m</b></span><span class="chip ${miss?'warn':'good'}">Comment missing ${miss}</span>`:''}<span class="chip ac">Target ${tgt()}/day</span></div>
+   ${wsTab==='rep'?`<div class="tools" style="gap:6px;margin-bottom:10px"><span class="cap" style="margin:0" title="Select rows, then click a comment">Downtime pick</span>
+     ${cfg.lib.map((l,i)=>`<span style="display:inline-flex;gap:3px"><button type="button" class="b3 sm" data-lib="${i}" ${ro?'disabled':''} title="Add to Down Time of selected rows">${esc(l[0])} <b style="color:var(--ac)">${l[1]}m</b></button>${canC?`<button type="button" class="b3 sm dan ico" data-ld="${i}" aria-label="Remove ${esc(l[0])}" style="width:26px;min-width:26px">${ic('x',12)}</button>`:''}</span>`).join('')}
+     ${canC?`<input class="in" id="nlt" placeholder="New comment" style="width:170px;min-height:31px;padding:4px 8px" aria-label="New comment"><input class="in" id="nlm" type="number" placeholder="Min" style="width:64px;min-height:31px;padding:4px 8px" aria-label="Minutes">${B('',{sm:1,k:'pri',i:'plus',act:'la',t:'Add comment'})}`:''}</div>`:''}`;
+  $$('[data-lib]',el).forEach(b=>b.onclick=()=>{if(!sheet||sheet.name!=='rep')return;const l=cfg.lib[+b.dataset.lib],t=l[1]+' Mins - '+l[0];const [r1,,r2]=sheet.rect();let n=0;
+    for(let r=r1;r<=r2;r++){const di=sheet.dr(r);if(di===undefined||di>=cur.rep.length||!String((cur.rep[di]||[])[1]||'').trim())continue;const row=cur.rep[di];while(row.length<4)row.push('');row[3]=row[3]&&row[3].trim()?row[3]+' + '+t:t;n++;}
+    if(!n)return toast('Select rows in the grid first');cur.dirty=true;sheet.render();sideW();});
   $$('[data-ld]',el).forEach(b=>b.onclick=async()=>{cfg.lib.splice(+b.dataset.ld,1);await saveCfg('library');sideW();});
-  on('[data-act=la]',async()=>{const t=$('#nlt').value.trim(),m=+$('#nlm').value;if(!t||!m)return toast('Comment aur minutes dono');cfg.lib.push([t,m]);await saveCfg('library');await log('LIBRARY ADD',t);sideW();},el);
+  on('[data-act=la]',async()=>{const t=$('#nlt').value.trim(),m=+$('#nlm').value;if(!t||!m)return toast('Enter both comment and minutes');cfg.lib.push([t,m]);await saveCfg('library');await log('LIBRARY ADD',t);sideW();},el);
 }
 async function masterSave(){
-  if(!can('save'))return;const rep=filled(cur.rep),uom=filled(cur.uom);if(!rep.length&&!uom.length)return toast('Save karne ko kuch nahi');
+  if(!can('save'))return;const rep=filled(cur.rep),uom=filled(cur.uom);if(!rep.length&&!uom.length)return toast('Nothing to save');
   const by={};rep.forEach(r=>{const d=anyDate(r[0])||cur.date;(by[d]=by[d]||[]).push(r);});if(uom.length&&!by[cur.date])by[cur.date]=null;
   const need=[];for(const d of Object.keys(by)){const x=await rd(dataP(d),null);if(x&&x.locked&&!(d===cur.date&&cur.unlocked))need.push(d);}
-  if(need.length){if(!can('edit'))return toast('Ye date(s) locked hain: '+need.map(shortD).join(', ')+' — “Edit saved date” access chahiye');if(!await askPw('Locked dates overwrite: '+need.map(shortD).join(', ')))return;}
+  if(need.length){if(!can('edit'))return toast('These date(s) are locked: '+need.map(shortD).join(', ')+' — “Edit saved date” access required');if(!await askPw('Locked dates overwrite: '+need.map(shortD).join(', ')))return;}
   for(const d of Object.keys(by)){const x=await rd(dataP(d),null);
     const o={date:d,rep:by[d]!==null?by[d]:(x?x.rep:[]),uom:d===cur.date?uom:(x?x.uom:[]),savedBy:me.msid,savedAt:new Date().toISOString(),locked:true,ver:APP.ver};
     await wr(dataP(d),o);cache[d]=o;}
   await backup('master save '+Object.keys(by).join(','));await log('MASTER SAVE',Object.keys(by).join(', ')+` · ${rep.length} rep / ${uom.length} uom`);
-  await loadWork(cur.date);toast('Server pe save + lock: '+Object.keys(by).map(shortD).join(', '));render();
+  await loadWork(cur.date);toast('Saved & locked on server: '+Object.keys(by).map(shortD).join(', '));render();
 }
 
 /* ---------------- REPORTS ---------------- */
@@ -667,22 +744,22 @@ async function vReports(){
   const R=days.flatMap(x=>filled(x.rep).map(r=>repRow(r,x.date))).filter(r=>r.name);
   const W=weekly(days);
   const tabs=`<div class="seg">${B('UOM Summary',{i:'chart',act:'rt',arg:'uom',on:rpTab==='uom'})}${B('Reprice Tracker',{i:'bolt',act:'rt',arg:'rep',on:rpTab==='rep'})}${B('Weekly Target',{i:'week',act:'rt',arg:'wk',on:rpTab==='wk'})}${can('mail')?B('Mail',{i:'mail',act:'rt',arg:'mail',on:rpTab==='mail'}):''}</div>`;
-  $('#main').innerHTML=head('Reports',`${fmtD(range.from)} → ${fmtD(range.to)} · upar From/To se range badlo (10 din bhi chalega)`,can('export')?B('Excel (all)',{i:'download',act:'xl'}):'')+
+  $('#main').innerHTML=head('Reports',`${fmtD(range.from)} → ${fmtD(range.to)} · set range with From/To above · double-click a name for full details`,can('export')?B('Excel (all)',{i:'download',act:'xl'}):'')+
     `<div class="card"><div class="tools" style="margin-bottom:10px">${tabs}<span class="sp"></span>${rpTab==='uom'?`<div class="seg">${B('Per day',{sm:1,act:'um',arg:'day',on:uomMode==='day'})}${B('Combined',{sm:1,act:'um',arg:'all',on:uomMode==='all'})}</div>`:''}</div><div id="rs"></div></div>`;
   on('[data-act=rt]',a=>{rpTab=a;render();});on('[data-act=um]',a=>{uomMode=a;render();});on('[data-act=xl]',()=>exportRange(days));
   if(rpTab==='uom'){let rows;
     if(uomMode==='day')rows=U.map(r=>[shortD(r.d),r.name,isNaN(r.vol)?'':r.vol,f2(r.util)+'%',f2(r.eff)+'%',f2(r.lc)+'%',f2(r.ou)]);
     else{const g={};U.forEach(r=>{const k=r.name.toUpperCase();g[k]=g[k]||{n:r.name,v:0,u:0,e:0,l:0,o:0,c:0};const x=g[k];x.v+=r.vol||0;x.u+=r.util||0;x.e+=r.eff||0;x.l+=r.lc||0;x.o+=r.ou||0;x.c++;});
       rows=Object.values(g).map(x=>[x.c+' days',x.n,x.v,f2(x.u/x.c)+'%',f2(x.e/x.c)+'%',f2(x.l/x.c)+'%',f2(x.o)]);}
-    rsheet=new Sheet($('#rs'),{ro:true,headers:['Date','Name','Volume','Utilization','Efficiency','LC Efficiency','O/U'],data:rows,num:[2,6],cls:(r,c)=>c===3?kind(pct(r[3]),'u'):(c===4||c===5)?kind(pct(r[c]),'e'):''});}
-  else if(rpTab==='rep')rsheet=new Sheet($('#rs'),{ro:true,headers:['Date','Name','Processed- Reprice','Total/ Achieved','Daily Target','Deficit','DT Mins','Down Time Comments'],num:[2,3,4,5,6],
+    rsheet=new Sheet($('#rs'),{name:'r_uom',ro:true,w:{1:210},nameCol:1,onName:n=>openPerson(n),headers:['Date','Name','Volume','Utilization','Efficiency','LC Efficiency','O/U'],data:rows,num:[2,6],cls:(r,c)=>c===3?kind(pct(r[3]),'u'):(c===4||c===5)?kind(pct(r[c]),'e'):''});}
+  else if(rpTab==='rep')rsheet=new Sheet($('#rs'),{name:'r_rep',ro:true,w:{1:170,7:520},nameCol:1,onName:n=>openPerson(n),headers:['Date','Name','Processed- Reprice','Total/ Achieved','Daily Target','Deficit','DT Mins','Down Time Comments'],num:[2,3,4,5,6],
     data:R.map(r=>[usD(r.date),r.name,r.proc,r.ach,r.target,r.def,r.mins||'',r.comment]),cls:(r,c)=>c===5?(num(r[5])>0?'bad':'good'):''});
-  else if(rpTab==='wk')rsheet=new Sheet($('#rs'),{ro:true,headers:['Week of','Week','Day','Name','Weekly Target- Reprice','Achieved prod','Deficit','Down Time'],num:[4,5,6],
+  else if(rpTab==='wk')rsheet=new Sheet($('#rs'),{name:'r_wk',ro:true,w:{3:190},nameCol:3,onName:n=>openPerson(n),headers:['Week of','Week','Day','Name','Weekly Target- Reprice','Achieved prod','Deficit','Down Time'],num:[4,5,6],
     data:W.map(w=>[shortD(w.wk),'Week'+weekNo(w.wk),'Day '+w.days,w.name,w.target,w.ach,w.def,w.mins+' Mins']),cls:(r,c)=>c===6?(num(r[6])>0?'bad':'good'):''});
   else vMail(days,U,R,W);
 }
 function mailHTML(days,R,W,inc){
-  const col={good:'#92D050',warn:'#FFA500',bad:'#FF99CC','':'#ffffff'};const F="font-family:'Times New Roman';font-size:14px";
+  const col={good:'#92D050',warn:'#FFA500',bad:'#FF99CC','':'#ffffff'};const F="font-family:Arial;font-size:13px";
   const th=(s,bg='#4CAF19',c='#000')=>`<th style="background:${bg};color:${c};border:1px solid #000;padding:6px 10px;${F}">${s}</th>`;
   const td=(s,bg='#fff',al='center')=>`<td style="background:${bg};border:1px solid #000;padding:5px 10px;text-align:${al};${F}">${esc(s)}</td>`;
   let h=`<p style="font-family:Calibri,Arial;font-size:14px">Hi ${esc((cfg.mail.to||'Team').split(',').reverse().join(' ').trim().split(' ')[0]||'Team')},<br><br>Please find the Repricing UOM &amp; Productivity report for ${range.from===range.to?fmtD(range.from):fmtD(range.from)+' to '+fmtD(range.to)}.</p>`;
@@ -701,11 +778,11 @@ function vMail(days,U,R,W){const inc=window._inc||(window._inc={uom:true,rep:tru
    <div class="mailbox" id="mbody" style="margin-top:10px">${mailHTML(days,R,W,inc)}</div></div>
    <div class="side"><div class="cap">Include</div>${[['uom','UOM Summary'],['rep','Reprice Tracker'],['wk','Weekly Target']].map(x=>`<div class="line"><span>${x[1]}</span><button type="button" class="tg" aria-pressed="${inc[x[0]]}" data-inc="${x[0]}" aria-label="${x[1]}"></button></div>`).join('')}
    <div class="tools" style="flex-direction:column;align-items:stretch;margin-top:12px">${B('Copy for Outlook',{k:'pri',i:'copy',act:'mcopy'})}${B('Open Outlook',{k:'mag',i:'mail',act:'mopen'})}${can('export')?B('Download Excel',{i:'download',act:'xl2'}):''}</div>
-   <div class="sub" style="margin-top:10px">Copy dabao → Outlook body mein Ctrl+V. Excel file download karke attach karo (browser khud attach nahi kar sakta).</div></div></div>`;
+   <div class="sub" style="margin-top:10px">Click Copy → press Ctrl+V in the Outlook body. Download the Excel file and attach it (browsers cannot attach files automatically).</div></div></div>`;
   $$('[data-inc]').forEach(b=>b.onclick=()=>{inc[b.dataset.inc]=!inc[b.dataset.inc];vMail(days,U,R,W);});
   on('[data-act=mcopy]',async()=>{const el=$('#mbody');try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([el.innerHTML],{type:'text/html'}),'text/plain':new Blob([el.innerText],{type:'text/plain'})})]);}
-    catch(e){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');s.removeAllRanges();}toast('Copied — Outlook mein Ctrl+V');await log('MAIL COPY',range.from+'..'+range.to);});
-  on('[data-act=mopen]',()=>{const q=encodeURIComponent;location.href=`mailto:${q($('#mto').value)}?cc=${q($('#mcc').value)}&subject=${q($('#msub').value)}&body=${q('(Ctrl+V — report paste karo)')}`;});
+    catch(e){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');s.removeAllRanges();}toast('Copied — press Ctrl+V in Outlook');await log('MAIL COPY',range.from+'..'+range.to);});
+  on('[data-act=mopen]',()=>{const q=encodeURIComponent;location.href=`mailto:${q($('#mto').value)}?cc=${q($('#mcc').value)}&subject=${q($('#msub').value)}&body=${q('(Press Ctrl+V to paste the report)')}`;});
   on('[data-act=xl2]',()=>exportRange(days));}
 
 /* ---------------- EXCEL ---------------- */
@@ -726,14 +803,14 @@ async function vServer(){const S=(await savedDates()).filter(d=>d>=range.from&&d
   $('#main').innerHTML=head('Server',`${esc(dir.name)} · encrypted · ${fmtD(range.from)} → ${fmtD(range.to)}`,(can('export')?B('Download range (sheet per date)',{i:'download',act:'dla'}):''))+
   `<div class="card"><div class="tw"><table class="t"><thead><tr><th>Date</th><th>Repricing rows</th><th>UOM rows</th><th>Saved by</th><th>Saved at</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead><tbody>${
    rows.map(x=>`<tr><td><b>${fmtD(x.date)}</b></td><td>${filled(x.rep).length}</td><td>${filled(x.uom).length}</td><td>${esc(x.savedBy)}</td><td>${new Date(x.savedAt).toLocaleString('en-GB')}</td><td><span class="chip good">${ic('lock',12)} Locked</span></td>
-   <td style="text-align:right;white-space:nowrap">${B('Open',{sm:1,i:'eye',act:'open',arg:x.date})} ${can('del')?B('Delete',{sm:1,k:'dan',i:'trash',act:'del',arg:x.date}):''}</td></tr>`).join('')||'<tr><td colspan="7" class="sub">Is range mein server pe kuch nahi.</td></tr>'}</tbody></table></div></div>`;
-  on('[data-act=open]',async d=>{if(cur.dirty&&!confirm('Unsaved data hai. Kholein?'))return;await loadWork(d);view=can('paste')?'ws':'rp';if(view==='rp')range={from:d,to:d};render();});
-  on('[data-act=del]',async d=>{if(!confirm(fmtD(d)+' server se sab ke liye delete hoga. Aage badhein?'))return;if(!await askPw('Delete '+fmtD(d)))return;await backup('before delete '+d);await rm(dataP(d));delete cache[d];await log('DELETE DATE',d);if(d===cur.date)await loadWork(d);toast('Deleted '+fmtD(d));render();});
+   <td style="text-align:right;white-space:nowrap">${B('Open',{sm:1,i:'eye',act:'open',arg:x.date})}</td></tr>`).join('')||'<tr><td colspan="7" class="sub">No saved data in this range.</td></tr>'}</tbody></table></div></div>`;
+  on('[data-act=open]',async d=>{if(cur.dirty&&!confirm('Unsaved data. Open anyway?'))return;await loadWork(d);view=can('paste')?'ws':'rp';if(view==='rp')range={from:d,to:d};render();});
+  on('[data-act=del]',async d=>{if(!confirm(fmtD(d)+' will be deleted for everyone. Continue?'))return;if(!await askPw('Delete '+fmtD(d)))return;await backup('before delete '+d);await rm(dataP(d));delete cache[d];await log('DELETE DATE',d);if(d===cur.date)await loadWork(d);toast('Deleted '+fmtD(d));render();});
   on('[data-act=dla]',()=>{const sh=rows.slice().reverse().map(x=>({name:x.date,rows:[DEF_HEAD.rep.concat(['Achieved','Target','Deficit']),...filled(x.rep).map(r=>{const R=repRow(r,x.date);return [usD(R.date),R.name,R.proc,R.comment,R.ach,R.target,R.def];}),[],DEF_HEAD.uom,...filled(x.uom)]}));
-    if(!sh.length)return toast('Kuch nahi');dl('Repricing_Server_'+range.from+'_to_'+range.to+'.xls',xlsXML(sh));log('EXPORT SERVER',sh.length+' dates');});}
+    if(!sh.length)return toast('Nothing to export');dl('Repricing_Server_'+range.from+'_to_'+range.to+'.xls',xlsXML(sh));log('EXPORT SERVER',sh.length+' dates');});}
 
 /* ---------------- ADMIN ---------------- */
-function startAs(u){asUser=me;me=Object.assign({},u,{pcNow:asUser.pcNow,sid:asUser.sid});log('VIEW AS',u.msid);view='dash';render();toast('Ab aap '+u.name+' ki nazar se dekh rahe ho');}
+function startAs(u){asUser=me;me=Object.assign({},u,{pcNow:asUser.pcNow,sid:asUser.sid});log('VIEW AS',u.msid);view='dash';render();toast('Viewing as '+u.name);}
 function stopAs(){if(asUser){me=asUser;asUser=null;view='admin';render();}}
 async function vAdmin(){
   await reloadSec();const T=[['users','Users & access','users'],['alerts','Alerts & sessions','bell'],['settings','Settings','gear'],['security','Security','shield'],['logs','Logs','history'],['backups','Backups','server']];
@@ -744,33 +821,36 @@ async function vAdmin(){
     body=`<div class="tools" style="margin-bottom:10px">${B('Add user',{k:'pri',i:'plus',act:'uadd'})}${B('Users Excel',{i:'download',act:'uxl'})}${B('Import CSV',{i:'upload',act:'uimp'})}<span class="sp"></span><span class="chip">${users.length} users · ${Object.keys(sessions).length} online</span></div>
     <div class="tw"><table class="t"><thead><tr><th>User</th><th>PC</th><th>Role</th><th>Valid till</th>${PERMS.map(p=>`<th style="text-align:center">${p[1]}</th>`).join('')}<th></th></tr></thead><tbody>${users.map((u,i)=>{const a=u.msid.toLowerCase()===ADMIN_MSID,k=u.msid.toLowerCase();
       return `<tr><td><span class="dot ${sessions[k]?'on':''}"></span><b>${esc(u.name)}</b><div class="sub">${esc(u.msid)}${u.empId?' · '+esc(u.empId):''}${u.team?' · '+esc(u.team):''}</div>${secS.locked[k]?'<span class="chip bad">Locked</span>':''}${u.active?'':'<span class="chip bad">Blocked</span>'}${!a&&!u.pw?'<span class="chip warn">New · password pending</span>':''}</td>
-      <td>${a?'<span class="chip ac">…'+ADMIN_PC_END.toUpperCase()+' only</span>':(esc(u.pc)||'<span class="chip warn">First login</span>')}</td><td><span class="chip ${a?'ac':u.role==='Lead'?'warn':''}">${esc(u.role)}</span></td><td style="white-space:nowrap">${u.validTill?fmtD(u.validTill):''}</td>
+      <td>${a?'<span class="chip ac">…'+ADMIN_PC_END.toUpperCase()+' only</span>':(esc(u.pc)||'<span class="chip warn">First login</span>')}</td><td><span class="chip ${a?'ac':u.role==='SME'?'good':u.role==='Lead'?'warn':''}">${esc(u.role)}</span></td><td style="white-space:nowrap">${u.validTill?fmtD(u.validTill):''}</td>
       ${PERMS.map(p=>`<td style="text-align:center"><button type="button" class="tg" aria-pressed="${a||!!u.perms[p[0]]}" ${a?'disabled':''} data-perm="${i}|${p[0]}" aria-label="${p[1]} for ${esc(u.name)}"></button></td>`).join('')}
       <td style="white-space:nowrap">${a?'':B('',{sm:1,i:'eye',act:'uas',arg:i,t:'View as '+u.name})} ${B('',{sm:1,i:'edit',act:'ued',arg:i,t:'Edit '+u.name})}</td></tr>`;}).join('')}</tbody></table></div>`;}
   if(adTab==='alerts'){const L=Object.entries(secS.locked);
     body=`<div class="row"><div class="grow"><div class="tools" style="margin-bottom:8px"><div class="cap" style="margin:0">Alerts</div><span class="sp"></span>${B('Mark all read',{sm:1,i:'check',act:'aread'})}${B('Clear alerts',{sm:1,k:'dan',i:'trash',act:'aclr'})}</div><div id="ash"></div></div>
-     <div class="side"><div class="card"><div class="cap">Locked IDs</div>${L.map(([k,v])=>`<div class="line"><span><b>${esc(k)}</b><div class="sub">${new Date(v.at).toLocaleString('en-GB')} · ${esc(v.pc||'')}</div></span>${B('Unlock',{sm:1,k:'pri',i:'unlock',act:'unl',arg:k})}</div>`).join('')||'<div class="sub">Koi lock nahi.</div>'}</div>
-     <div style="height:12px"></div><div class="card"><div class="cap">Online sessions</div>${Object.values(sessions).map(s=>`<div class="line"><span><span class="dot on"></span><b>${esc(s.msid)}</b><div class="sub">${esc(s.pc)}</div></span>${s.msid.toLowerCase()===ADMIN_MSID?'<span class="chip ac">You</span>':B('Kick',{sm:1,k:'dan',i:'logout',act:'kick',arg:s.msid.toLowerCase()})}</div>`).join('')||'<div class="sub">Koi online nahi.</div>'}</div></div></div>`;}
+     <div class="side"><div class="card"><div class="cap">Locked IDs</div>${L.map(([k,v])=>`<div class="line"><span><b>${esc(k)}</b><div class="sub">${new Date(v.at).toLocaleString('en-GB')} · ${esc(v.pc||'')}</div></span>${B('Unlock',{sm:1,k:'pri',i:'unlock',act:'unl',arg:k})}</div>`).join('')||'<div class="sub">No locked IDs.</div>'}</div>
+     <div style="height:12px"></div><div class="card"><div class="cap">Online sessions</div>${Object.values(sessions).map(s=>`<div class="line"><span><span class="dot on"></span><b>${esc(s.msid)}</b><div class="sub">${esc(s.pc)}</div></span>${s.msid.toLowerCase()===ADMIN_MSID?'<span class="chip ac">You</span>':B('Kick',{sm:1,k:'dan',i:'logout',act:'kick',arg:s.msid.toLowerCase()})}</div>`).join('')||'<div class="sub">No one online.</div>'}</div></div></div>`;}
   if(adTab==='settings'){const fl=(id,l,v,t='text')=>`<div class="fld"><label for="${id}">${l}</label><input class="in" type="${t}" id="${id}" value="${esc(v)}"></div>`;
     body=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px">
      <div class="card"><div class="cap">Report rules</div><div style="display:grid;gap:10px">${fl('s_t','Daily target (reprice)',cfg.target,'number')}${fl('s_ub','Utilization pink below %',cfg.th.utilBad,'number')}${fl('s_eb','Efficiency pink below %',cfg.th.effBad,'number')}${fl('s_ew','Efficiency orange above %',cfg.th.effWarn,'number')}</div></div>
      <div class="card"><div class="cap">Mail</div><div style="display:grid;gap:10px">${fl('s_to','Report To',cfg.mail.to)}${fl('s_cc','Report Cc',cfg.mail.cc)}${fl('s_sub','Subject ({date})',cfg.mail.subject)}${fl('s_ae','Admin alert email (lock / help mail)',cfg.mail.adminEmail)}${fl('s_wh','Auto-mail webhook URL (Power Automate / Teams — optional)',cfg.mail.webhook)}</div></div>
-     <div class="card"><div class="cap">Validity & retention</div><div style="display:grid;gap:10px">${fl('s_ex','Tool valid till',cfg.expiry,'date')}${fl('s_kl','Logs rakho (din)',cfg.keep.logs,'number')}${fl('s_kb','Backups rakho (din)',cfg.keep.backups,'number')}</div></div></div>
+     <div class="card"><div class="cap">Validity & retention</div><div style="display:grid;gap:10px">${fl('s_ex','Tool valid till',cfg.expiry,'date')}${fl('s_kl','Keep logs (days)',cfg.keep.logs,'number')}${fl('s_kb','Keep backups (days)',cfg.keep.backups,'number')}</div></div></div>
      <div style="margin-top:14px">${B('Save settings',{k:'pri',i:'save',act:'ss'})}</div>`;}
-  if(adTab==='security'){const S=[['onePC','Ek ID · ek PC','MSID pehle login wale PC se lock'],['oneSession','Ek ID · ek session','Same ID dusre PC pe saath mein nahi chalegi'],['rememberPw','Users password PC pe yaad rakh sakein','Login screen ka tick'],['f12','Block F12 / DevTools keys',''],['ctrlU','Block Ctrl+U',''],['rightClick','Right-click band',''],['ctrlPS','Block Ctrl+P / Ctrl+S',''],['copyBlock','Copy sirf grid / mail ke andar','']];
+  if(adTab==='security'){const S=[['onePC','One ID · one PC','MSID locked to the PC used at first sign-in'],['oneSession','One ID · one session','Same ID cannot run on two PCs at once'],['rememberPw','Allow users to remember password','Checkbox on sign-in screen'],['f12','Block F12 / DevTools keys',''],['ctrlU','Block Ctrl+U',''],['rightClick','Disable right-click',''],['ctrlPS','Block Ctrl+P / Ctrl+S',''],['copyBlock','Allow copy only inside grid / mail','']];
     body=`<div class="row"><div class="grow"><div class="card"><div class="cap">Security switches</div>${S.map(s=>`<div class="line"><span><b>${s[1]}</b>${s[2]?`<div class="sub">${s[2]}</div>`:''}</span><button type="button" class="tg" aria-pressed="${!!cfg.sec[s[0]]}" data-sec="${s[0]}" aria-label="${s[1]}"></button></div>`).join('')}
-     <div class="line"><span><b>Galat password limit</b><div class="sub">Itne try ke baad ID lock + Admin alert</div></span><input class="in" type="number" id="s_mf" value="${cfg.sec.maxFails}" style="width:80px" aria-label="Max fails"></div>
+     <div class="line"><span><b>Failed password limit</b><div class="sub">ID locks + Admin alert after this many attempts</div></span><input class="in" type="number" id="s_mf" value="${cfg.sec.maxFails}" style="width:80px" aria-label="Max fails"></div>
      <div class="line"><span><b>Auto logout (min, 0 = off)</b></span><input class="in" type="number" id="s_al" value="${cfg.sec.autoLogout}" style="width:80px" aria-label="Auto logout"></div>
-     <div style="margin-top:10px">${B('Save security',{k:'pri',i:'save',act:'sec'})}</div><div class="sub" style="margin-top:8px">Browser ki rok-tok 100% lock nahi hoti; asli suraksha = encrypted server files + folder permission.</div></div></div>
-     <div class="side"><div class="card"><div class="cap">Admin protection</div><div class="sub">Admin = PC …${ADMIN_PC_END.toUpperCase()} + MSID ${ADMIN_MSID} + master password. Password sirf aapke PC ke cache mein.</div>
+     <div style="margin-top:10px">${B('Save security',{k:'pri',i:'save',act:'sec'})}</div><div class="sub" style="margin-top:8px">Browser key blocking is a deterrent only; real protection = encrypted server files + folder permissions.</div></div></div>
+     <div class="side"><div class="card"><div class="cap">Admin protection</div><div class="sub">Admin = PC …${ADMIN_PC_END.toUpperCase()} + MSID ${ADMIN_MSID} + master password. Password is cached only on your PC.</div>
      <div style="display:grid;gap:8px;margin-top:10px"><input class="in" type="password" id="s_op" placeholder="Current master password" aria-label="Current master password"><input class="in" type="password" id="s_np" placeholder="New master password" aria-label="New master password">${B('Change master password',{k:'mag',i:'lock',act:'mpc'})}</div></div></div></div>`;}
   if(adTab==='logs'){const files=(await ls('Logs')).reverse();const pick=window._lp||'all';let L=[];for(const f of (pick==='all'?files:[pick]))L=L.concat(await rd('Logs/'+f,[]));L.reverse();
-    body=`<div class="tools" style="margin-bottom:10px"><select class="in" id="lp" style="width:auto" aria-label="Log day"><option value="all">All (${cfg.keep.logs} din)</option>${files.map(f=>`<option ${f===pick?'selected':''} value="${esc(f)}">${esc(f.replace('Log_','').replace('.rpx',''))}</option>`).join('')}</select>
+    body=`<div class="tools" style="margin-bottom:10px"><select class="in" id="lp" style="width:auto" aria-label="Log day"><option value="all">All (${cfg.keep.logs} days)</option>${files.map(f=>`<option ${f===pick?'selected':''} value="${esc(f)}">${esc(f.replace('Log_','').replace('.rpx',''))}</option>`).join('')}</select>
      <span class="sp"></span>${pick!=='all'?B('Erase this day',{k:'dan',i:'trash',act:'le1'}):''}${B('Erase all logs',{k:'dan',i:'trash',act:'leall'})}</div><div id="lsh"></div>`;
     window._logs=L;}
   if(adTab==='backups'){const files=(await ls('Backups')).reverse();const det=[];for(const f of files){const b=await rd('Backups/'+f,{snaps:[]});(b.snaps||[]).forEach((s,i)=>det.push([f,i,s]));}det.sort((a,b)=>b[0].localeCompare(a[0])||b[1]-a[1]);
-    body=`<div class="tools" style="margin-bottom:10px">${B('Backup now',{k:'pri',i:'save',act:'bn'})}<span class="sub">Settings + users (password sirf hash — padha nahi ja sakta) + us din ka data · ${cfg.keep.backups} din · encrypted</span></div>
-     <div class="tw"><table class="t"><thead><tr><th>Day</th><th>Time</th><th>By</th><th>Reason</th><th style="text-align:right">Restore</th></tr></thead><tbody>${det.slice(0,150).map(([f,i,s])=>`<tr><td>${esc(f.match(/\d{4}-\d{2}-\d{2}/)[0])}</td><td>${esc(s.t)}</td><td>${esc(s.by)}</td><td>${esc(s.reason)}</td><td style="text-align:right">${B('Restore',{sm:1,i:'history',act:'br',arg:f+'|'+i})}</td></tr>`).join('')||'<tr><td colspan="5" class="sub">Abhi koi backup nahi.</td></tr>'}</tbody></table></div>`;}
+    const SD=(await savedDates()).reverse();
+    body=`<div class="banner tamper" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">${ic('trash',15)} Delete saved data — Admin only (users cannot delete)
+      <select class="in" id="ddel" style="width:auto" aria-label="Date to delete">${SD.map(d=>`<option value="${d}">${fmtD(d)}</option>`).join('')}</select>${B('Delete date',{sm:1,k:'dan',i:'trash',act:'ddel',dis:!SD.length})}</div>
+     <div class="tools" style="margin-bottom:10px">${B('Backup now',{k:'pri',i:'save',act:'bn'})}<span class="sub">Settings + users (passwords stored as hash only — unreadable) + that day's data · ${cfg.keep.backups} days · encrypted</span></div>
+     <div class="tw"><table class="t"><thead><tr><th>Day</th><th>Time</th><th>By</th><th>Reason</th><th style="text-align:right">Restore</th></tr></thead><tbody>${det.slice(0,150).map(([f,i,s])=>`<tr><td>${esc(f.match(/\d{4}-\d{2}-\d{2}/)[0])}</td><td>${esc(s.t)}</td><td>${esc(s.by)}</td><td>${esc(s.reason)}</td><td style="text-align:right">${B('Restore',{sm:1,i:'history',act:'br',arg:f+'|'+i})}</td></tr>`).join('')||'<tr><td colspan="5" class="sub">No backups yet.</td></tr>'}</tbody></table></div>`;}
   $('#main').innerHTML=tamperBanner()+head('Admin','Full control — access, security, alerts, logs, backups',`<span class="chip ac">${ic('shield',13)} ${ADMIN_MSID} · ${ADMIN_EMP}</span>`)+
    `<div class="seg" style="margin-bottom:12px;flex-wrap:wrap">${T.map(t=>B(t[1]+(t[0]==='alerts'&&unread?` (${unread})`:''),{i:t[2],act:'at',arg:t[0],on:adTab===t[0]})).join('')}</div><div class="card">${body}</div>`;
   on('[data-act=at]',a=>{adTab=a;render();});
@@ -783,8 +863,8 @@ async function vAdmin(){
   if(adTab==='alerts')new Sheet($('#ash'),{ro:true,headers:['Time','Type','MSID','PC','Message','Status'],data:secS.alerts.map(a=>[a.t,a.type,a.msid,a.pc,a.msg,a.read?'seen':'NEW']),cls:(r,c)=>c===5&&r[5]==='NEW'?'bad':c===1&&/LOCK|TAMPER/.test(r[1])?'bad':''});
   on('[data-act=aread]',async()=>{secS.alerts.forEach(a=>a.read=true);await saveSec();render();});
   on('[data-act=aclr]',async()=>{if(!await askPw('Clear alerts'))return;secS.alerts=[];await saveSec();await log('ALERTS CLEARED','');render();});
-  on('[data-act=unl]',async k=>{delete secS.locked[k];secS.fails[k]=0;await saveSec();await log('UNLOCK',k);toast(k+' unlock');render();});
-  on('[data-act=kick]',async k=>{await rm('Sessions/'+k+'.rpx');await log('KICK',k);toast(k+' ka session band (1 min mein bahar)');render();});
+  on('[data-act=unl]',async k=>{delete secS.locked[k];secS.fails[k]=0;await saveSec();await log('UNLOCK',k);toast(k+' unlocked');render();});
+  on('[data-act=kick]',async k=>{await rm('Sessions/'+k+'.rpx');await log('KICK',k);toast(k+' session closed (signed out within 1 min)');render();});
   // settings
   on('[data-act=ss]',async()=>{const g=id=>$('#'+id).value;cfg.target=+g('s_t')||344;cfg.th={utilBad:+g('s_ub'),effBad:+g('s_eb'),effWarn:+g('s_ew')};
     Object.assign(cfg.mail,{to:g('s_to'),cc:g('s_cc'),subject:g('s_sub'),adminEmail:g('s_ae').trim(),webhook:g('s_wh').trim()});cfg.expiry=g('s_ex')||cfg.expiry;cfg.keep={logs:+g('s_kl')||30,backups:+g('s_kb')||30};
@@ -793,48 +873,49 @@ async function vAdmin(){
   $$('[data-sec]').forEach(b=>b.onclick=()=>b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true'));
   on('[data-act=sec]',async()=>{$$('[data-sec]').forEach(b=>cfg.sec[b.dataset.sec]=b.getAttribute('aria-pressed')==='true');cfg.sec.maxFails=Math.max(1,+$('#s_mf').value||5);cfg.sec.autoLogout=+$('#s_al').value||0;
     await saveCfg('security');await log('SECURITY',JSON.stringify(cfg.sec));armIdle();toast('Security saved');render();});
-  on('[data-act=mpc]',async()=>{const a=users.find(u=>u.msid.toLowerCase()===ADMIN_MSID);if(await sha($('#s_op').value)!==a.pw)return toast('Current password galat');const np=$('#s_np').value;if(np.length<6)return toast('Naya password kam se kam 6');
-    a.pw=await sha(np);await saveUsers('admin password');if(localStorage.getItem('rp23_pw_'+ADMIN_MSID))localStorage.setItem('rp23_pw_'+ADMIN_MSID,btoa(unescape(encodeURIComponent(np))));await log('ADMIN PASSWORD CHANGED','');toast('Master password badal gaya');render();});
+  on('[data-act=mpc]',async()=>{const a=users.find(u=>u.msid.toLowerCase()===ADMIN_MSID);if(await sha($('#s_op').value)!==a.pw)return toast('Current password is incorrect');const np=$('#s_np').value;if(np.length<6)return toast('New password must be at least 6 characters');
+    a.pw=await sha(np);await saveUsers('admin password');if(localStorage.getItem('rp23_pw_'+ADMIN_MSID))localStorage.setItem('rp23_pw_'+ADMIN_MSID,btoa(unescape(encodeURIComponent(np))));await log('ADMIN PASSWORD CHANGED','');toast('Master password changed');render();});
   // logs
   if(adTab==='logs'){new Sheet($('#lsh'),{ro:true,headers:['Date','Time','MSID','PC','Action','Detail'],data:window._logs.map(l=>[l.d||'',l.t,l.msid,l.pc,l.action,l.detail]),cls:(r,c)=>c===4&&/FAIL|LOCK|DELETE|KICK|TAMPER/.test(r[4])?'bad':c===4&&/SAVE|LOGIN/.test(r[4])?'good':''});
     $('#lp').onchange=e=>{window._lp=e.target.value;render();};
     on('[data-act=le1]',async()=>{if(!await askPw('Erase log '+window._lp))return;await rm('Logs/'+window._lp);window._lp='all';await log('LOG ERASED','1 day');render();});
     on('[data-act=leall]',async()=>{if(!await askPw('Erase ALL logs'))return;for(const f of await ls('Logs'))await rm('Logs/'+f);window._lp='all';await log('LOG ERASED','all');render();});}
   // backups
-  on('[data-act=bn]',async()=>{await backup('manual');toast('Backup ho gaya');render();});
+  on('[data-act=ddel]',async()=>{const d=$('#ddel').value;if(!d||!confirm(fmtD(d)+' will be deleted for everyone.'))return;if(!await askPw('Delete '+fmtD(d)))return;await backup('before delete '+d);await rm(dataP(d));delete cache[d];await log('DELETE DATE',d);if(d===cur.date)await loadWork(d);toast('Deleted '+fmtD(d));render();});
+  on('[data-act=bn]',async()=>{await backup('manual');toast('Backup created');render();});
   on('[data-act=br]',async a=>{const [f,i]=a.split('|');const b=await rd('Backups/'+f,null),s=b&&b.snaps[+i];if(!s)return;if(!await askPw('Restore backup '+f.slice(7,17)+' '+s.t))return;
     await backup('before restore');cfg=Object.assign(DEF_CFG(),s.cfg);users=s.users;await saveCfg('restored');await saveUsers('restored');for(const d in (s.data||{})){await wr(dataP(d),s.data[d]);cache[d]=s.data[d];}
-    tamper.clear();usersBroken=false;me=users.find(u=>u.msid.toLowerCase()===ADMIN_MSID)||me;await log('RESTORE',f+' #'+i);toast('Restore ho gaya');render();});
+    tamper.clear();usersBroken=false;me=users.find(u=>u.msid.toLowerCase()===ADMIN_MSID)||me;await log('RESTORE',f+' #'+i);toast('Restore complete');render();});
 }
 function userModal(i){const nu=i<0;const u=nu?{msid:'',empId:'',name:'',email:'',team:'',pc:'',role:'Employee',pw:'',validTill:cfg.expiry,active:true,perms:NEWPERMS()}:JSON.parse(JSON.stringify(users[i]));const a=u.msid.toLowerCase()===ADMIN_MSID;
   const fl=(id,l,v,x='')=>`<div class="fld"><label for="${id}">${l}</label><input class="in" id="${id}" value="${esc(v)}" ${x}></div>`;
   const ov=modal(`<div class="tools" style="justify-content:space-between;margin-bottom:12px"><h3 style="margin:0;font-size:19px">${nu?'Add user':'Edit · '+esc(u.name)}</h3>${B('',{i:'x',act:'mx',t:'Close'})}</div>
    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">${fl('u_n','Full name',u.name)}${fl('u_m','MSID',u.msid,a?'disabled':'')}${fl('u_e','Employee ID',u.empId||'',a?'disabled':'')}${fl('u_em','Email',u.email||'')}${fl('u_t','Team / process',u.team||'')}
-   ${a?'':fl('u_pc','PC name (khali = user pehle login pe khud set karega)',u.pc)}${a?'':`<div class="fld"><label for="u_r">Role</label><select class="in" id="u_r">${['Employee','Lead'].map(r=>`<option ${u.role===r?'selected':''}>${r}</option>`).join('')}</select></div>`}${fl('u_v','Valid till',u.validTill,'type="date" '+(a?'disabled':''))}</div>
+   ${a?'':fl('u_pc','PC name (blank = set by user at first sign-in)',u.pc)}${a?'':`<div class="fld"><label for="u_r">Role</label><select class="in" id="u_r">${['Employee','Lead','SME'].map(r=>`<option ${u.role===r?'selected':''}>${r}</option>`).join('')}</select></div>`}${fl('u_v','Valid till',u.validTill,'type="date" '+(a?'disabled':''))}</div>
    ${a?'':`<div class="cap" style="margin-top:14px">Access</div><div class="perm">${PERMS.map(p=>`<label><input type="checkbox" data-up="${p[0]}" ${u.perms[p[0]]?'checked':''}>${p[1]}</label>`).join('')}</div>
-   <div class="line" style="margin-top:10px"><span><b>Active</b><div class="sub">Off = login band</div></span><button type="button" class="tg" id="u_a" aria-pressed="${u.active}" aria-label="Active"></button></div>`}
-   <div class="sub" style="margin-top:8px">${nu?'User pehli baar login pe apna PC name aur password khud set karega.':''}</div>
+   <div class="line" style="margin-top:10px"><span><b>Active</b><div class="sub">Off = sign-in disabled</div></span><button type="button" class="tg" id="u_a" aria-pressed="${u.active}" aria-label="Active"></button></div>`}
+   <div class="sub" style="margin-top:8px">${nu?'The user sets their own PC name and password at first sign-in.':''}</div>
    <div class="tools" style="margin-top:14px">${B('Save',{k:'pri',i:'save',act:'us'})}${!nu&&!a?B('Fresh start (reset PC + password)',{i:'history',act:'ur'})+B('Delete',{k:'dan',i:'trash',act:'ud'}):''}</div>`);
   const q=s=>$(s,ov);$('[data-act=mx]',ov).onclick=()=>ov.remove();const ta=q('#u_a');if(ta)ta.onclick=()=>ta.setAttribute('aria-pressed',ta.getAttribute('aria-pressed')!=='true');
-  $('[data-act=us]',ov).onclick=async()=>{const m=a?u.msid:q('#u_m').value.trim();if(!m||!q('#u_n').value.trim())return toast('Name aur MSID zaroori');
-    if(users.some((x,j)=>j!==i&&x.msid.toLowerCase()===m.toLowerCase()))return toast('Ye MSID pehle se hai');if(!a&&m.toLowerCase()===ADMIN_MSID)return toast('Ye Admin ID hai');
+  $('[data-act=us]',ov).onclick=async()=>{const m=a?u.msid:q('#u_m').value.trim();if(!m||!q('#u_n').value.trim())return toast('Name and MSID are required');
+    if(users.some((x,j)=>j!==i&&x.msid.toLowerCase()===m.toLowerCase()))return toast('This MSID already exists');if(!a&&m.toLowerCase()===ADMIN_MSID)return toast('This is the Admin ID');
     Object.assign(u,{name:q('#u_n').value.trim(),msid:m,email:q('#u_em').value.trim(),team:q('#u_t').value.trim()});
-    if(!a){Object.assign(u,{empId:q('#u_e').value.trim(),pc:q('#u_pc').value.trim(),role:q('#u_r').value,validTill:q('#u_v').value||cfg.expiry,active:ta.getAttribute('aria-pressed')==='true'});$$('[data-up]',ov).forEach(c=>u.perms[c.dataset.up]=c.checked);}
+    if(!a){Object.assign(u,{empId:q('#u_e').value.trim(),pc:q('#u_pc').value.trim(),role:q('#u_r').value,validTill:q('#u_v').value||cfg.expiry,active:ta.getAttribute('aria-pressed')==='true'});$$('[data-up]',ov).forEach(c=>u.perms[c.dataset.up]=c.checked);if(u.role==='SME')users.forEach(x=>{if(x!==users[i]&&x.msid!==u.msid&&x.role==='SME'){x.role='Lead';toast(x.name+' is no longer SME (only one SME allowed)');}});}
     if(nu){u.created=new Date().toISOString();users.push(u);}else users[i]=u;if(a)me=Object.assign(u,{pcNow:me.pcNow,sid:me.sid});
     await saveUsers('user '+u.msid);await log(nu?'USER ADD':'USER EDIT',u.msid);ov.remove();toast('Saved: '+u.name);render();};
-  const r=$('[data-act=ur]',ov);if(r)r.onclick=async()=>{users[i].pc='';users[i].pw='';delete secS.locked[u.msid.toLowerCase()];await saveSec();await rm('Sessions/'+u.msid.toLowerCase()+'.rpx');await saveUsers('reset '+u.msid);await log('FRESH START',u.msid);ov.remove();toast(u.name+': agle login pe naya PC + password');render();};
-  const d=$('[data-act=ud]',ov);if(d)d.onclick=async()=>{if(!confirm(u.name+' ko hatayein?'))return;users.splice(i,1);await rm('Sessions/'+u.msid.toLowerCase()+'.rpx');await saveUsers('delete '+u.msid);await log('USER DELETE',u.msid);ov.remove();render();};}
+  const r=$('[data-act=ur]',ov);if(r)r.onclick=async()=>{users[i].pc='';users[i].pw='';delete secS.locked[u.msid.toLowerCase()];await saveSec();await rm('Sessions/'+u.msid.toLowerCase()+'.rpx');await saveUsers('reset '+u.msid);await log('FRESH START',u.msid);ov.remove();toast(u.name+': new PC + password at next sign-in');render();};
+  const d=$('[data-act=ud]',ov);if(d)d.onclick=async()=>{if(!confirm(u.name+' — delete this user?'))return;users.splice(i,1);await rm('Sessions/'+u.msid.toLowerCase()+'.rpx');await saveUsers('delete '+u.msid);await log('USER DELETE',u.msid);ov.remove();render();};}
 function importUsers(){const inp=document.createElement('input');inp.type='file';inp.accept='.csv,.txt';
-  inp.onchange=async()=>{const t=await inp.files[0].text(),L=t.replace(/\r/g,'').split('\n').filter(l=>l.trim());if(L.length<2)return toast('CSV khali');const sp=L[0].includes('\t')?'\t':',';const H=L[0].split(sp).map(h=>h.trim().toLowerCase());const ix=n=>H.findIndex(h=>h.includes(n));
+  inp.onchange=async()=>{const t=await inp.files[0].text(),L=t.replace(/\r/g,'').split('\n').filter(l=>l.trim());if(L.length<2)return toast('CSV is empty');const sp=L[0].includes('\t')?'\t':',';const H=L[0].split(sp).map(h=>h.trim().toLowerCase());const ix=n=>H.findIndex(h=>h.includes(n));
     let ad=0,up=0;for(const l of L.slice(1)){const c=l.split(sp).map(x=>x.trim().replace(/^"|"$/g,''));const m=c[ix('msid')];if(!m||m.toLowerCase()===ADMIN_MSID)continue;let u=users.find(x=>x.msid.toLowerCase()===m.toLowerCase());
       if(!u){u={msid:m,empId:'',name:m,email:'',team:'',pc:'',role:'Employee',pw:'',validTill:cfg.expiry,active:true,perms:NEWPERMS(),created:new Date().toISOString()};users.push(u);ad++;}else up++;
       const g=n=>ix(n)>=0?c[ix(n)]:'';if(g('name'))u.name=g('name');if(g('employee'))u.empId=g('employee');if(g('email'))u.email=g('email');if(g('team'))u.team=g('team');if(g('pc'))u.pc=g('pc');if(g('valid'))u.validTill=anyDate(g('valid'))||u.validTill;if(/lead/i.test(g('role')))u.role='Lead';}
-    await saveUsers('import');await log('USERS IMPORT',`${ad} new, ${up} updated`);toast(`${ad} naye · ${up} update`);render();};inp.click();}
+    await saveUsers('import');await log('USERS IMPORT',`${ad} new, ${up} updated`);toast(`${ad} added · ${up} updated`);render();};inp.click();}
 
 /* ---------------- boot ---------------- */
 window.addEventListener('beforeunload',e=>{if(me&&cur.dirty){e.preventDefault();e.returnValue='';}});
-(async()=>{range={from:monday(iso()),to:iso()};cur.date=iso();render();
-  try{const h=await idbGet('dir');if(h&&(await h.queryPermission({mode:'readwrite'}))==='granted'){dir=h;await loadStore();render();}}catch(e){}})();
+(async()=>{range={from:monday(iso()),to:iso()};cur.date=iso();
+  try{const h=await idbGet('dir');if(h){savedH=h;if((await h.queryPermission({mode:'readwrite'}))==='granted'){dir=h;await loadStore();}}}catch(e){}render();})();
 </script>
 </body>
 </html>
