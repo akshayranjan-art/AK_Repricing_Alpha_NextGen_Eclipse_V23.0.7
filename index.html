@@ -196,6 +196,12 @@ table.g td.cmp{padding:0 4px;text-align:center}
 .xl.big table.g td,.xl.big table.g th.hd{font-size:15.5px;height:36px}.xl.big table.g th.hd{height:40px}
 .dgrid .cap{font-size:13.5px}.dgrid .lg{font-size:15px;font-weight:600}.dgrid .lg b{font-size:15px}
 .lextra{display:flex;gap:8px;flex-wrap:wrap}.lextra .b3{flex:1;min-height:38px;font-size:12.5px}
+#lb table.g td,#lb table.g th.hd{font-size:13.5px;height:26px}
+.marq{overflow:hidden;white-space:nowrap;background:linear-gradient(90deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:12px;margin:8px 0;padding:8px 0;font-weight:700;color:#9a3412}
+.marq span{display:inline-block;animation:mq 24s linear infinite}@keyframes mq{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
+.topf{display:inline-block;padding:6px 14px;border-radius:999px;font-weight:800;font-size:13px;color:#fff;margin-right:8px;background:linear-gradient(90deg,#ea580c,#db2777,#7c3aed,#0891b2,#16a34a,#ea580c);background-size:300% 100%;animation:tf 6s linear infinite;white-space:nowrap}@keyframes tf{to{background-position:300% 0}}
+.attn{display:flex;gap:8px;align-items:center;overflow-x:auto;white-space:nowrap;padding:8px 12px;margin-bottom:12px;background:#fff1f2;border:1px solid #fecdd3;border-radius:12px}
+.attn b{color:#9f1239;font-size:13px;flex:0 0 auto}.attn .lbtn{flex:0 0 auto;text-decoration:none;background:#ffe4e6;color:#9f1239;border-radius:999px;padding:4px 10px;font-size:13px}.attn .lbtn i{font-style:normal;font-weight:800;margin-left:4px}
 </style>
 </head>
 <body class="nosel">
@@ -210,6 +216,12 @@ table.g td.cmp{padding:0 4px;text-align:center}
 const APP={ver:'V23.0.8',build:'Build 5 · Final · Nov 2026',expiry:'2027-12-31'};
 const ADMIN_MSID='aranja14',ADMIN_EMP='001328467',ADMIN_PC_END='2rjj';
 const ADMIN_PW0='00dcb9f336caaa235697f9b0242da315b6d74753897d1f563244858e59b3db14';
+const ROSTER0=['Raja Selvarasu','Sanjay G C','Somashekar N','Chaithanya PP','Nayana C S'];
+const SEED=[['rselvar4','001038361','Raja Selvarasu','raja.selvarasu@optum.com','LHTU05CG230322J','U8P'],['av100','000890351','Abhinay S V','abhinay.v@optum.com','LHTU05CG2122K58','ABV'],['sn141','002300314','Somashekar N','somashekar_n@optum.com','LHTU05CG2303229','SNO'],['sc72','002241706','Sanjay G C','sanjay.chandrusheker@optum.com','','F1V'],['cpp1','001874044','Chaithanya PP','chaithanya.p@optum.com','','MHH'],['ncs2','001843870','Nayana C S','nayana.cs@uhc.com','','NCS']];
+const LIB0=[['NDM issue',30],['NDM freeze + manual resolving',30],['NDM slowness',20],['Meeting with manager',30],['Huddle',30],['Meeting with Vinesh',20],['Automation meeting',50],['Self evaluation',15],['System restart',15]];
+const normN=n=>String(n||'').replace(/^'+/,'').trim();
+const rosterOn=()=>!!(cfg&&cfg.rosterOn&&cfg.roster&&cfg.roster.length);
+function RD(days){if(!rosterOn())return days;const ok=n=>cfg.roster.some(r=>nameMatch(r,normN(n)));return days.map(x=>x?Object.assign({},x,{rep:(x.rep||[]).filter(r=>r&&ok(r[1])),uom:(x.uom||[]).filter(r=>r&&ok(r[0]))}):x);}
 const isAdminPC=pc=>String(pc||'').trim().toLowerCase().endsWith(ADMIN_PC_END);
 const PERMS=[['paste','Paste & edit'],['headers','Edit headers'],['save','Master save'],['reports','Reports'],['mail','Mail report'],['export','Excel export'],['comments','Downtime library'],['tabUom','UOM Summary tab'],['tabWk','Weekly Target tab'],['dump','Dump selected / all'],['addrows','+10 rows'],['resethead','Reset headers'],['ppl','People 360'],['srv','Server tab']];
 const NEWK=['tabUom','tabWk','dump','addrows','resethead','ppl','srv'];
@@ -284,7 +296,7 @@ const B=(label,o={})=>`<button type="button" class="b3 ${o.k||''} ${o.sm?'sm':''
 const on=(sel,fn,root=document)=>$$(sel,root).forEach(e=>e.onclick=ev=>fn(e.dataset.arg,e,ev));
 
 /* ---------------- crypto store ---------------- */
-let KEY=null;const _k=['AnE#Rp23','0rb!t-Saffr0n','2rjj~eclipse','V23.0.8'];
+let KEY=null;const _k=['AnE#Rp23','0rb!t-Saffr0n','2rjj~eclipse','V23.0.7'];
 async function key(){if(KEY)return KEY;const b=await crypto.subtle.importKey('raw',new TextEncoder().encode(_k.join('|')),'PBKDF2',false,['deriveKey']);
   KEY=await crypto.subtle.deriveKey({name:'PBKDF2',salt:new TextEncoder().encode('AlphaNextGenEclipse.Repricing'),iterations:60000,hash:'SHA-256'},b,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);return KEY;}
 function b64(u){let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s);}
@@ -323,6 +335,9 @@ async function loadStore(){
   users.forEach(x=>{if(x!==a&&x.role==='Admin')x.role='Lead';const old=x.perms||{};x.perms=Object.assign(allPerms(false),old);for(const k of NEWK)if(old[k]===undefined)x.perms[k]=k==='ppl'||k==='srv'?!!old.reports:k==='resethead'?!!old.headers:true;});
   Object.assign(a,{role:'Admin',active:true,empId:ADMIN_EMP,perms:allPerms(true)});if(!a.pw||usersBroken)a.pw=a.pw||ADMIN_PW0;if(usersBroken)a.pw=ADMIN_PW0;
   secS=await rd(F.sec,{fails:{},locked:{},alerts:[]});secS.fails=secS.fails||{};secS.locked=secS.locked||{};secS.alerts=secS.alerts||{};if(!Array.isArray(secS.alerts))secS.alerts=[];
+  Object.assign(a,{email:a.email||'akshay.ranjan@uhc.com',opid:'ARA',pc:a.pc||'LHTU05CG2122RJJ'});
+  if(!cfg.seeded&&!usersBroken&&!tamper.has(F.cfg)){for(const d of SEED)if(!users.some(x=>x.msid.toLowerCase()===d[0]))users.push({msid:d[0],empId:d[1],name:d[2],email:d[3],team:'',pc:d[4],opid:d[5],role:'Employee',pw:'',validTill:APP.expiry,active:true,perms:NEWPERMS(),created:new Date().toISOString()});
+    cfg.roster=ROSTER0.slice();cfg.rosterOn=true;cfg.lib=LIB0.map(x=>x.slice());cfg.seeded=true;cfg.announce=cfg.announce||'';await wr(F.users,users);await wr(F.cfg,cfg);}
   if(!c&&!tamper.has(F.cfg))await wr(F.cfg,cfg);
   if(!u&&!usersBroken)await wr(F.users,users);
   if((await rawR(F.sec))==null)await wr(F.sec,secS);
@@ -365,11 +380,11 @@ async function heartbeat(){if(!me||!dir)return;const p='Sessions/'+me.msid.toLow
 const cachedPw=m=>{const s=localStorage.getItem('rp23_pw_'+String(m).toLowerCase());if(!s)return '';try{return decodeURIComponent(escape(atob(s)));}catch(e){return '';}};
 async function tryLogin(pc,msid,pw,pw2,remember,say){
   if(!dir)return say('Connect the server folder first.');
-  pc=pc.trim();msid=msid.trim();const k=msid.toLowerCase();
+  pc=pc.trim();msid=msid.trim();let k=msid.toLowerCase();
   if(!pc||!msid)return say('Enter both PC name and MSID.');
   const fresh=await rd(F.users,null);if(fresh&&fresh.length&&!tamper.has(F.users)){const keepA=users.find(x=>x.msid.toLowerCase()===ADMIN_MSID);users=fresh;if(!users.some(x=>x.msid.toLowerCase()===ADMIN_MSID))users.unshift(keepA);}
   await reloadSec();
-  const u=users.find(x=>x.msid.toLowerCase()===k),adm=k===ADMIN_MSID;
+  let u=users.find(x=>x.msid.toLowerCase()===k);if(!u&&/^\d+$/.test(k))u=users.find(x=>x.empId&&String(x.empId).replace(/^0+/,'')===k.replace(/^0+/,''));if(u)k=u.msid.toLowerCase();const adm=k===ADMIN_MSID;
   const L=secS.locked[k];
   if(L){if(adm&&Date.now()-L.at>15*6e4){delete secS.locked[k];secS.fails[k]=0;await saveSec();}else return {locked:true};}
   const fail=async t=>{secS.fails[k]=(secS.fails[k]||0)+1;const n=secS.fails[k];await log('LOGIN FAILED',{msid,pc,reason:t});
@@ -556,7 +571,7 @@ function render(){const app=$('#app');
   const V={dash:vDash,ws:vWork,rp:vReports,ppl:vPeople,srv:vServer,admin:vAdmin}[view];Promise.resolve(V()).catch(e=>{console.error(e);toast('Error: '+e.message);});
 }
 const head=(t,s,a='')=>`<div class="ph"><div><h1>${t}</h1><p>${s}</p></div><div class="tools">${a}</div></div>`;
-const tamperBanner=()=>isAdm()&&(tamper.size||usersBroken)?`<div class="banner tamper">${ic('shield',16)} Server file tampered / corrupted: ${[...tamper].map(esc).join(', ')} — restore from Admin → Backups.</div>`:'';
+const tamperBanner=()=>cfg&&cfg.announce?`<div class="marq"><span>${ic('bell',15)} ${esc(cfg.announce)}</span></div>`:'';
 
 /* ---------------- LOGIN ---------------- */
 function loginView(){
@@ -597,7 +612,7 @@ function bindLogin(){on('[data-act=connect]',pickFolder);
 /* ---------------- people helpers ---------------- */
 const toks=n=>String(n||'').toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean);
 function nameMatch(a,b){const x=toks(a),y=toks(b);if(!x.length||!y.length||x[0]!==y[0])return false;const [s,l]=x.length<=y.length?[x,y]:[y,x];return s.every(t=>l.includes(t));}
-function team(days){const P=[];const find=n=>P.find(p=>nameMatch(p.name,n));
+function team(days){days=RD(days);const P=[];const find=n=>P.find(p=>nameMatch(p.name,n));
   days.forEach(x=>{filled(x.rep).forEach(r=>{const R=repRow(r,x.date);if(!R.name)return;let p=find(R.name);if(!p){p={name:R.name,rep:[],uom:[]};P.push(p);}p.rep.push(R);});});
   days.forEach(x=>{filled(x.uom).forEach(r=>{const U=uomRow(r);if(!U.name)return;U.date=x.date;let p=find(U.name);if(!p){p={name:U.name,rep:[],uom:[]};P.push(p);}p.uom.push(U);});});
   return P.map(p=>{const proc=p.rep.reduce((a,r)=>a+r.ach,0),tg=p.rep.reduce((a,r)=>a+r.target,0),dm=p.rep.reduce((a,r)=>a+r.mins,0),avg=k=>{const v=p.uom.filter(u=>!isNaN(u[k]));return v.length?v.reduce((a,u)=>a+u[k],0)/v.length:NaN;};
@@ -631,7 +646,7 @@ function trendSVG(pts,h=230){if(!pts.some(p=>p.v||p.pv))return '<div class="sub"
 function delta(cur,prev,upGood=true,unit='%',abs=false){if(isNaN(cur)||isNaN(prev)||(!abs&&!prev))return '<div class="dl" style="color:var(--mu)">— vs previous period</div>';
   const d=abs?cur-prev:(cur-prev)/Math.abs(prev)*100;if(Math.abs(d)<0.005)return '<div class="dl" style="color:var(--mu)">● no change vs previous</div>';const good=(d>0)===upGood;
   return `<div class="dl ${good?'up':'dn'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(abs?2:1)}${abs?' pts':unit} vs previous period</div>`;}
-function sumUp(days){const R=days.flatMap(x=>filled(x.rep).map(r=>repRow(r,x.date))).filter(r=>r.name),U=days.flatMap(x=>filled(x.uom).map(uomRow)).filter(r=>r.name);
+function sumUp(days){days=RD(days);const R=days.flatMap(x=>filled(x.rep).map(r=>repRow(r,x.date))).filter(r=>r.name),U=days.flatMap(x=>filled(x.uom).map(uomRow)).filter(r=>r.name);
   const proc=R.reduce((a,r)=>a+r.ach,0),tg=R.reduce((a,r)=>a+r.target,0),av=k=>{const v=U.filter(u=>!isNaN(u[k]));return v.length?v.reduce((a,u)=>a+u[k],0)/v.length:NaN;};
   return {R,U,proc,tg,ach:tg?proc/tg*100:NaN,def:tg-proc,dm:R.reduce((a,r)=>a+r.mins,0),util:av('util'),eff:av('eff'),lc:av('lc')};}
 
@@ -649,12 +664,13 @@ async function vDash(){
   const ub={b:0,g:0};T.forEach(p=>{const k=kind(p.util,'u');if(k==='bad')ub.b++;else if(k==='good')ub.g++;});
   const dr=dtReasons(C.R),drSeg=dr.slice(0,6).map((x,i)=>({l:x[0],v:x[1],c:PAL[i],u:'m'}));if(dr.length>6)drSeg.push({l:'Others',v:dr.slice(6).reduce((a,x)=>a+x[1],0),c:PAL[7],u:'m'});
   const achC=isNaN(C.ach)?0:C.ach;
+  const tp=T.filter(p=>!isNaN(p.eff)&&!isNaN(p.util)).sort((a,b)=>b.eff*b.util-a.eff*a.util)[0],topH=tp?`<span class="topf">🏆 ${esc(tp.name)} · Eff ${f2(tp.eff)}% · Util ${f2(tp.util)}%</span>`:'';
   const gain=T.filter(p=>!isNaN(p.dAch)).sort((a,b)=>b.dAch-a.dAch);
   const att=T.filter(p=>(p.tg&&p.ach<100)||kind(p.util,'u')==='bad'||kind(p.eff,'e')==='bad'||(p.dAch<0)).sort((a,b)=>(a.ach||999)-(b.ach||999));
   const why=p=>p.tg&&p.ach<100?`Ach ${f2(p.ach)}%`:kind(p.util,'u')==='bad'?`Util ${f2(p.util)}%`:kind(p.eff,'e')==='bad'?`Eff ${f2(p.eff)}%`:`▼ ${f2(-p.dAch)} pts`;
   const missing=[];for(let d=range.from;d<=range.to&&d<iso();d=addD(d,1)){const w=pd(d).getDay();if(w&&w<6&&!S.has(d))missing.push(shortD(d));}
   $('#main').innerHTML=tamperBanner()+head('Performance Overview',`${fmtD(range.from)} → ${fmtD(range.to)} · compared with ${fmtD(pf)} → ${fmtD(pt)} · ${T.length} people${missing.length?` · <span style="color:#be185d;font-weight:700">Missing data: ${missing.join(', ')}</span>`:''}`,
-    can('export')?B('Export',{sm:1,i:'download',act:'dx'}):'')+
+    topH+(can('export')?B('Export',{sm:1,i:'download',act:'dx'}):''))+
   `<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
     ${K('Processed',C.proc.toLocaleString('en-IN'),delta(C.proc,P.proc))}${K('Target',C.tg.toLocaleString('en-IN'),`<div class="dl" style="color:var(--mu)">${tgt()} per person per day</div>`)}
     ${K('Achievement',isNaN(C.ach)?'—':f2(C.ach)+'%',delta(C.ach,P.ach,true,'',true),isNaN(C.ach)?'':C.ach>=100?'good':'bad')}
@@ -666,10 +682,7 @@ async function vDash(){
    <div class="card"><div class="cap">People vs target</div>${donut([{l:'Met target',v:met,c:'#16a34a'},{l:'Below target',v:below,c:'#db2777'},{l:'UOM only',v:uOnly,c:'#cbb59c'}],met+'/'+withT.length,'met target')}</div>
    <div class="card"><div class="cap">Efficiency bands</div>${donut([{l:'Below '+cfg.th.effBad+'%',v:eb.b,c:'#db2777'},{l:cfg.th.effBad+'–'+cfg.th.effWarn+'%',v:eb.g,c:'#16a34a'},{l:'Above '+cfg.th.effWarn+'%',v:eb.w,c:'#ea580c'}],isNaN(C.eff)?'—':f2(C.eff)+'%','avg efficiency')}</div>
    <div class="card"><div class="cap">Downtime by reason</div>${donut(drSeg,C.dm+'m','total downtime')}</div></div>
-  <div class="row" style="margin-bottom:14px"><div class="grow"><div class="card"><div class="tools" style="justify-content:space-between"><div class="cap" style="margin:0">Daily trend · processed vs target vs previous period</div><span class="chip ${ub.b?'bad':'good'}">Utilization below ${cfg.th.utilBad}%: ${ub.b}</span></div>${trendSVG(pts)}</div></div>
-   <div style="flex:1 1 360px;min-width:300px;display:flex;flex-direction:column;gap:14px">
-    <div class="card" style="flex:1"><div class="cap">Top gainers vs previous period</div>${gain.filter(p=>p.dAch>0).slice(0,5).map(p=>`<div class="line"><button type="button" class="lbtn" data-p="${esc(p.name)}">${esc(p.name)}</button><span class="chip good">▲ ${f2(p.dAch)} pts · ${f2(p.ach)}%</span></div>`).join('')||'<div class="sub">No previous-period data to compare yet.</div>'}</div>
-    <div class="card" style="flex:1"><div class="cap">Needs attention</div>${att.slice(0,6).map(p=>`<div class="line"><button type="button" class="lbtn" data-p="${esc(p.name)}">${esc(p.name)}</button><span class="chip bad">${why(p)}</span></div>`).join('')||'<div class="sub">Everyone is on track.</div>'}</div></div></div>
+  <div class="attn"><b>Needs attention</b>${att.slice(0,15).map(p=>`<button type="button" class="lbtn" data-p="${esc(p.name)}">${esc(p.name)} <i>${why(p)}</i></button>`).join('')||'<span class="sub">Everyone is on track.</span>'}</div>
   <div class="card"><div class="tools" style="justify-content:space-between;margin-bottom:8px"><div class="cap" style="margin:0">Team performance · ${T.length} people</div><span class="sub">Double-click a name for full weekly / monthly details · ▼ to filter</span></div><div id="lb"></div></div>`;
   new Sheet($('#lb'),{name:'lb2',ro:true,w:{0:190,7:110},left:[0],nameCol:0,onName:n=>openPerson(n),headers:['Name','Days','Processed','Target','+/- vs Target','Ach %','Change vs Prev','DT Mins','Utilization','Efficiency','LC Efficiency'],num:[1,2,3,4,5,7],
     data:T.sort((a,b)=>(isNaN(b.ach)?-1:b.ach)-(isNaN(a.ach)?-1:a.ach)).map(p=>[p.name,p.days,p.tg?p.proc:'',p.tg||'',p.tg?-p.def:'',isNaN(p.ach)?'':f2(p.ach)+'%',isNaN(p.dAch)?'':(p.dAch>0?'▲ ':p.dAch<0?'▼ ':'')+f2(Math.abs(p.dAch))+' pts',p.dm||'',isNaN(p.util)?'':f2(p.util)+'%',isNaN(p.eff)?'':f2(p.eff)+'%',isNaN(p.lc)?'':f2(p.lc)+'%']),
@@ -873,7 +886,7 @@ async function vServer(){const S=(await savedDates()).filter(d=>d>=range.from&&d
 function startAs(u){asUser=me;me=Object.assign({},u,{pcNow:asUser.pcNow,sid:asUser.sid});log('VIEW AS',u.msid);view='dash';render();toast('Viewing as '+u.name);}
 function stopAs(){if(asUser){me=asUser;asUser=null;view='admin';render();}}
 async function vAdmin(){
-  await reloadSec();const T=[['users','Users & access','users'],['alerts','Alerts & sessions','bell'],['settings','Settings','gear'],['security','Security','shield'],['logs','Logs','history'],['backups','Backups','server']];
+  await reloadSec();const T=[['users','Users & access','users'],['alerts','Alerts & sessions','bell'],['settings','Settings','gear'],['team','Team list','users'],['ann','Announcement','bell'],['security','Security','shield'],['logs','Logs','history'],['backups','Backups','server']];
   const sessions={};for(const n of await ls('Sessions')){const s=await rd('Sessions/'+n,null);if(s&&Date.now()-s.at<3*6e4)sessions[s.msid.toLowerCase()]=s;}
   const unread=secS.alerts.filter(a=>!a.read).length;
   let body='';
@@ -883,7 +896,13 @@ async function vAdmin(){
       return `<tr><td><span class="dot ${sessions[k]?'on':''}"></span><b>${esc(u.name)}</b><div class="sub">${esc(u.msid)}${u.empId?' · '+esc(u.empId):''}${u.team?' · '+esc(u.team):''}</div>${secS.locked[k]?'<span class="chip bad">Locked</span>':''}${u.active?'':'<span class="chip bad">Blocked</span>'}${!a&&!u.pw?'<span class="chip warn">New · password pending</span>':''}</td>
       <td>${a?'<span class="chip ac">…'+ADMIN_PC_END.toUpperCase()+' only</span>':(esc(u.pc)||'<span class="chip warn">First login</span>')}</td><td><span class="chip ${a?'ac':u.role==='SME'||u.role==='Manager'?'good':u.role==='Lead'?'warn':''}">${esc(u.role)}</span></td><td style="white-space:nowrap">${u.validTill?fmtD(u.validTill):''}</td>
       ${PERMS.map(p=>`<td style="text-align:center"><button type="button" class="tg" aria-pressed="${a||!!u.perms[p[0]]}" ${a?'disabled':''} data-perm="${i}|${p[0]}" aria-label="${p[1]} for ${esc(u.name)}"></button></td>`).join('')}
-      <td style="white-space:nowrap">${a?'':B('',{sm:1,i:'eye',act:'uas',arg:i,t:'View as '+u.name})} ${B('',{sm:1,i:'edit',act:'ued',arg:i,t:'Edit '+u.name})}</td></tr>`;}).join('')}</tbody></table></div>`;}
+      <td style="white-space:nowrap">${secS.locked[k]?B('Unlock',{sm:1,k:'pri',act:'unl',arg:k}):''}${!a&&u.pc?B('Release PC',{sm:1,i:'history',act:'rel',arg:k}):''}${a?'':B('',{sm:1,i:'eye',act:'uas',arg:i,t:'View as '+u.name})} ${B('',{sm:1,i:'edit',act:'ued',arg:i,t:'Edit '+u.name})}</td></tr>`;}).join('')}</tbody></table></div>`;}
+  if(adTab==='ann'){body=`<div class="cap">Announcement (scrolls left to right on every screen)</div><textarea class="in" id="ann_t" rows="3" style="width:100%" aria-label="Announcement">${esc(cfg.announce||'')}</textarea><div class="tools" style="margin-top:10px">${B('Publish',{k:'pri',i:'bell',act:'asave'})}${B('Clear',{i:'eraser',act:'aclr'})}</div>`;}
+  if(adTab==='team'){const seen=new Map();const add=n=>{const t=normN(n);if(t&&!seen.has(t.toLowerCase()))seen.set(t.toLowerCase(),t);};(await rangeData()).forEach(d=>{if(!d)return;(d.rep||[]).forEach(r=>r&&add(r[1]));(d.uom||[]).forEach(r=>r&&add(r[0]));});(cfg.roster||[]).forEach(add);
+    const names=[...seen.values()].sort((x,y)=>x.localeCompare(y));
+    body=`<div class="tools" style="margin-bottom:10px"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="ro_on" ${cfg.rosterOn?'checked':''}> Show only ticked names (locked list)</label>${B('Save list',{k:'pri',i:'save',act:'rsave'})}<span class="sp"></span><span class="chip">${(cfg.roster||[]).length} selected</span></div>
+    <div class="perm">${names.map(n=>`<label><input type="checkbox" data-rn="${esc(n)}" ${(cfg.roster||[]).some(r=>nameMatch(r,n))?'checked':''}>${esc(n)}</label>`).join('')}</div>
+    <div class="tools" style="margin-top:12px"><input class="in" id="ro_new" placeholder="Add a name manually" style="max-width:260px" aria-label="New name">${B('Add',{i:'plus',act:'radd'})}</div>`;}
   if(adTab==='alerts'){const L=Object.entries(secS.locked);
     body=`<div class="row"><div class="grow"><div class="tools" style="margin-bottom:8px"><div class="cap" style="margin:0">Alerts</div><span class="sp"></span>${B('Mark all read',{sm:1,i:'check',act:'aread'})}${B('Clear alerts',{sm:1,k:'dan',i:'trash',act:'aclr'})}</div><div id="ash"></div></div>
      <div class="side"><div class="card"><div class="cap">Locked IDs</div>${L.map(([k,v])=>`<div class="line"><span><b>${esc(k)}</b><div class="sub">${new Date(v.at).toLocaleString('en-GB')} · ${esc(v.pc||'')}</div></span>${B('Unlock',{sm:1,k:'pri',i:'unlock',act:'unl',arg:k})}</div>`).join('')||'<div class="sub">No locked IDs.</div>'}</div>
@@ -924,6 +943,11 @@ async function vAdmin(){
   on('[data-act=aread]',async()=>{secS.alerts.forEach(a=>a.read=true);await saveSec();render();});
   on('[data-act=aclr]',async()=>{if(!await askPw('Clear alerts'))return;secS.alerts=[];await saveSec();await log('ALERTS CLEARED','');render();});
   on('[data-act=unl]',async k=>{delete secS.locked[k];secS.fails[k]=0;await saveSec();await log('UNLOCK',k);toast(k+' unlocked');render();});
+  on('[data-act=rel]',async k=>{const u=users.find(x=>x.msid.toLowerCase()===k);if(!u)return;u.pc='';await saveUsers('release pc');await rm('Sessions/'+k+'.rpx');await log('RELEASE PC',k);toast(k+' PC released');render();});
+  on('[data-act=rsave]',async()=>{cfg.roster=$$('[data-rn]').filter(c=>c.checked).map(c=>c.dataset.rn);cfg.rosterOn=$('#ro_on').checked;await saveCfg('team list');await log('TEAM LIST',cfg.roster.length+' names');toast('Team list saved');render();});
+  on('[data-act=radd]',async()=>{const v=normN($('#ro_new').value);if(!v)return;cfg.roster=[...(cfg.roster||[]),v];await saveCfg('team list');render();});
+  on('[data-act=asave]',async()=>{cfg.announce=$('#ann_t').value.trim();await saveCfg('announcement');toast('Announcement published');render();});
+  on('[data-act=aclr]',async()=>{cfg.announce='';await saveCfg('announcement');toast('Announcement cleared');render();});
   on('[data-act=kick]',async k=>{await rm('Sessions/'+k+'.rpx');await log('KICK',k);toast(k+' session closed (signed out within 1 min)');render();});
   // settings
   on('[data-act=ss]',async()=>{const g=id=>$('#'+id).value;cfg.target=+g('s_t')||344;cfg.th={utilBad:+g('s_ub'),effBad:+g('s_eb'),effWarn:+g('s_ew')};
