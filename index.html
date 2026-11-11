@@ -704,6 +704,11 @@ function sumUp(days){days=RD(days);const R=days.flatMap(x=>filled(x.rep).map(r=>
   return {R,U,proc,tg,ach:tg?proc/tg*100:NaN,def:tg-proc,dm:R.reduce((a,r)=>a+r.mins,0),util:av('util'),eff:av('eff'),lc:av('lc')};}
 
 /* ---------------- DASHBOARD (director view) ---------------- */
+function dashDates(rg,pf,pt,S,days,T){const have=[...new Set(days.filter(x=>filled(x.rep).length||filled(x.uom).length).map(x=>x.date))].sort();
+  const miss=[];for(let d=rg.from;d<=rg.to&&d<=iso();d=addD(d,1)){const w=pd(d).getDay();if(w&&w<6&&!have.includes(d))miss.push(d);}
+  return `<div class="tools" style="gap:8px;margin:2px 0 10px;padding:9px 12px;border-radius:14px;background:#fff;border:1px solid var(--bd);box-shadow:0 4px 12px rgba(120,53,15,.06)">
+   <span class="chip ac" style="font-size:12.5px">${ic('cal',14)} ${fmtD(rg.from)} → ${fmtD(rg.to)}</span><span class="chip" title="Previous period used for ▲▼">vs ${fmtD(pf)} → ${fmtD(pt)}</span>
+   <span class="chip good">Data on ${have.length} day(s): ${have.map(shortD).join(', ')||'—'}</span>${miss.length?`<span class="chip bad">No data: ${miss.map(shortD).join(', ')}</span>`:''}<span class="chip">${T.length} people</span></div>`;}
 async function vDash(){
   const n=nDays(range.from,range.to),pf=addD(range.from,-n),pt=addD(range.from,-1);
   const days=await rangeData(),prevDays=await rangeData(pf,pt),S=new Set(await savedDates());
@@ -722,7 +727,7 @@ async function vDash(){
   const att=T.filter(p=>(p.tg&&p.ach<100)||kind(p.util,'u')==='bad'||kind(p.eff,'e')==='bad'||(p.dAch<0)).sort((a,b)=>(a.ach||999)-(b.ach||999));
   const why=p=>p.tg&&p.ach<100?`Ach ${f2(p.ach)}%`:kind(p.util,'u')==='bad'?`Util ${f2(p.util)}%`:kind(p.eff,'e')==='bad'?`Eff ${f2(p.eff)}%`:`▼ ${f2(-p.dAch)} pts`;
   const missing=[];for(let d=range.from;d<=range.to&&d<iso();d=addD(d,1)){const w=pd(d).getDay();if(w&&w<6&&!S.has(d))missing.push(shortD(d));}
-  $('#main').innerHTML=tamperBanner()+head('Performance Overview',`${fmtD(range.from)} → ${fmtD(range.to)} · compared with ${fmtD(pf)} → ${fmtD(pt)} · ${T.length} people${missing.length?` · <span style="color:#be185d;font-weight:700">Missing data: ${missing.join(', ')}</span>`:''}`,
+  $('#main').innerHTML=tamperBanner()+dashDates(range,pf,pt,S,days,T)+head('Performance Overview',`${fmtD(range.from)} → ${fmtD(range.to)} · compared with ${fmtD(pf)} → ${fmtD(pt)} · ${T.length} people${missing.length?` · <span style="color:#be185d;font-weight:700">Missing data: ${missing.join(', ')}</span>`:''}`,
     topH+(can('export')?B('Export',{sm:1,i:'download',act:'dx'}):''))+
   `<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
     ${K('Processed',C.proc.toLocaleString('en-IN'),delta(C.proc,P.proc))}${K('Target',C.tg.toLocaleString('en-IN'),`<div class="dl" style="color:var(--mu)">${tgt()} per person per day</div>`)}
@@ -737,9 +742,9 @@ async function vDash(){
    <div class="card"><div class="cap">Downtime by reason</div>${donut(drSeg,C.dm+'m','total downtime')}</div></div>
   <div class="attn"><b>Needs attention</b>${att.slice(0,15).map(p=>`<button type="button" class="lbtn" data-p="${esc(p.name)}">${esc(p.name)} <i>${why(p)}</i></button>`).join('')||'<span class="sub">Everyone is on track.</span>'}</div>
   <div class="card"><div class="tools" style="justify-content:space-between;margin-bottom:8px"><div class="cap" style="margin:0">Team performance · ${T.length} people</div><span class="sub">Double-click a name for full weekly / monthly details · ▼ to filter</span></div><div id="lb"></div></div>`;
-  new Sheet($('#lb'),{name:'lb2',ro:true,w:{0:190,7:110},left:[0],nameCol:0,onName:n=>openPerson(n),headers:['Name','Days','Processed','Target','+/- vs Target','Ach %','Change vs Prev','DT Mins','Utilization','Efficiency','LC Efficiency'],num:[1,2,3,4,5,7],
-    data:T.sort((a,b)=>(isNaN(b.ach)?-1:b.ach)-(isNaN(a.ach)?-1:a.ach)).map(p=>[p.name,p.days,p.tg?p.proc:'',p.tg||'',p.tg?-p.def:'',isNaN(p.ach)?'':f2(p.ach)+'%',isNaN(p.dAch)?'':(p.dAch>0?'▲ ':p.dAch<0?'▼ ':'')+f2(Math.abs(p.dAch))+' pts',p.dm||'',isNaN(p.util)?'':f2(p.util)+'%',isNaN(p.eff)?'':f2(p.eff)+'%',isNaN(p.lc)?'':f2(p.lc)+'%']),
-    cls:(r,c)=>c===4&&r[4]!==''?(num(r[4])<0?'bad':'good'):c===5?pctK(pct(r[5])):c===6&&r[6]?(r[6][0]==='▲'?'good':r[6][0]==='▼'?'bad':''):c===8?kind(pct(r[8]),'u'):(c===9||c===10)?kind(pct(r[c]),'e'):''});
+  new Sheet($('#lb'),{name:'lb2',ro:true,w:{0:190,7:110},left:[0],nameCol:0,onName:n=>openPerson(n),headers:['Name','Days','Processed','Target','+/- vs Target','Ach %','Change vs Prev','DT Mins','Utilization','Efficiency','LC Efficiency','Dates with data','Missing dates'],num:[1,2,3,4,5,7],w:{0:190,7:110,11:260,12:220},left:[0,11,12],
+    data:T.sort((a,b)=>(isNaN(b.ach)?-1:b.ach)-(isNaN(a.ach)?-1:a.ach)).map(p=>[p.name,p.days,p.tg?p.proc:'',p.tg||'',p.tg?-p.def:'',isNaN(p.ach)?'':f2(p.ach)+'%',isNaN(p.dAch)?'':(p.dAch>0?'▲ ':p.dAch<0?'▼ ':'')+f2(Math.abs(p.dAch))+' pts',p.dm||'',isNaN(p.util)?'':f2(p.util)+'%',isNaN(p.eff)?'':f2(p.eff)+'%',isNaN(p.lc)?'':f2(p.lc)+'%',(()=>{const ds=[...new Set(p.rep.map(r=>r.date))].sort();return ds.map(shortD).join(', ');})(),(()=>{const all=[...new Set(days.filter(x=>filled(x.rep).length).map(x=>x.date))],mine=new Set(p.rep.map(r=>r.date));return all.filter(d=>!mine.has(d)).sort().map(shortD).join(', ');})()]),
+    cls:(r,c)=>c===12&&r[12]?'bad':c===4&&r[4]!==''?(num(r[4])<0?'bad':'good'):c===5?pctK(pct(r[5])):c===6&&r[6]?(r[6][0]==='▲'?'good':r[6][0]==='▼'?'bad':''):c===8?kind(pct(r[8]),'u'):(c===9||c===10)?kind(pct(r[c]),'e'):''});
   on('[data-p]',x=>openPerson(x));
   on('[data-act=dx]',()=>{const h=['Name','Days','Processed','Target','+/- vs Target','Ach %','Change vs Prev','DT Mins','Utilization','Efficiency','LC Efficiency'];
     const rows=$$('#lb tbody tr').map(tr=>[...tr.querySelectorAll('td[data-c]')].map(td=>{const v=td.textContent;return v!==''&&!isNaN(Number(v))?Number(v):v;}));
