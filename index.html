@@ -193,6 +193,7 @@ table.g th.hd.cmp{white-space:normal;line-height:1.1;height:38px;font-size:11px;
 table.g th.hd.cmp .hn{white-space:normal;max-width:62px;text-align:center;display:inline-block}
 table.g th.hd.cmp .fb{display:none}
 table.g td.cmp{padding:0 4px;text-align:center}
+table.g td.cmp.edc{background:#fff;color:var(--tx);box-shadow:inset 0 -2px 0 #fde68a}
 .xl.big table.g td,.xl.big table.g th.hd{font-size:15.5px;height:36px}.xl.big table.g th.hd{height:40px}
 .dgrid .cap{font-size:13.5px}.dgrid .lg{font-size:15px;font-weight:600}.dgrid .lg b{font-size:15px}
 .lextra{display:flex;gap:8px;flex-wrap:wrap}.lextra .b3{flex:1;min-height:38px;font-size:12.5px}
@@ -209,7 +210,7 @@ table.g td.cmp{padding:0 4px;text-align:center}
 .ecl-logo .el-b{display:inline-flex;flex-direction:column;align-items:stretch;gap:.4em;animation:el-lv 5.5s ease-in-out infinite alternate}
 .ecl-logo .el-l1{display:flex;align-items:center}
 .ecl-logo .el-l1 .el-t{margin-left:-.42em}
-.ecl-logo .el-l2{display:flex;justify-content:space-between;align-items:baseline;gap:.5em;font-size:.9em}
+.ecl-logo .el-l2{display:flex;justify-content:space-between;align-items:baseline;gap:.45em;font-size:1.08em}
 .ecl-logo .el-wd{display:inline-flex;align-items:baseline}
 .ecl-logo .el-A{height:1.12em;width:1.2em;margin-right:.02em;margin-bottom:-.06em;flex:none;overflow:visible;filter:drop-shadow(0 0 .1em rgba(255,170,60,.75));animation:el-ag 3.2s ease-in-out infinite alternate}
 @keyframes el-ag{from{filter:drop-shadow(0 0 .06em rgba(255,150,40,.5)) brightness(1)}to{filter:drop-shadow(0 0 .22em rgba(255,200,90,.95)) brightness(1.18)}}
@@ -246,7 +247,7 @@ table.g td.cmp{padding:0 4px;text-align:center}
    Alpha NextGen Eclipse — Repricing UOM & Productivity · V23.0.7
    Server folder = encrypted store (.rpx). Admin locked to aranja14 / PC …2RJJ.
    ===================================================================== */
-const APP={ver:'V23.0.7',build:'Build 6 · Final · Nov 2026',expiry:'2027-12-31'};
+const APP={ver:'V23.0.7',build:'Build 7 · Final · Nov 2026',expiry:'2027-12-31'};
 const ADMIN_MSID='aranja14',ADMIN_EMP='001328467',ADMIN_PC_END='2rjj';
 const ADMIN_PW0='00dcb9f336caaa235697f9b0242da315b6d74753897d1f563244858e59b3db14';
 const ROSTER0=['Raja Selvarasu','Sanjay G C','Somashekar N','Chaithanya PP','Nayana C S'];
@@ -256,7 +257,7 @@ const normN=n=>String(n||'').replace(/^'+/,'').trim();
 const rosterOn=()=>!!(cfg&&cfg.rosterOn&&cfg.roster&&cfg.roster.length);
 function RD(days){if(!rosterOn())return days;const ok=n=>cfg.roster.some(r=>nameMatch(r,normN(n)));return days.map(x=>x?Object.assign({},x,{rep:(x.rep||[]).filter(r=>r&&ok(r[1])),uom:(x.uom||[]).filter(r=>r&&ok(r[0]))}):x);}
 const isAdminPC=pc=>String(pc||'').trim().toLowerCase().endsWith(ADMIN_PC_END);
-const PERMS=[['paste','Paste & edit'],['headers','Edit headers'],['save','Master save'],['reports','Reports'],['mail','Mail report'],['export','Excel export'],['comments','Downtime library'],['tabUom','UOM Summary tab'],['tabWk','Weekly Target tab'],['dump','Dump selected / all'],['addrows','+10 rows'],['resethead','Reset headers'],['ppl','People 360'],['srv','Server tab'],['noidle','No idle auto-logout']];
+const PERMS=[['paste','Paste & edit'],['headers','Edit headers'],['save','Master save'],['reports','Reports'],['mail','Mail report'],['export','Excel export'],['comments','Downtime library'],['tabUom','UOM Summary tab'],['tabWk','Weekly Target tab'],['dump','Dump selected / all'],['addrows','+10 rows'],['resethead','Reset headers'],['ppl','People 360'],['srv','Server tab'],['del','Delete saved data'],['noidle','No idle auto-logout']];
 const NEWK=['tabUom','tabWk','dump','addrows','resethead','ppl','srv','noidle'];
 const allPerms=v=>Object.fromEntries(PERMS.map(p=>[p[0],v]));
 const NEWPERMS=()=>Object.assign(allPerms(false),{paste:true,save:true,reports:true,mail:true,export:true,tabUom:true,tabWk:true,dump:true,addrows:true,ppl:true,srv:true});
@@ -272,7 +273,7 @@ const DEF_CFG=()=>({ver:APP.ver,expiry:APP.expiry,target:344,
 const DEF_ADMIN=()=>({msid:ADMIN_MSID,empId:ADMIN_EMP,name:'Akshay Ranjan',email:'',team:'Admin',pc:'',role:'Admin',pw:ADMIN_PW0,validTill:APP.expiry,active:true,perms:allPerms(true),created:new Date().toISOString()});
 
 let dir=null,cfg=null,users=[],secS={fails:{},locked:{},alerts:[]},me=null,asUser=null;
-let backV=null,view='dash',wsTab='rep',rpTab='uom',adTab='users',uomMode='day';
+let mailSel=null,wkSel=null,backV=null,view='dash',wsTab='rep',rpTab='uom',adTab='users',uomMode='day';
 let range={from:null,to:null};
 let cur={date:null,rep:[],uom:[],locked:false,unlocked:false,dirty:false,savedAt:null,savedBy:null};
 let tamper=new Set(),usersBroken=false,hbTimer=null,idleTimer=null,cache={};
@@ -304,7 +305,8 @@ function anyDate(v){const s=String(v??'').trim();if(!s)return null;let m;
   return null;}
 function toast(t){const e=document.createElement('div');e.textContent=t;$('#toast').appendChild(e);setTimeout(()=>e.remove(),3800);}
 const isAdm=()=>!!me&&me.role==='Admin'&&String(me.msid).toLowerCase()===ADMIN_MSID&&!asUser;
-const can=p=>{if(!me)return false;if(p==='admin')return isAdm();if(me.role==='Admin'&&!asUser)return true;if(p==='edit')return ['SME','Manager'].includes(me.role);if(p==='del')return false;return !!(me.perms&&me.perms[p]);};
+const can=p=>{if(!me)return false;if(p==='admin')return isAdm();if(me.role==='Admin'&&!asUser)return true;if(['SME','Manager'].includes(me.role))return p!=='noidle'||!!(me.perms&&me.perms.noidle);if(p==='edit')return false;return !!(me.perms&&me.perms[p]);};
+const FULLNAME=/raja\s*selvarasu|\braju\b|abhinay|abninay/i;
 const kind=(v,t)=>{const T=cfg.th;if(isNaN(v))return '';if(t==='u')return v<T.utilBad?'bad':'good';return v<T.effBad?'bad':(v>T.effWarn?'warn':'good');};
 async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rp23|'+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 
@@ -367,7 +369,7 @@ async function loadStore(){
   const u=await rd(F.users,null);usersBroken=tamper.has(F.users);
   users=(u&&u.length)?u:[DEF_ADMIN()];
   let a=users.find(x=>x.msid.toLowerCase()===ADMIN_MSID);if(!a){a=DEF_ADMIN();users.unshift(a);}
-  users.forEach(x=>{if(x!==a&&x.role==='Admin')x.role='Lead';const old=x.perms||{};x.perms=Object.assign(allPerms(false),old);for(const k of NEWK)if(old[k]===undefined)x.perms[k]=k==='ppl'||k==='srv'?!!old.reports:k==='resethead'?!!old.headers:k==='noidle'?false:true;});
+  users.forEach(x=>{if(x!==a&&x.role==='Admin')x.role='Lead';const old=x.perms||{};x.perms=Object.assign(allPerms(false),old);if(!x.autoMgr&&FULLNAME.test(String(x.name||''))){x.autoMgr=true;if(!['SME','Manager'].includes(x.role))x.role='Manager';Object.assign(x.perms,allPerms(true),{noidle:!!old.noidle});}for(const k of NEWK)if(old[k]===undefined)x.perms[k]=k==='ppl'||k==='srv'?!!old.reports:k==='resethead'?!!old.headers:k==='noidle'?false:true;});
   Object.assign(a,{role:'Admin',active:true,empId:ADMIN_EMP,perms:allPerms(true)});if(!a.pw||usersBroken)a.pw=a.pw||ADMIN_PW0;if(usersBroken)a.pw=ADMIN_PW0;
   secS=await rd(F.sec,{fails:{},locked:{},alerts:[]});secS.fails=secS.fails||{};secS.locked=secS.locked||{};secS.alerts=secS.alerts||{};if(!Array.isArray(secS.alerts))secS.alerts=[];
   Object.assign(a,{email:a.email||'akshay.ranjan@uhc.com',opid:'ARA',pc:a.pc||'LHTU05CG2122RJJ'});
@@ -481,7 +483,7 @@ class Sheet{
     for(let c=0;c<this.nC;c++){const nm=c<this.nH?H[c]:this.computed[c-this.nH].name;h+=`<th class="hd ${c>=this.nH?'cmp':''}" data-h="${c}"><span class="hn" title="${esc(nm)}">${esc(nm)}</span><button type="button" class="fb ${this.filters[c]?'on':''}" data-fc="${c}" aria-label="Filter ${esc(nm)}">▼</button><span class="rz" data-rz="${c}" title="Drag to resize column"></span></th>`;}
     h+='</tr></thead><tbody>';
     this.view.forEach((di,vr)=>{const r=this.data[di]||[];h+=`<tr><td class="rn">${vr+1}</td>`;
-      for(let c=0;c<this.nC;c++){let v,k='';if(c<this.nH){v=r[c]??'';if(this.cls&&!this.empty(r))k=this.cls(r,c)||'';}else if(!this.empty(r)){const x=this.computed[c-this.nH].fn(r);v=x.v;k='cmp '+(x.k||'');}else{v='';k='cmp';}
+      for(let c=0;c<this.nC;c++){let v,k='';if(c<this.nH){v=r[c]??'';if(this.cls&&!this.empty(r))k=this.cls(r,c)||'';}else if(!this.empty(r)){const x=this.computed[c-this.nH].fn(r);v=x.v;k='cmp '+(this.computed[c-this.nH].ed?'edc ':'')+(x.k||'');}else{v='';k='cmp'+(this.computed[c-this.nH].ed?' edc':'');}
         if(this.num.includes(c)||(c>=this.nH&&this.computed[c-this.nH].n))k+=' n';if(this.left.includes(c))k+=' lft';
         if(c===this.nameCol&&this.onName&&String(v).trim())k+=' nm';
         h+=`<td data-r="${vr}" data-c="${c}" class="${k}" ${String(v).length>18?`title="${esc(v)}"`:''}>${esc(v)}</td>`;}
@@ -498,7 +500,8 @@ class Sheet{
     $('.sbar',this.el).innerHTML=`<span>Rows <b>${shown}</b>${shown!==rows?' / '+rows:''}</span><span>Selected <b>${r2-r1+1}×${c2-c1+1}</b></span><span>Count <b>${cnt}</b></span>${n?`<span>Sum <b>${+s.toFixed(2)}</b></span><span>Avg <b>${(s/n).toFixed(2)}</b></span>`:''}${Object.values(this.filters).some(Boolean)?'<span class="chip good">Filter ON</span>':''}${this.ro?'<span class="chip">Read only</span>':''}`;}
   dr(vr){return this.view[vr];}
   ensure(di){while(this.data.length<=di)this.data.push([]);return this.data[di];}
-  setCell(vr,c,v){if(c>=this.nH)return;let di=this.dr(vr);if(di===undefined)di=this.data.length;const r=this.ensure(di);while(r.length<this.nH)r.push('');r[c]=v;}
+  editable(c){return c<this.nH||!!(this.computed[c-this.nH]&&this.computed[c-this.nH].ed);}
+  setCell(vr,c,v){if(!this.editable(c))return;let di=this.dr(vr);if(di===undefined)di=this.data.length;const r=this.ensure(di);while(r.length<this.nH)r.push('');r[c]=v;}
   bind(){
     const B=this.box;
     B.addEventListener('mousedown',e=>{const t=e.target.closest('td[data-r]');if(!t)return;if(this.ed)this.commit();e.preventDefault();B.focus();const p=[+t.dataset.r,+t.dataset.c];
@@ -532,10 +535,10 @@ class Sheet{
     if(k==='Delete'||k==='Backspace'){e.preventDefault();return this.erase();}
     if(k==='F2'){e.preventDefault();return this.edit(...this.a);}
     if(k.length===1&&!c&&!e.altKey){e.preventDefault();this.edit(this.a[0],this.a[1],k);}}
-  erase(){if(this.ro)return;const [r1,c1,r2,c2]=this.rect();let n=0;for(let r=r1;r<=r2;r++){const di=this.dr(r);if(di===undefined||di>=this.data.length)continue;for(let c=c1;c<=Math.min(c2,this.nH-1);c++){if(this.data[di][c]){this.data[di][c]='';n++;}}}
+  erase(){if(this.ro)return;const [r1,c1,r2,c2]=this.rect();let n=0;for(let r=r1;r<=r2;r++){const di=this.dr(r);if(di===undefined||di>=this.data.length)continue;for(let c=c1;c<=c2;c++){if(!this.editable(c))continue;if(this.data[di][c]){this.data[di][c]='';n++;}}}
     this.compact();this.onChange();this.render();toast(n+' cells cleared');}
   compact(){while(this.data.length&&this.empty(this.data[this.data.length-1]))this.data.pop();}
-  edit(r,c,first){if(this.ro||c>=this.nH)return;const t=this.td(r,c);if(!t)return;const di=this.dr(r),cur=(this.data[di]||[])[c]??'';
+  edit(r,c,first){if(this.ro||!this.editable(c))return;const t=this.td(r,c);if(!t)return;const di=this.dr(r),cur=(this.data[di]||[])[c]??'';
     t.classList.add('ed');const lid=this.combo[c]?'dl_'+this.name+c:'';t.innerHTML=`<input ${lid?`list="${lid}"`:''} aria-label="Cell">${lid?`<datalist id="${lid}">${this.combo[c]().map(o=>`<option value="${esc(o)}">`).join('')}</datalist>`:''}`;
     const i=$('input',t);i.value=first!==undefined?first:cur;this.ed={r,c,i};i.focus();if(first===undefined)i.select();
     i.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();this.commit();this.move(1,0);}else if(e.key==='Tab'){e.preventDefault();this.commit();this.move(0,e.shiftKey?-1:1);}else if(e.key==='Escape'){this.ed=null;this.render();this.box.focus();}};
@@ -547,7 +550,7 @@ class Sheet{
     const [r0,c0]=this.rect();
     if(this.name==='rep'&&c0===0)g=g.map(r=>{const x=r.slice(0,3);const cm=r.slice(3).map(t=>String(t).trim()).find(t=>t&&isNaN(num(t))&&!/^absent$/i.test(t));x.push(cm||'');return x;});const tgt=g.map((_,i)=>{const di=this.view[r0+i];return di===undefined?null:di;});
     g.forEach((row,i)=>{let di=tgt[i];if(di===null)di=Math.max(this.data.length,...tgt.filter(x=>x!==null).map(x=>x+1));tgt[i]=di;const r=this.ensure(di);while(r.length<this.nH)r.push('');
-      row.forEach((v,j)=>{if(c0+j<this.nH)r[c0+j]=String(v).trim();});});
+      row.forEach((v,j)=>{if(this.editable(c0+j))r[c0+j]=String(v).trim();});});
     this.compact();this.onChange();this.render();toast(g.length+' rows pasted');}
   fpop(c,btn){$$('.fpop').forEach(p=>p.remove());const vals={};this.data.forEach(r=>{if(this.empty(r))return;const v=this.val(r,c);vals[v]=(vals[v]||0)+1;});
     const keys=Object.keys(vals).sort((x,y)=>{const a=num(x),b=num(y);return !isNaN(a)&&!isNaN(b)?a-b:x.localeCompare(y);});const cur=this.filters[c];
@@ -560,14 +563,18 @@ class Sheet{
     $('[data-all]',p).onchange=e=>$$('[data-v]',p).forEach(x=>{if(x.closest('label').style.display!=='none')x.checked=e.target.checked;});
     const sort=d=>{const em=this.data.filter(r=>this.empty(r)),fl=this.data.filter(r=>!this.empty(r));fl.sort((x,y)=>{const a=this.val(x,c),b=this.val(y,c),na=num(a),nb=num(b);return d*(!isNaN(na)&&!isNaN(nb)?na-nb:a.localeCompare(b));});this.data.splice(0,this.data.length,...fl,...em);this.compact();this.onChange(true);close();this.render();};
     $('[data-act=az]',p).onclick=()=>sort(1);$('[data-act=za]',p).onclick=()=>sort(-1);
-    $('[data-act=cl]',p).onclick=()=>{delete this.filters[c];close();this.render();};$('[data-act=x]',p).onclick=close;
-    $('[data-act=ok]',p).onclick=()=>{const s=new Set($$('[data-v]',p).filter(x=>x.checked).map(x=>x.dataset.v));this.filters[c]=s.size===keys.length?null:s;close();this.render();};
+    $('[data-act=cl]',p).onclick=()=>{delete this.filters[c];close();this.render();this.onFilter&&this.onFilter(c,null);};$('[data-act=x]',p).onclick=close;
+    $('[data-act=ok]',p).onclick=()=>{const s=new Set($$('[data-v]',p).filter(x=>x.checked).map(x=>x.dataset.v));this.filters[c]=s.size===keys.length?null:s;close();this.render();this.onFilter&&this.onFilter(c,this.filters[c]);};
     setTimeout(()=>document.addEventListener('mousedown',function h(e){if(!p.contains(e.target)){p.remove();document.removeEventListener('mousedown',h);}}),0);}
 }
 
 /* ---------------- data ---------------- */
 const tgt=()=>cfg.target;
-const repRow=(r,d)=>{const p=num(r[2]);const a=isNaN(p)?0:p;const m=mins(r[3]);return {date:anyDate(r[0])||d,name:String(r[1]||'').trim(),proc:a,ach:a,target:tgt(),def:tgt()-a,comment:String(r[3]||''),mins:m};};
+const ABS=/absent|leave|holiday|week\s*off|^\s*(al|pl|sl|wo|lop)\s*$/i;
+const ovr=(r,i)=>{const v=r[i];if(v===undefined||v===null||String(v).trim()==='')return null;const n=num(v);return isNaN(n)?null:n;};
+const repRow=(r,d)=>{const absent=ABS.test(String(r[2]||''))||ABS.test(String(r[4]||''));const p=num(r[2]);const a=ovr(r,4)??(isNaN(p)?0:p);
+  const tg=ovr(r,5)??(absent?0:tgt());const df=absent&&ovr(r,4)===null?0:tg-a;const m=mins(r[3]);
+  return {date:anyDate(r[0])||d,name:String(r[1]||'').trim(),absent,proc:absent&&!a?'Absent':a,ach:a,target:tg,def:df,comment:String(r[3]||''),mins:m,wh:absent?'0.00':hm(480-m)};};
 const uomRow=r=>({name:String(r[0]||'').trim(),vol:num(r[1]),util:pct(r[2]),eff:pct(r[3]),lc:pct(r[4]),ou:num(r[5])});
 const filled=a=>(a||[]).filter(r=>r&&r.some(x=>String(x??'').trim()));
 async function savedDates(){return (await ls('Data')).filter(n=>/^\d{4}-\d{2}-\d{2}\.rpx$/.test(n)).map(n=>n.slice(0,10));}
@@ -575,16 +582,16 @@ async function getDay(d){if(cache[d]!==undefined)return cache[d];cache[d]=await 
 async function rangeData(from=range.from,to=range.to){const S=new Set(await savedDates());const out=[];for(let d=from;d<=to;d=addD(d,1)){let x=S.has(d)?await getDay(d):null;
   if(d===cur.date&&(cur.dirty||!x))x={date:d,rep:filled(cur.rep),uom:filled(cur.uom),live:true};if(x)out.push(x);}return out;}
 async function backRows(v){const S=new Set(await savedDates()),out=[],seen=new Set();for(let d=v.from;d<=v.to;d=addD(d,1)){if(!S.has(d))continue;const y=await getDay(d);((y&&y.rep)||[]).forEach(r=>{if(!r||!String(r[1]||'').trim())return;const k=(anyDate(r[0])||d)+'|'+String(r[1]).trim().toLowerCase();if(!seen.has(k)){seen.add(k);out.push(JSON.parse(JSON.stringify(r)));}});}out.sort((a,b)=>String(anyDate(a[0])||'9').localeCompare(String(anyDate(b[0])||'9')));return out;}
-async function loadWork(d){cur.date=d;const x=await getDay(d);cur.rep=x?JSON.parse(JSON.stringify(x.rep||[])):[];cur.uom=x?JSON.parse(JSON.stringify(x.uom||[])):[];
+async function loadWork(d){cur.date=d;delete cache[d];const x=await getDay(d);cur.rep=x?JSON.parse(JSON.stringify(x.rep||[])):[];cur.uom=x?JSON.parse(JSON.stringify(x.uom||[])):[];
   cur.locked=!!(x&&x.locked);cur.unlocked=false;cur.dirty=false;cur.savedAt=x?x.savedAt:null;cur.savedBy=x?x.savedBy:null;}
 function weekly(days){const W={};days.forEach(x=>filled(x.rep).forEach(r=>{const R=repRow(r,x.date);if(!R.name)return;const wk=monday(R.date),k=wk+'|'+R.name.toLowerCase();
-  W[k]=W[k]||{wk,name:R.name,dates:new Set(),ach:0,mins:0};W[k].dates.add(R.date);W[k].ach+=R.ach;W[k].mins+=R.mins;}));
-  return Object.values(W).sort((a,b)=>a.wk.localeCompare(b.wk)||a.name.localeCompare(b.name)).map(w=>({...w,days:w.dates.size,target:tgt()*w.dates.size,def:tgt()*w.dates.size-w.ach}));}
+  W[k]=W[k]||{wk,name:R.name,dates:new Set(),ach:0,mins:0,tg:0,df:0};W[k].dates.add(R.date);W[k].ach+=R.ach;W[k].mins+=R.mins;W[k].tg+=R.target;W[k].df+=R.def;}));
+  return Object.values(W).sort((a,b)=>a.wk.localeCompare(b.wk)||a.name.localeCompare(b.name)).map(w=>({...w,days:w.dates.size,target:w.tg,def:w.df}));}
 
 /* ---------------- RENDER ---------------- */
 function render(){const app=$('#app');
   if(!dir||!me){app.innerHTML=loginView();bindLogin();return;}
-  const NAV=[['dash','Dashboard','home',''],['ws','Workspace','grid','paste'],['rp','Reports','chart','reports'],['ppl','People 360','users','ppl'],['srv','Server','server','srv']];
+  const NAV=[['dash','Dashboard','home',''],['ws','Workspace','grid','paste'],['rp','Report / Mail','chart','reports'],['ppl','People 360','users','ppl'],['srv','Server','server','srv']];
   if(!can('admin')&&view==='admin')view='dash';const ok=NAV.filter(n=>!n[3]||can(n[3])||(n[0]==='ws'));if(!ok.some(n=>n[0]===view)&&view!=='admin')view='dash';
   const unread=isAdm()?secS.alerts.filter(a=>!a.read).length:0;
   app.innerHTML=`${asUser?`<div style="background:#9d174d;color:#fff;padding:7px 14px;display:flex;gap:10px;justify-content:center;align-items:center;font-weight:700">${ic('eye',15)} Admin view-as: ${esc(me.name)} (${esc(me.msid)}) ${B('Back to Admin',{sm:1,act:'stopas',i:'shield'})}</div>`:''}
@@ -804,17 +811,24 @@ async function vWork(){
   if(wsTab==='rep'&&bk&&!bk.length){}else if(wsTab==='rep'){
     cur.rep.forEach(r=>{if(r&&r[3]!==undefined&&String(r[3]).trim()!==''&&String(r[3]).trim()===String(r[2]).trim())r[3]='';});
     sheet=new Sheet($('#sh'),{name:'rep',cw:72,headers:cfg.headers.rep,data:bk||cur.rep,ro:ro||!!bk,editHead:can('headers'),combo:{3:lib},num:[2],w:{0:92,1:165,2:105,3:560},left:[1,3],nameCol:1,onName:n=>openPerson(n),
-      computed:[{name:'Achieved',n:1,fn:r=>({v:isNaN(num(r[2]))?'':num(r[2])})},{name:'Daily Target',n:1,fn:()=>({v:tgt()})},
-        {name:'Deficit',n:1,fn:r=>{const d=tgt()-(num(r[2])||0);return {v:d,k:d>0?'bad':'good'};}},{name:'DT Mins',n:1,fn:r=>({v:mins(r[3])||''})},{name:'Work Hrs',n:1,fn:r=>({v:hm(480-mins(r[3]))})}],
+      computed:[{name:'Achieved',n:1,ed:1,fn:r=>{const R=repRow(r,cur.date);return {v:ovr(r,4)!==null?R.ach:R.absent?'Absent':(isNaN(num(r[2]))?'':R.ach)};}},{name:'Daily Target',n:1,ed:1,fn:r=>({v:repRow(r,cur.date).target})},
+        {name:'Deficit',n:1,fn:r=>{const d=repRow(r,cur.date).def;return {v:d,k:d>0?'bad':'good'};}},{name:'DT Mins',n:1,fn:r=>({v:repRow(r,cur.date).mins||''})},{name:'Work Hrs',n:1,fn:r=>({v:repRow(r,cur.date).wh})}],
       onChange:()=>{cur.dirty=true;sideW();},onHead:async()=>{await saveCfg('headers');await log('HEADER EDIT','rep');}});
   }else if(wsTab==='uom'){
     sheet=new Sheet($('#sh'),{name:'uom',big:true,headers:cfg.headers.uom,data:cur.uom,ro,editHead:can('headers'),num:[1,5],w:{0:240,1:100,2:125,3:125,4:140,5:90},left:[0],nameCol:0,onName:n=>openPerson(n),
       cls:(r,c)=>c===2?kind(pct(r[2]),'u'):(c===3||c===4)?kind(pct(r[c]),'e'):'',onChange:()=>{cur.dirty=true;sideW();},onHead:async()=>{await saveCfg('headers');await log('HEADER EDIT','uom');}});
   }else{
-    const S=new Set(await savedDates()),wk=monday(cur.date),days=[];
-    for(let i=0;i<7;i++){const d=addD(wk,i);if(d===cur.date)days.push({date:d,rep:filled(cur.rep)});else if(S.has(d)){const x=await getDay(d);if(x)days.push(x);}}
+    const S=new Set(await savedDates()),wk=monday(wkSel||cur.date),we=addD(wk,6),days=[];
+    for(let i=0;i<7;i++){const d=addD(wk,i);if(S.has(d)){const x=await getDay(d);if(x)days.push(x);}}
+    const live=filled(cur.rep).filter(r=>{const d=anyDate(r[0])||cur.date;return d>=wk&&d<=we;});
+    if(cur.dirty&&live.length){const keys=new Set(live.map(r=>(anyDate(r[0])||cur.date)+'|'+String(r[1]).trim().toLowerCase()));days.forEach(x=>x.rep=filled(x.rep).filter(r=>!keys.has((anyDate(r[0])||x.date)+'|'+String(r[1]).trim().toLowerCase())));days.push({date:cur.date,rep:live});}
     const W=weekly(days).filter(w=>w.wk===wk);
-    sheet=new Sheet($('#sh'),{name:'wk',ro:true,w:{1:190},left:[1],nameCol:1,onName:n=>openPerson(n),headers:['Week'+weekNo(cur.date),'Name','Weekly Target- Reprice','Achieved prod','Deficit','Down Time'],num:[2,3,4],
+    $('#sh').insertAdjacentHTML('beforebegin',`<div class="tools" style="margin:6px 0 10px;gap:10px"><span class="cap" style="margin:0">Week</span><input type="date" class="in" id="wks" value="${wk}" style="width:150px" aria-label="Pick any date of the week">
+      <span class="chip ac">Week ${weekNo(wk)} · ${fmtD(wk)} → ${fmtD(we)}</span>${B('‹ Prev week',{sm:1,act:'wkp'})}${B('Next week ›',{sm:1,act:'wkn'})}${can('mail')?B('Mail this week',{sm:1,k:'mag',i:'mail',act:'wkm'}):''}</div>`);
+    $('#wks').onchange=e=>{wkSel=e.target.value||null;render();};
+    on('[data-act=wkp]',()=>{wkSel=addD(wk,-7);render();});on('[data-act=wkn]',()=>{wkSel=addD(wk,7);render();});
+    on('[data-act=wkm]',()=>{range={from:wk,to:we};window._inc={uom:false,rep:true,wk:true};rpTab='mail';view='rp';render();});
+    sheet=new Sheet($('#sh'),{name:'wk',ro:true,w:{1:190},left:[1],nameCol:1,onName:n=>openPerson(n),headers:['Week'+weekNo(wk),'Name','Weekly Target- Reprice','Achieved prod','Deficit','Down Time'],num:[2,3,4],
       data:W.map(w=>['Day '+w.days,w.name,w.target,w.ach,w.def,w.mins+' Mins']),cls:(r,c)=>c===4?(num(r[4])>0?'bad':'good'):''});
   }
   on('[data-act=clip]',async()=>{try{sheet.paste(await navigator.clipboard.readText());}catch(e){toast('Clipboard blocked — click the grid and press Ctrl+V');}});
@@ -828,7 +842,7 @@ async function vWork(){
 function sideW(){const el=$('#wside');if(!el)return;const R=filled(cur.rep).map(r=>repRow(r,cur.date)),canC=true,ro=!can('paste')||(cur.locked&&!cur.unlocked);
   const dm=R.reduce((a,r)=>a+r.mins,0),miss=R.filter(r=>!r.comment.trim()).length,dates=[...new Set(R.map(r=>r.date))],U=filled(cur.uom).length;
   el.innerHTML=`<div class="tools" style="gap:6px;margin-bottom:8px;padding:8px 10px;border-radius:12px;background:var(--surf2);border:1px dashed var(--bd2)">
-    <span class="cap" style="margin:0">Live</span><span class="chip">Rows <b>&nbsp;${wsTab==='uom'?U:R.length}</b></span>${wsTab!=='uom'?`<span class="chip">Dates <b>&nbsp;${dates.map(shortD).join(', ')||'—'}</b></span><span class="chip">Processed <b>&nbsp;${R.reduce((a,r)=>a+r.ach,0)}</b></span><span class="chip">Downtime <b>&nbsp;${dm}m</b></span><span class="chip ${miss?'warn':'good'}">Comment missing ${miss}</span>`:''}<span class="chip ac">Target ${tgt()}/day</span></div>
+    <span class="cap" style="margin:0">Live</span><span class="chip">Rows <b>&nbsp;${wsTab==='uom'?U:R.length}</b></span>${wsTab!=='uom'?`<span class="chip">Dates <b>&nbsp;${dates.map(shortD).join(', ')||'—'}</b></span><span class="chip">Processed <b>&nbsp;${R.reduce((a,r)=>a+r.ach,0)}</b></span><span class="chip">Downtime <b>&nbsp;${dm}m</b></span><span class="chip ${miss?'warn':'good'}">Comment missing ${miss}</span>`:''}<span class="chip ac">Target ${tgt()}/day</span><span class="sp"></span>${cur.savedAt?`<span class="chip good" title="${esc((dir?dir.name:"")+"/Data/"+cur.date+".rpx")}">${ic("server",13)} Saved on server: ${esc(dir?dir.name:"")}/Data/${cur.date}.rpx · by ${esc(cur.savedBy||"")} · ${new Date(cur.savedAt).toLocaleString("en-GB")}</span>`:`<span class="chip warn">${ic("server",13)} ${fmtD(cur.date)} not saved on server yet</span>`}${wsTab==="uom"&&!U&&R.length?`<span class="chip bad">No UOM Summary on ${shortD(cur.date)} — Repricing has ${R.length} rows</span>`:wsTab==="rep"&&!R.length&&U?`<span class="chip bad">No Repricing on ${shortD(cur.date)} — UOM has ${U} rows</span>`:""}</div>
    ${wsTab==='rep'?`<div class="tools" style="gap:8px;margin-bottom:10px;flex-wrap:nowrap;overflow-x:auto"><span class="cap" style="margin:0;white-space:nowrap">Downtime</span>
      <input class="in" id="dtp" list="dtl" placeholder="Pick from list or type a new comment…" style="width:360px;min-height:32px;padding:4px 10px" aria-label="Downtime comment" ${ro?'disabled':''}>
      <datalist id="dtl">${cfg.lib.map(l=>`<option value="${esc(l[1]+' Mins - '+l[0])}">`).join('')}</datalist>
@@ -851,19 +865,40 @@ async function masterSave(){
     const o={date:d,rep:by[d]!==null?by[d]:(x?x.rep:[]),uom:d===cur.date?uom:(x?x.uom:[]),savedBy:me.msid,savedAt:new Date().toISOString(),locked:true,ver:APP.ver};
     await wr(dataP(d),o);cache[d]=o;}
   await backup('master save '+Object.keys(by).join(','));await log('MASTER SAVE',Object.keys(by).join(', ')+` · ${rep.length} rep / ${uom.length} uom`);
-  await loadWork(cur.date);toast('Saved & locked on server: '+Object.keys(by).map(shortD).join(', '));render();
+  await loadWork(cur.date);toast('Saved on server → '+(dir?dir.name:'')+'/Data/ · '+Object.keys(by).map(shortD).join(', ')+(uom.length?' · UOM Summary saved to '+shortD(cur.date):''));render();
 }
 
+/* ---------------- DELETE SAVED DATA ---------------- */
+async function delDataModal(){if(!can('del'))return;const S=(await savedDates()).reverse();const info={};for(const d of S.slice(0,90)){const x=await getDay(d);info[d]=x?[filled(x.rep).length,filled(x.uom).length,x.savedBy||'']:[0,0,''];}
+  const ov=modal(`<div class="tools" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0;font-size:18px">${ic('trash',18)} Delete saved data</h3>${B('',{i:'x',act:'mx',t:'Close'})}</div>
+   <div class="sub" style="margin-bottom:10px">Tick the dates to delete from the server. A backup is kept first (Admin can restore). What to delete:</div>
+   <div class="seg" style="margin-bottom:10px"><label class="chip"><input type="radio" name="dw" value="all" checked> Whole date</label><label class="chip"><input type="radio" name="dw" value="rep"> Repricing only</label><label class="chip"><input type="radio" name="dw" value="uom"> UOM Summary only</label></div>
+   <div style="max-height:46vh;overflow:auto;border:1px solid var(--bd);border-radius:12px;padding:6px">${S.map(d=>`<label class="line" style="cursor:pointer;border-top:0;padding:6px 8px"><span><input type="checkbox" data-dd="${d}" style="width:17px;height:17px;accent-color:#db2777;vertical-align:middle"> <b>${fmtD(d)}</b></span><span class="sub">Repricing ${info[d]?info[d][0]:'?'} · UOM ${info[d]?info[d][1]:'?'} · by ${esc(info[d]?info[d][2]:'')}</span></label>`).join('')||'<div class="sub">Nothing saved.</div>'}</div>
+   <div class="tools" style="margin-top:12px">${B('Delete selected',{k:'dan',i:'trash',act:'dgo'})}${B('Cancel',{act:'dno'})}</div>`);
+  $('[data-act=mx]',ov).onclick=$('[data-act=dno]',ov).onclick=()=>ov.remove();
+  $('[data-act=dgo]',ov).onclick=async()=>{const ds=$$('[data-dd]',ov).filter(c=>c.checked).map(c=>c.dataset.dd);if(!ds.length)return toast('Tick at least one date');const w=$('input[name=dw]:checked',ov).value;
+    if(!confirm(`Delete ${w==='all'?'all data':w==='rep'?'Repricing data':'UOM Summary data'} for ${ds.length} date(s) for everyone?`))return;ov.remove();if(!await askPw('Delete '+ds.length+' date(s)'))return;
+    for(const d of ds){await backup('before delete '+d);if(w==='all')await rm(dataP(d));else{const x=await rd(dataP(d),null);if(x){x[w]=[];if(!filled(x.rep).length&&!filled(x.uom).length)await rm(dataP(d));else await wr(dataP(d),x);}}delete cache[d];await log('DELETE DATA',d+' · '+w);}
+    if(ds.includes(cur.date))await loadWork(cur.date);toast(ds.length+' date(s) deleted · backup kept');render();};}
+
 /* ---------------- REPORTS ---------------- */
+const inMail=n=>!mailSel||[...mailSel].some(x=>nameMatch(x,n));
+function rpHook(sh){const c=sh.nameCol;if(mailSel){const vals=new Set();sh.data.forEach(r=>{const v=String(r[c]??'').trim();if(v&&inMail(v))vals.add(v);});sh.filters[c]=vals;sh.render();}
+  sh.onFilter=(cc,set)=>{if(cc!==c)return;mailSel=set?new Set(set):null;toast(mailSel?mailSel.size+' people selected — Mail will use the same':'All people selected');};return sh;}
 let rsheet=null;
-async function vReports(){
+async function vReports(){rsheet=null;
   const days=await rangeData();
   const U=days.flatMap(x=>filled(x.uom).map(r=>({d:x.date,...uomRow(r)}))).filter(r=>r.name);
   const R=days.flatMap(x=>filled(x.rep).map(r=>repRow(r,x.date))).filter(r=>r.name);
   const W=weekly(days);
   const tabs=`<div class="seg">${B('UOM Summary',{i:'chart',act:'rt',arg:'uom',on:rpTab==='uom'})}${B('Reprice Tracker',{i:'bolt',act:'rt',arg:'rep',on:rpTab==='rep'})}${B('Weekly Target',{i:'week',act:'rt',arg:'wk',on:rpTab==='wk'})}${can('mail')?B('Mail',{i:'mail',act:'rt',arg:'mail',on:rpTab==='mail'}):''}</div>`;
-  $('#main').innerHTML=head('Reports',`${fmtD(range.from)} → ${fmtD(range.to)} · set range with From/To above · double-click a name for full details`,can('export')?B('Excel (all)',{i:'download',act:'xl'}):'')+
-    `<div class="card"><div class="tools" style="margin-bottom:10px">${tabs}<span class="sp"></span>${rpTab==='uom'?`<div class="seg">${B('Per day',{sm:1,act:'um',arg:'day',on:uomMode==='day'})}${B('Combined',{sm:1,act:'um',arg:'all',on:uomMode==='all'})}</div>`:''}</div><div id="rs"></div></div>`;
+  const wkPick=(rpTab==='wk'||rpTab==='mail')?`<span class="cap" style="margin:0">Week</span><input type="date" class="in" id="rwk" value="${monday(range.from)}" style="width:150px" aria-label="Pick a week">${B('This week',{sm:1,act:'rwt'})}${rpTab==='wk'&&can('mail')?B('Mail this week',{sm:1,k:'mag',i:'mail',act:'rwm'}):''}`:'';
+  $('#main').innerHTML=head('Report / Mail',`${fmtD(range.from)} → ${fmtD(range.to)} · set range with From/To above or pick a week · double-click a name for full details`,(can('del')?B('Delete saved data',{k:'dan',i:'trash',act:'rdel'}):'')+(can('export')?B('Excel (all)',{i:'download',act:'xl'}):''))+
+    `<div class="card"><div class="tools" style="margin-bottom:10px">${tabs}<span class="sp"></span>${wkPick}${rpTab==='uom'?`<div class="seg">${B('Per day',{sm:1,act:'um',arg:'day',on:uomMode==='day'})}${B('Combined',{sm:1,act:'um',arg:'all',on:uomMode==='all'})}</div>`:''}</div><div id="rs"></div></div>`;
+  const rw=$('#rwk');if(rw)rw.onchange=e=>{const m=monday(e.target.value||iso());range={from:m,to:addD(m,6)};render();};
+  on('[data-act=rwt]',()=>{const m=monday(iso());range={from:m,to:addD(m,6)};render();});
+  on('[data-act=rwm]',()=>{const m=monday(range.from);range={from:m,to:addD(m,6)};window._inc={uom:false,rep:true,wk:true};rpTab='mail';render();});
+  on('[data-act=rdel]',delDataModal);
   on('[data-act=rt]',a=>{rpTab=a;render();});on('[data-act=um]',a=>{uomMode=a;render();});on('[data-act=xl]',()=>exportRange(days));
   if(rpTab==='uom'){let rows;
     if(uomMode==='day')rows=U.map(r=>[shortD(r.d),r.name,isNaN(r.vol)?'':r.vol,f2(r.util)+'%',f2(r.eff)+'%',f2(r.lc)+'%',f2(r.ou)]);
@@ -875,13 +910,15 @@ async function vReports(){
   else if(rpTab==='wk')rsheet=new Sheet($('#rs'),{name:'r_wk',ro:true,w:{3:190},left:[3],nameCol:3,onName:n=>openPerson(n),headers:['Week of','Week','Day','Name','Weekly Target- Reprice','Achieved prod','Deficit','Down Time'],num:[4,5,6],
     data:W.map(w=>[shortD(w.wk),'Week'+weekNo(w.wk),'Day '+w.days,w.name,w.target,w.ach,w.def,w.mins+' Mins']),cls:(r,c)=>c===6?(num(r[6])>0?'bad':'good'):''});
   else vMail(days,U,R,W);
+  if(rpTab!=='mail'&&rsheet)rpHook(rsheet);
 }
 function mailHTML(days,R,W,inc){
   const col={good:'#92D050',warn:'#FFA500',bad:'#FF99CC','':'#ffffff'};const F="font-family:Arial;font-size:13px";
   const th=(s,bg='#4CAF19',c='#000')=>`<th style="background:${bg};color:${c};border:1px solid #000;padding:6px 10px;${F}">${s}</th>`;
   const td=(s,bg='#fff',al='center')=>`<td style="background:${bg};border:1px solid #000;padding:5px 10px;text-align:${al};${F}">${esc(s)}</td>`;
   let h=`<p style="font-family:Calibri,Arial;font-size:14px">Hi ${esc((cfg.mail.to||'Team').split(',').reverse().join(' ').trim().split(' ')[0]||'Team')},<br><br>Please find the Repricing UOM &amp; Productivity report for ${range.from===range.to?fmtD(range.from):fmtD(range.from)+' to '+fmtD(range.to)}.</p>`;
-  if(inc.uom)days.forEach(x=>{const U=filled(x.uom).map(uomRow).filter(r=>r.name);if(!U.length)return;
+  R=R.filter(r=>inMail(r.name));W=W.filter(w=>inMail(w.name));
+  if(inc.uom)days.forEach(x=>{const U=filled(x.uom).map(uomRow).filter(r=>r.name&&inMail(r.name));if(!U.length)return;
     h+=`<table style="border-collapse:collapse;margin-bottom:12px"><tr><th colspan="6" style="background:#A9D08E;border:1px solid #000;padding:6px;${F}">${shortD(x.date)}</th></tr><tr>${['Name','Volume','Utilization','Efficiency','LC Efficiency','O/U'].map(s=>th(s)).join('')}</tr>`+
     U.map(r=>`<tr>${td(r.name.toUpperCase(),'#fff','left')}${td(isNaN(r.vol)?'':r.vol)}${td(f2(r.util)+'%',col[kind(r.util,'u')])}${td(f2(r.eff)+'%',col[kind(r.eff,'e')])}${td(f2(r.lc)+'%',col[kind(r.lc,'e')])}${td(f2(r.ou))}</tr>`).join('')+'</table>';});
   if(inc.rep&&R.length)h+=`<table style="border-collapse:collapse;margin-bottom:12px"><tr>${['Date','Name','Processed- Reprice','Total/ Achieved','Daily Target','Deficit','Down Time Comments'].map(s=>th(s,'#0070C0','#fff')).join('')}</tr>`+
@@ -895,9 +932,14 @@ function vMail(days,U,R,W){const inc=window._inc||(window._inc={uom:true,rep:tru
    <div class="line"><span style="width:64px" class="sub">Cc</span><input class="in" id="mcc" value="${esc(cfg.mail.cc)}" aria-label="Cc"></div><div class="line"><span style="width:64px" class="sub">Subject</span><input class="in" id="msub" value="${esc(subj)}" aria-label="Subject"></div>
    <div class="mailbox" id="mbody" style="margin-top:10px">${mailHTML(days,R,W,inc)}</div></div>
    <div class="side"><div class="cap">Include</div>${[['uom','UOM Summary'],['rep','Reprice Tracker'],['wk','Weekly Target']].map(x=>`<div class="line"><span>${x[1]}</span><button type="button" class="tg" aria-pressed="${inc[x[0]]}" data-inc="${x[0]}" aria-label="${x[1]}"></button></div>`).join('')}
+   <div class="cap" style="margin-top:14px">People in mail · ${mailSel?mailSel.size+' selected':'All'}</div>
+   <div class="tools" style="gap:6px;margin-bottom:6px">${B('All',{sm:1,act:'mpa'})}${B('None',{sm:1,act:'mpn'})}</div>
+   <div style="max-height:220px;overflow:auto;border:1px solid var(--bd);border-radius:10px;padding:4px">${(()=>{const n=[];[...U.map(r=>r.name),...R.map(r=>r.name)].forEach(v=>{if(v&&!n.some(z=>nameMatch(z,v)))n.push(v);});return n.sort((a,b)=>a.localeCompare(b));})().map(v=>`<label style="display:flex;gap:7px;align-items:center;padding:4px 6px;font-size:12.5px;cursor:pointer"><input type="checkbox" data-mp="${esc(v)}" ${inMail(v)?'checked':''} style="accent-color:#16a34a">${esc(v)}</label>`).join('')}</div>
    <div class="tools" style="flex-direction:column;align-items:stretch;margin-top:12px">${B('Copy for Outlook',{k:'pri',i:'copy',act:'mcopy'})}${B('Open Outlook',{k:'mag',i:'mail',act:'mopen'})}${can('export')?B('Download Excel',{i:'download',act:'xl2'}):''}</div>
    <div class="sub" style="margin-top:10px">Click Copy → press Ctrl+V in the Outlook body. Download the Excel file and attach it (browsers cannot attach files automatically).</div></div></div>`;
   $$('[data-inc]').forEach(b=>b.onclick=()=>{inc[b.dataset.inc]=!inc[b.dataset.inc];vMail(days,U,R,W);});
+  $$('[data-mp]').forEach(c=>c.onchange=()=>{const all=$$('[data-mp]');const sel=all.filter(x=>x.checked).map(x=>x.dataset.mp);mailSel=sel.length===all.length?null:new Set(sel);vMail(days,U,R,W);});
+  on('[data-act=mpa]',()=>{mailSel=null;vMail(days,U,R,W);});on('[data-act=mpn]',()=>{mailSel=new Set();vMail(days,U,R,W);});
   on('[data-act=mcopy]',async()=>{const el=$('#mbody');try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([el.innerHTML],{type:'text/html'}),'text/plain':new Blob([el.innerText],{type:'text/plain'})})]);}
     catch(e){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');s.removeAllRanges();}toast('Copied — press Ctrl+V in Outlook');await log('MAIL COPY',range.from+'..'+range.to);});
   on('[data-act=mopen]',()=>{const q=encodeURIComponent;location.href=`mailto:${q($('#mto').value)}?cc=${q($('#mcc').value)}&subject=${q($('#msub').value)}&body=${q('(Press Ctrl+V to paste the report)')}`;});
