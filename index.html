@@ -45,7 +45,7 @@ a{color:var(--ac)}
 .tg:disabled{opacity:.6;cursor:not-allowed}
 
 /* ===== header ===== */
-.hdr{margin:0 14px;padding:16px 22px 34px;border-radius:0 0 26px 26px;color:#fff;position:relative;overflow:hidden;
+.hdr{margin:0 14px;padding:12px 22px 30px;border-radius:0 0 26px 26px;color:#fff;position:relative;overflow:hidden;
   background:linear-gradient(120deg,var(--esp1) 0%,var(--esp2) 45%,var(--esp3) 100%);box-shadow:0 14px 30px rgba(46,26,14,.28)}
 .hdr::before{content:"";position:absolute;right:-120px;top:-260px;width:620px;height:520px;border-radius:50%;
   background:radial-gradient(circle at 50% 70%,rgba(251,146,60,.55),rgba(234,88,12,.18) 45%,transparent 68%);pointer-events:none}
@@ -70,10 +70,10 @@ a{color:var(--ac)}
 .who b{display:block;font-size:13px}.who small{color:#f5d0b0;font-size:11px}
 .hdr .b3{--side:#000;--txc:#fde7c7;border-color:#5b3418;background:linear-gradient(180deg,#4a2a14,#2a170b)}
 .hdr .b3 .bdg{position:absolute;top:-6px;right:-6px;background:#db2777;color:#fff;font-size:10px;border-radius:999px;padding:1px 6px}
-.navwrap{display:flex;justify-content:center;margin-top:-24px;position:relative;z-index:2;padding:0 14px}
+.navwrap{display:flex;justify-content:center;margin-top:-22px;position:relative;z-index:2;padding:0 14px}
 .nav{display:flex;flex-wrap:wrap;gap:8px;padding:9px 10px 12px;background:#fff;border:1px solid var(--bd);border-radius:18px;box-shadow:0 12px 26px rgba(120,53,15,.12)}
 .nav .b3{min-width:132px}
-main{padding:16px 16px 8px;width:100%}
+main{padding:10px 16px 8px;width:100%}
 footer{padding:12px;text-align:center;font-size:11.5px;color:var(--mu)}
 
 /* ===== blocks ===== */
@@ -347,7 +347,10 @@ async function idbGet(k){const d=await idb();return new Promise(r=>{const q=d.tr
 async function dh(p,c=true){let h=dir;for(const x of p.split('/').filter(Boolean))h=await h.getDirectoryHandle(x,{create:c});return h;}
 async function rawR(p){try{const a=p.split('/'),f=a.pop();const h=await (await dh(a.join('/'),false)).getFileHandle(f);return await (await h.getFile()).text();}catch(e){return null;}}
 async function rawW(p,t){const a=p.split('/'),f=a.pop();const h=await (await dh(a.join('/'),true)).getFileHandle(f,{create:true});const w=await h.createWritable();await w.write(t);await w.close();}
-async function ls(p){try{const d=await dh(p,true),o=[];for await(const [n,h] of d.entries())if(h.kind==='file')o.push(n);return o.sort();}catch(e){return [];}}
+let srvErr='';
+async function ls(p){let d;try{d=await dh(p,false);}catch(e){if(e.name==='NotFoundError')return [];srvErr=e.name+': '+e.message;return [];}
+  const o=[];try{for await(const [n,h] of d.entries()){try{if(h.kind==='file')o.push(n);}catch(_){}}}catch(e){srvErr=e.name+': '+e.message;}return o.sort();}
+async function probe(p){try{const a=p.split('/'),f=a.pop();await (await dh(a.join('/'),false)).getFileHandle(f);return true;}catch(e){return false;}}
 async function rm(p){const a=p.split('/'),f=a.pop();try{await (await dh(a.join('/'),false)).removeEntry(f);}catch(e){}}
 async function rd(p,def){const t=await rawR(p);if(t==null)return def;try{return await dec(t);}catch(e){tamper.add(p);return def;}}
 async function wr(p,o){await rawW(p,await enc(o));tamper.delete(p);}
@@ -577,7 +580,12 @@ const repRow=(r,d)=>{const absent=ABS.test(String(r[2]||''))||ABS.test(String(r[
   return {date:anyDate(r[0])||d,name:String(r[1]||'').trim(),absent,proc:absent&&!a?'Absent':a,ach:a,target:tg,def:df,comment:String(r[3]||''),mins:m,wh:absent?'0.00':hm(480-m)};};
 const uomRow=r=>({name:String(r[0]||'').trim(),vol:num(r[1]),util:pct(r[2]),eff:pct(r[3]),lc:pct(r[4]),ou:num(r[5])});
 const filled=a=>(a||[]).filter(r=>r&&r.some(x=>String(x??'').trim()));
-async function savedDates(){return (await ls('Data')).filter(n=>/^\d{4}-\d{2}-\d{2}\.rpx$/.test(n)).map(n=>n.slice(0,10));}
+async function savedDates(){const s=new Set((await ls('Data')).map(n=>n.trim()).filter(n=>/^\d{4}-\d{2}-\d{2}\.rpx$/i.test(n)).map(n=>n.slice(0,10)));
+  if(!s.size&&dir){const t=[];for(let i=0;i<45;i++)t.push(addD(iso(),-i));const r=await Promise.all(t.map(d=>probe(dataP(d))));t.forEach((d,i)=>{if(r[i])s.add(d);});}
+  return [...s].sort();}
+async function syncNow(){if(!dir&&!savedH)return pickFolder();const h=dir||savedH;try{let p=await h.queryPermission({mode:'readwrite'});if(p!=='granted')p=await h.requestPermission({mode:'readwrite'});
+  if(p!=='granted')return toast('Server permission not granted — choose “Allow”');srvErr='';dir=h;cache={};const keep=me;await loadStore();me=users.find(u=>keep&&u.msid.toLowerCase()===keep.msid.toLowerCase())?Object.assign(users.find(u=>u.msid.toLowerCase()===keep.msid.toLowerCase()),{pcNow:keep.pcNow,sid:keep.sid}):keep;
+  if(cur.date&&!cur.dirty)await loadWork(cur.date);const n=(await savedDates()).length;toast(srvErr?'Server read problem: '+srvErr:'Synced · '+n+' saved date(s) found on server');render();}catch(e){toast('Sync failed: '+e.message);}}
 async function getDay(d){if(cache[d]!==undefined)return cache[d];cache[d]=await rd(dataP(d),null);return cache[d];}
 async function rangeData(from=range.from,to=range.to){const S=new Set(await savedDates());const out=[];for(let d=from;d<=to;d=addD(d,1)){let x=S.has(d)?await getDay(d):null;
   if(d===cur.date&&(cur.dirty||!x))x={date:d,rep:filled(cur.rep),uom:filled(cur.uom),live:true};if(x)out.push(x);}return out;}
@@ -596,25 +604,75 @@ function render(){const app=$('#app');
   const unread=isAdm()?secS.alerts.filter(a=>!a.read).length:0;
   app.innerHTML=`${asUser?`<div style="background:#9d174d;color:#fff;padding:7px 14px;display:flex;gap:10px;justify-content:center;align-items:center;font-weight:700">${ic('eye',15)} Admin view-as: ${esc(me.name)} (${esc(me.msid)}) ${B('Back to Admin',{sm:1,act:'stopas',i:'shield'})}</div>`:''}
   <header class="hdr"><div class="hrow">
-    <div class="brand">${eclLogo(11,'el-float')}<div><span class="ver">${APP.ver}</span><div class="t2"><span>Repricing UOM &amp; Productivity</span></div></div></div>
-    <div class="tools" style="gap:10px">
-      <div class="glass"><span class="lb">From</span><input type="date" id="rf" value="${range.from}" aria-label="From date"><span class="lb">To</span><input type="date" id="rt" value="${range.to}" aria-label="To date">
-        <button type="button" class="qk" data-q="t">Today</button><button type="button" class="qk" data-q="w">Week</button><button type="button" class="qk" data-q="10">10 days</button><button type="button" class="qk" data-q="m">Month</button></div>
-      <span class="srv"><i></i>${esc(dir.name)}</span>
-      <div class="who"><div class="ava">${esc((me.name||me.msid).split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase())}</div><div><b>${esc(me.name)}</b><small>${esc(me.msid)} · ${esc(me.role)}${me.empId?' · '+esc(me.empId):''}</small></div></div>
-      ${isAdm()?`<button type="button" class="b3 ico ${view==='admin'?'on':''}" aria-pressed="${view==='admin'}" data-nav="admin" title="Admin" aria-label="Admin">${ic('shield',18)}${unread?`<span class="bdg">${unread}</span>`:''}</button>`:''}
-      ${B('',{act:'logout',i:'logout',t:'Logout'})}
-    </div></div></header>
+    <div style="display:flex;flex-direction:column;gap:8px"><div class="brand">${eclLogo(11,'el-float')}<div><span class="ver">${APP.ver}</span><div class="t2"><span>Repricing UOM &amp; Productivity</span></div></div></div>
+      <div class="who"><div class="ava">${esc((me.name||me.msid).split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase())}</div><div><b>${esc(me.name)}</b><small>${esc(me.msid)} · ${esc(me.role)}${me.empId?' · '+esc(me.empId):''}</small></div></div></div>
+<div class="tools top-right-tools">
+
+    <div class="top-filter-row">
+
+        <div class="glass">
+            <span class="lb">From</span>
+            <input type="date" id="rf" value="${range.from}" aria-label="From date">
+
+            <span class="lb">To</span>
+            <input type="date" id="rt" value="${range.to}" aria-label="To date">
+
+            <button type="button" class="qk" data-q="t">Today</button>
+            <button type="button" class="qk" data-q="w">Week</button>
+            <button type="button" class="qk" data-q="10">10 days</button>
+            <button type="button" class="qk" data-q="m">Month</button>
+        </div>
+
+        <span class="srv" title="Connected server folder">
+            <i></i>${esc(dir.name)}
+        </span>
+
+    </div>
+
+    <div class="top-icons">
+
+        <button
+            type="button"
+            class="b3 ico"
+            data-act="sync"
+            title="Sync — re-read server"
+            aria-label="Sync">
+            ${ic('history',17)}
+        </button>
+
+        ${isAdm()?`
+        <button
+            type="button"
+            class="b3 ico ${view==='admin' ? 'on' : ''}"
+            aria-pressed="${view==='admin'}"
+            data-nav="admin"
+            title="Admin"
+            aria-label="Admin">
+            ${ic('shield',18)}
+            ${unread ? `<span class="bdg">${unread}</span>` : ''}
+        </button>
+        ` : ''}
+
+        ${B('',{
+            act:'logout',
+            i:'logout',
+            t:'Logout'
+        })}
+
+    </div>
+
+</div>
+ </header>
   <div class="navwrap"><nav class="nav" aria-label="Main">${ok.map(n=>`<button type="button" class="b3 ${view===n[0]?'on':''}" aria-pressed="${view===n[0]}" data-nav="${n[0]}">${ic(n[2],16)}${n[1]}</button>`).join('')}</nav></div>
   <main id="main"></main><footer>®® Alpha NextGen Eclipse · Repricing UOM &amp; Productivity ${APP.ver} · ${APP.build} · Valid till ${fmtD(cfg.expiry)}</footer>`;
   $$('[data-nav]').forEach(b=>b.onclick=async()=>{if(view==='ws'&&cur.dirty&&b.dataset.nav!=='ws'){}view=b.dataset.nav;render();});
-  on('[data-act=logout]',()=>logout());on('[data-act=stopas]',stopAs);
+  on('[data-act=logout]',()=>logout());on('[data-act=sync]',syncNow);on('[data-act=stopas]',stopAs);
   const setR=async(f,t)=>{if(f>t)[f,t]=[t,f];range={from:f,to:t};render();};
   $('#rf').onchange=e=>setR(e.target.value||range.from,range.to);$('#rt').onchange=e=>setR(range.from,e.target.value||range.to);
   $$('[data-q]').forEach(b=>b.onclick=()=>{const t=iso(),q=b.dataset.q;setR(q==='t'?t:q==='w'?monday(t):q==='10'?addD(t,-9):t.slice(0,8)+'01',t);});
   const V={dash:vDash,ws:vWork,rp:vReports,ppl:vPeople,srv:vServer,admin:vAdmin}[view];Promise.resolve(V()).catch(e=>{console.error(e);toast('Error: '+e.message);});
 }
-const head=(t,s,a='')=>`<div class="ph"><div><h1>${t}</h1><p>${s}</p></div><div class="tools">${a}</div></div>`;
+const head=(t,s,a='')=>`<div class="ph" style="margin:4px 0 8px"><div><h1 title="${String(s).replace(/<[^>]*>/g,'').replace(/"/g,'')}">${t}</h1></div><div class="tools">${a}</div></div>`;
 const tamperBanner=()=>cfg&&cfg.announce?`<div class="marq"><span>${ic('bell',15)} ${esc(cfg.announce)}</span></div>`:'';
 
 /* ---------------- LOGIN ---------------- */
@@ -795,10 +853,9 @@ async function vWork(){
     ${B('Paste from clipboard',{k:'pri',sm:1,i:'copy',act:'clip',dis:ro})}${B('Dump selected (Del)',{sm:1,i:'eraser',act:'dump',dis:ro||!can('dump')})}${B('Dump all',{sm:1,k:'dan',i:'trash',act:'dumpall',dis:ro||!can('dump')})}
     ${B('+10 rows',{sm:1,i:'plus',act:'rows',dis:ro||!can('addrows')})}${B('Clear filters',{sm:1,i:'filter',act:'nof'})}${can('resethead')?B('Reset headers',{sm:1,i:'history',act:'rhead'}):''}
     <span class="sp"></span>${cur.dirty?'<span class="chip warn">Unsaved</span>':cur.savedAt?'<span class="chip good">'+ic('check',13)+' Saved</span>':''}</div>`;
-  $('#main').innerHTML=tamperBanner()+head('Workspace','Excel-style: drag to select · Delete = clear · Ctrl+C / Ctrl+V · double-click = edit · Ctrl+double-click a name = person details · drag column edge = resize · ▼ = filter',
-    `<div class="fld" style="flex-direction:row;align-items:center;gap:8px"><label for="wd" style="white-space:nowrap">Work date</label><input type="date" id="wd" class="in ${SDs.has(cur.date)?'has':''}" value="${cur.date}" style="width:150px"></div>${can('save')?B('Master Save',{k:'pri',i:'save',act:'msave',dis:ro&&!cur.dirty}):''}`)+
-   `<div class="card">${tabs}${chips}${bk?`<div class="banner">${ic('eye',16)} Back view · ${esc(backV.label)} · read only</div>`:lockB}${bk?'':tb}${bk?'':'<div id="wside"></div>'}${bk&&!bk.length?`<div class="banner warn" style="margin:12px 0">No data found for this date</div>`:'<div id="sh"></div>'}</div>`;
-  on('[data-act=tab]',a=>{wsTab=a;render();});
+  $('#main').innerHTML=tamperBanner()+
+   `<div class="card"><div class="tools" style="justify-content:space-between">${tabs}<div class="tools"><label for="wd" style="font-weight:700;font-size:12px" title="Pick any date — data loads from the server">Work date</label><input type="date" id="wd" class="in ${SDs.has(cur.date)?'has':''}" value="${cur.date}" style="width:150px" title="Pick any date — data loads from the server">${B('',{i:'history',act:'sync',t:'Sync — re-read server'})}${can('save')?B('Master Save',{k:'pri',i:'save',act:'msave',dis:ro&&!cur.dirty}):''}</div></div>${chips}${bk?`<div class="banner">${ic('eye',16)} Back view · ${esc(backV.label)} · read only</div>`:lockB}${bk?'':tb}${bk?'':'<div id="wside"></div>'}${bk&&!bk.length?`<div class="banner warn" style="margin:12px 0">No data found for this date</div>`:'<div id="sh"></div>'}</div>`;
+  on('[data-act=tab]',a=>{wsTab=a;render();});on('#main [data-act=sync]',syncNow);
   $('#wd').onchange=async e=>{if(cur.dirty&&!confirm('Unsaved data. Change date?')){e.target.value=cur.date;return;}await loadWork(e.target.value||iso());render();};
   document.querySelectorAll('.dchip').forEach(b=>b.onclick=async()=>{if(cur.dirty&&!confirm('Unsaved data. Change date?'))return;await loadWork(b.dataset.d);render();});
   on('[data-act=wdel]',async()=>{const d=cur.date;if(!confirm(fmtD(d)+' saved data will be deleted for everyone (a backup is kept first). Continue?'))return;if(!await askPw('Delete '+fmtD(d)))return;await backup('before delete '+d);await rm(dataP(d));delete cache[d];await log('DELETE DATE',d);await loadWork(d);toast(fmtD(d)+' deleted (backup kept)');render();});
@@ -912,11 +969,17 @@ async function vReports(){rsheet=null;
   else vMail(days,U,R,W);
   if(rpTab!=='mail'&&rsheet)rpHook(rsheet);
 }
+function greetNames(){const to=($('#mto')&&$('#mto').value)||cfg.mail.to||'',cc=($('#mcc')&&$('#mcc').value)||cfg.mail.cc||'';
+  const nm=x=>{x=x.trim().replace(/<.*?>/g,'').replace(/["']/g,'');if(!x)return '';if(x.includes('@')){x=x.split('@')[0].split(/[._\-]/)[0];}else if(x.includes(',')){x=x.split(',').pop();}else x=x.split(/\s+/)[0];x=x.trim().split(/\s+/)[0]||'';return x?x.charAt(0).toUpperCase()+x.slice(1).toLowerCase():'';};
+  const parts=(to+';'+cc).split(';').flatMap(p=>p.includes('@')?p.split(/[,\s]+/):[p]);
+  const meT=toks(me.name).concat([String(me.msid||'').toUpperCase()]),out=[];
+  parts.map(nm).forEach(n=>{if(!n)return;if(meT.includes(n.toUpperCase())||(n.toUpperCase()==='RAJU'&&meT.includes('RAJA'))||(n.toUpperCase()==='RAJA'&&meT.includes('RAJU')))return;if(!out.includes(n))out.push(n);});
+  return out.length?out.join(', '):'Team';}
 function mailHTML(days,R,W,inc){
   const col={good:'#92D050',warn:'#FFA500',bad:'#FF99CC','':'#ffffff'};const F="font-family:Arial;font-size:13px";
   const th=(s,bg='#4CAF19',c='#000')=>`<th style="background:${bg};color:${c};border:1px solid #000;padding:6px 10px;${F}">${s}</th>`;
   const td=(s,bg='#fff',al='center')=>`<td style="background:${bg};border:1px solid #000;padding:5px 10px;text-align:${al};${F}">${esc(s)}</td>`;
-  let h=`<p style="font-family:Calibri,Arial;font-size:14px">Hi ${esc((cfg.mail.to||'Team').split(',').reverse().join(' ').trim().split(' ')[0]||'Team')},<br><br>Please find the Repricing UOM &amp; Productivity report for ${range.from===range.to?fmtD(range.from):fmtD(range.from)+' to '+fmtD(range.to)}.</p>`;
+  let h=`<p style="font-family:Calibri,Arial;font-size:14px">Hi ${esc(greetNames())},<br><br>Please find the Repricing UOM &amp; Productivity report for ${range.from===range.to?fmtD(range.from):fmtD(range.from)+' to '+fmtD(range.to)}.</p>`;
   R=R.filter(r=>inMail(r.name));W=W.filter(w=>inMail(w.name));
   if(inc.uom)days.forEach(x=>{const U=filled(x.uom).map(uomRow).filter(r=>r.name&&inMail(r.name));if(!U.length)return;
     h+=`<table style="border-collapse:collapse;margin-bottom:12px"><tr><th colspan="6" style="background:#A9D08E;border:1px solid #000;padding:6px;${F}">${shortD(x.date)}</th></tr><tr>${['Name','Volume','Utilization','Efficiency','LC Efficiency','O/U'].map(s=>th(s)).join('')}</tr>`+
@@ -938,6 +1001,8 @@ function vMail(days,U,R,W){const inc=window._inc||(window._inc={uom:true,rep:tru
    <div class="tools" style="flex-direction:column;align-items:stretch;margin-top:12px">${B('Copy for Outlook',{k:'pri',i:'copy',act:'mcopy'})}${B('Open Outlook',{k:'mag',i:'mail',act:'mopen'})}${can('export')?B('Download Excel',{i:'download',act:'xl2'}):''}</div>
    <div class="sub" style="margin-top:10px">Click Copy → press Ctrl+V in the Outlook body. Download the Excel file and attach it (browsers cannot attach files automatically).</div></div></div>`;
   $$('[data-inc]').forEach(b=>b.onclick=()=>{inc[b.dataset.inc]=!inc[b.dataset.inc];vMail(days,U,R,W);});
+  ['#mto','#mcc'].forEach(id=>{const el=$(id);if(el)el.oninput=()=>{$('#mbody').innerHTML=mailHTML(days,R,W,inc);};});
+  $('#mbody').innerHTML=mailHTML(days,R,W,inc);
   $$('[data-mp]').forEach(c=>c.onchange=()=>{const all=$$('[data-mp]');const sel=all.filter(x=>x.checked).map(x=>x.dataset.mp);mailSel=sel.length===all.length?null:new Set(sel);vMail(days,U,R,W);});
   on('[data-act=mpa]',()=>{mailSel=null;vMail(days,U,R,W);});on('[data-act=mpn]',()=>{mailSel=new Set();vMail(days,U,R,W);});
   on('[data-act=mcopy]',async()=>{const el=$('#mbody');try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([el.innerHTML],{type:'text/html'}),'text/plain':new Blob([el.innerText],{type:'text/plain'})})]);}
