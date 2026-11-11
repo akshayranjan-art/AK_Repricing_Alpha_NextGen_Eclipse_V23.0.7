@@ -202,7 +202,49 @@ table.g td.cmp{padding:0 4px;text-align:center}
 .topf{display:inline-block;padding:6px 14px;border-radius:999px;font-weight:800;font-size:13px;color:#fff;margin-right:8px;background:linear-gradient(90deg,#ea580c,#db2777,#7c3aed,#0891b2,#16a34a,#ea580c);background-size:300% 100%;animation:tf 6s linear infinite;white-space:nowrap}@keyframes tf{to{background-position:300% 0}}
 .attn{display:flex;gap:8px;align-items:center;overflow-x:auto;white-space:nowrap;padding:8px 12px;margin-bottom:12px;background:#fff1f2;border:1px solid #fecdd3;border-radius:12px}
 .attn b{color:#9f1239;font-size:13px;flex:0 0 auto}.attn .lbtn{flex:0 0 auto;text-decoration:none;background:#ffe4e6;color:#9f1239;border-radius:999px;padding:4px 10px;font-size:13px}.attn .lbtn i{font-style:normal;font-weight:800;margin-left:4px}
+#wd.has{background:#dcfce7;border-color:#16a34a;font-weight:700}
+.dchip{border:1px solid #d6c3a8;border-radius:8px;padding:3px 8px;font-size:12px;background:#fff;cursor:pointer;margin:2px;color:#444}.dchip.has{background:#16a34a;color:#fff;border-color:#15803d;font-weight:700}.dchip.on{outline:2px solid #ea580c}
+paste karo
+ 2) jaha logo chahiye wahan neeche wala <div class="ecl-logo"> paste karo
+ 3) size: .ecl-logo{font-size:20px} badlo (header ke liye 12-14px, hero ke liye 30-40px)
+ 4) light header par: class="ecl-logo el-plate" (dark capsule). Float 3D: class="ecl-logo el-float"
+-->
+<!-- HEAD -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<style>
+.ecl-logo{--g1:linear-gradient(180deg,#fff0a0,#ff8a1f 45%,#e02a00);--g2:linear-gradient(90deg,#fff0a0,#ff8a1f 50%,#e02a00);--g3:linear-gradient(180deg,#fff0a0,#ff8a1f 45%,#c81e00);--ex:#3a0d00;display:inline-block;font-size:20px;line-height:1;white-space:nowrap}
+.ecl-logo *{box-sizing:border-box}
+.ecl-logo .el-b{display:inline-flex;flex-direction:column;align-items:stretch;gap:.4em;animation:el-lv 5.5s ease-in-out infinite alternate}
+.ecl-logo .el-l1{display:flex;align-items:center}
+.ecl-logo .el-l1 .el-t{margin-left:-.42em}
+.ecl-logo .el-l2{display:flex;justify-content:space-between;align-items:baseline;gap:.5em;font-size:.9em}
+.ecl-logo .el-wd{display:inline-flex;align-items:baseline}
+.ecl-logo .el-A{height:.76em;width:.84em;margin-right:.03em;flex:none;overflow:visible}
+.ecl-logo svg.el-O{flex:none;filter:drop-shadow(0 .12em .14em rgba(0,0,0,.55))}
+.ecl-logo .el-sw{animation:el-swp 7s ease-in-out infinite}
+.ecl-logo .el-rr{transform-origin:100px 100px;animation:el-sp 70s linear infinite}
+.ecl-logo .el-ff{transform-box:fill-box;transform-origin:center;animation:el-pl 5s ease-in-out infinite}
+.ecl-logo .el-t{position:relative;display:inline-block;isolation:isolate;line-height:1.05}
+.ecl-logo .el-t::before{content:attr(data-t);position:absolute;left:0;top:0;z-index:-1;color:var(--ex);white-space:pre;text-shadow:.02em .02em var(--ex),.04em .04em var(--ex),.06em .06em var(--ex),.08em .08em var(--ex),.1em .1em var(--ex),.2em .26em .3em rgba(0,0,0,.55)}
+.ecl-logo .el-t b{font-weight:inherit;background-image:linear-gradient(105deg,transparent 33%,rgba(255,255,255,.98) 50%,transparent 67%),var(--g);background-size:260% 100%,100% 100%;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;animation:el-shn 6.5s linear infinite;animation-delay:var(--d,0s)}
+.ecl-logo .el-pt{font-family:Cinzel,Georgia,serif;font-weight:800;font-size:3.2em;letter-spacing:.05em}
+.ecl-logo .el-pt b{--g:var(--g1)}.ecl-logo .el-nx b,.ecl-logo .el-lp b{--g:var(--g2)}.ecl-logo .el-ec b{--g:var(--g3)}
+.ecl-logo .el-nx,.ecl-logo .el-lp{font-family:Orbitron,system-ui,sans-serif;font-weight:800;letter-spacing:.05em}
+.ecl-logo .el-ec{font-family:Cinzel,Georgia,serif;font-weight:800;letter-spacing:.14em}
+.ecl-logo.el-plate{background:radial-gradient(120% 140% at 50% 100%,#5a1700,#220600 60%,#0a0200);padding:.55em 1em;border-radius:.8em;box-shadow:0 .3em 1em rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,150,60,.25)}
+.ecl-logo.el-float{animation:el-fl 12s ease-in-out infinite}
+@keyframes el-lv{from{filter:drop-shadow(0 0 .12em rgba(255,110,20,.4)) brightness(.97)}to{filter:drop-shadow(0 0 .3em rgba(255,140,30,.8)) brightness(1.1)}}
+@keyframes el-swp{from{transform:translateX(-70px) skewX(-20deg)}to{transform:translateX(210px) skewX(-20deg)}}
+@keyframes el-sp{to{transform:rotate(360deg)}}
+@keyframes el-pl{50%{transform:scale(1.25);opacity:.75}}
+@keyframes el-shn{from{background-position:140% 0,0 0}to{background-position:-60% 0,0 0}}
+@keyframes el-fl{0%,100%{transform:perspective(700px) rotateY(-5deg) rotateX(1.5deg)}50%{transform:perspective(700px) rotateY(5deg) rotateX(-1.5deg) translateY(-2px)}}
+@media (prefers-reduced-motion: reduce){.ecl-logo,.ecl-logo *{animation:none!important}}
+.brand .ecl-logo{margin-right:4px}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
 </head>
 <body class="nosel">
 <div id="app"></div>
@@ -223,8 +265,8 @@ const normN=n=>String(n||'').replace(/^'+/,'').trim();
 const rosterOn=()=>!!(cfg&&cfg.rosterOn&&cfg.roster&&cfg.roster.length);
 function RD(days){if(!rosterOn())return days;const ok=n=>cfg.roster.some(r=>nameMatch(r,normN(n)));return days.map(x=>x?Object.assign({},x,{rep:(x.rep||[]).filter(r=>r&&ok(r[1])),uom:(x.uom||[]).filter(r=>r&&ok(r[0]))}):x);}
 const isAdminPC=pc=>String(pc||'').trim().toLowerCase().endsWith(ADMIN_PC_END);
-const PERMS=[['paste','Paste & edit'],['headers','Edit headers'],['save','Master save'],['reports','Reports'],['mail','Mail report'],['export','Excel export'],['comments','Downtime library'],['tabUom','UOM Summary tab'],['tabWk','Weekly Target tab'],['dump','Dump selected / all'],['addrows','+10 rows'],['resethead','Reset headers'],['ppl','People 360'],['srv','Server tab']];
-const NEWK=['tabUom','tabWk','dump','addrows','resethead','ppl','srv'];
+const PERMS=[['paste','Paste & edit'],['headers','Edit headers'],['save','Master save'],['reports','Reports'],['mail','Mail report'],['export','Excel export'],['comments','Downtime library'],['tabUom','UOM Summary tab'],['tabWk','Weekly Target tab'],['dump','Dump selected / all'],['addrows','+10 rows'],['resethead','Reset headers'],['ppl','People 360'],['srv','Server tab'],['noidle','No idle auto-logout']];
+const NEWK=['tabUom','tabWk','dump','addrows','resethead','ppl','srv','noidle'];
 const allPerms=v=>Object.fromEntries(PERMS.map(p=>[p[0],v]));
 const NEWPERMS=()=>Object.assign(allPerms(false),{paste:true,save:true,reports:true,mail:true,export:true,tabUom:true,tabWk:true,dump:true,addrows:true,ppl:true,srv:true});
 const DEF_HEAD={rep:['Date','Name','Processed- Reprice','Down Time Comments'],uom:['Name','Volume','Utilization','Efficiency','LC Efficiency','O/U']};
@@ -239,7 +281,7 @@ const DEF_CFG=()=>({ver:APP.ver,expiry:APP.expiry,target:344,
 const DEF_ADMIN=()=>({msid:ADMIN_MSID,empId:ADMIN_EMP,name:'Akshay Ranjan',email:'',team:'Admin',pc:'',role:'Admin',pw:ADMIN_PW0,validTill:APP.expiry,active:true,perms:allPerms(true),created:new Date().toISOString()});
 
 let dir=null,cfg=null,users=[],secS={fails:{},locked:{},alerts:[]},me=null,asUser=null;
-let view='dash',wsTab='rep',rpTab='uom',adTab='users',uomMode='day';
+let backV=null,view='dash',wsTab='rep',rpTab='uom',adTab='users',uomMode='day';
 let range={from:null,to:null};
 let cur={date:null,rep:[],uom:[],locked:false,unlocked:false,dirty:false,savedAt:null,savedBy:null};
 let tamper=new Set(),usersBroken=false,hbTimer=null,idleTimer=null,cache={};
@@ -291,6 +333,8 @@ const IC={home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',grid:'<rect
  eraser:'<path d="M3 17l8-8 7 7-4 4H7z"/><path d="M14 20h7"/>',filter:'<path d="M3 5h18l-7 8v6l-4 2v-8z"/>',smile:'<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>',
  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',week:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M7 14h3M12 14h5"/>',target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>'};
 const ic=(n,s=17)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
+let _eln=0;const ECL=String.raw`<div class="ecl-logo" role="img" aria-label="OPTUM Alpha NEXTgeN Eclipse"><div class="el-b"><div class="el-l1"><svg class="el-O" style="width:4.2em;height:4.2em" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="O"><defs><linearGradient id="ecloa" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#d63a00"/><stop offset="1" stop-color="#ffc94a"/></linearGradient><linearGradient id="eclol" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient><linearGradient id="eclos" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="eclok"><rect width="120" height="120" fill="#000"/><circle cx="60" cy="60" r="50" fill="#fff"/><circle cx="74" cy="52" r="44" fill="#000"/></mask><mask id="ecloj"><rect width="120" height="120" fill="#000"/><circle cx="68" cy="54" r="36" fill="#fff"/><circle cx="58" cy="64" r="33" fill="#000"/></mask></defs><rect class="el-dp" width="120" height="120" fill="#3a0d00" mask="url(#eclok)" transform="translate(3 4.5)"/><rect class="el-dp" width="120" height="120" fill="#3a0d00" mask="url(#eclok)" transform="translate(1.5 2.2)"/><rect width="120" height="120" fill="url(#ecloa)" mask="url(#eclok)"/><rect width="120" height="120" fill="url(#eclol)" mask="url(#eclok)"/><g mask="url(#eclok)"><rect class="el-sw" x="-40" y="-10" width="26" height="140" fill="url(#eclos)"/></g><rect width="120" height="120" fill="#3a2218" mask="url(#ecloj)"/><rect width="120" height="120" fill="url(#eclol)" opacity=".45" mask="url(#ecloj)"/><g transform="translate(66 58) scale(.4) translate(-100 -100)"><defs><linearGradient id="ecloz1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a0"/><stop offset=".55" stop-color="#ff8a1f"/><stop offset="1" stop-color="#e02a00"/></linearGradient><radialGradient id="eclozm" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#16256a"/><stop offset="1" stop-color="#04071a"/></radialGradient><radialGradient id="eclozo"><stop offset=".55" stop-color="#ff8a1f" stop-opacity=".6"/><stop offset="1" stop-color="#ff8a1f" stop-opacity="0"/></radialGradient><radialGradient id="eclozx"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#fff0a0"/><stop offset="1" stop-color="#fff0a0" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="100" r="92" fill="url(#eclozo)"/><g class="el-rr" stroke="url(#ecloz1)" stroke-width="3" stroke-linecap="round" opacity=".8"><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(0 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(30 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(60 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(90 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(120 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(150 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(180 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(210 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(240 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(270 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(300 100 100)"/><line x1="100" y1="10" x2="100" y2="-4" transform="rotate(330 100 100)"/></g><circle cx="100" cy="100" r="64" fill="url(#eclozm)" stroke="url(#ecloz1)" stroke-width="6"/><ellipse cx="100" cy="66" rx="46" ry="24" fill="#fff" opacity=".13"/><g class="el-ff"><path d="M138 34L143 58L167 64L143 70L138 94L133 70L109 64L133 58Z" fill="url(#eclozx)"/><circle cx="138" cy="64" r="4" fill="#fff"/></g><circle r="3.5" fill="#fff"><animateMotion dur="16s" repeatCount="indefinite" path="M100 30A70 70 0 1 1 99.9 30"/></circle></g></svg><span class="el-t el-pt" data-t="PTUM" style="--d:0s"><b>PTUM</b></span></div><div class="el-l2"><span class="el-wd"><svg class="el-A" viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="eclaa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a0"/><stop offset=".55" stop-color="#ff8a1f"/><stop offset="1" stop-color="#e02a00"/></linearGradient><radialGradient id="eclax"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff0a0"/><stop offset="1" stop-color="#fff0a0" stop-opacity="0"/></radialGradient></defs><path d="M10 98L50 8L90 98" fill="none" stroke="#3a0d00" stroke-width="15" stroke-miterlimit="8" transform="translate(3 4)"/><path d="M10 98L50 8L90 98" fill="none" stroke="url(#eclaa)" stroke-width="15" stroke-miterlimit="8"/><polygon points="0,72 104,36 52,68" fill="#fff" opacity=".95"/><g class="el-ff"><path d="M84 8L87 24L103 28L87 32L84 48L81 32L65 28L81 24Z" fill="url(#eclax)"/></g></svg><span class="el-t el-lp" data-t="LPHA" style="--d:0s"><b>LPHA</b></span></span><span class="el-t el-nx" data-t="NEXTgeN" style="--d:0s"><b>NEXTgeN</b></span><span class="el-t el-ec" data-t="ECLIPSE" style="--d:0.4s"><b>ECLIPSE</b></span></div></div></div>`;
+const eclLogo=(px=13,cls='')=>{_eln++;return ECL.replace(/ecl[a-z0-9]+/g,m=>m+'_'+_eln).replace('class="ecl-logo"','class="ecl-logo '+cls+'" style="font-size:'+px+'px"');};
 const logo=(s=46)=>`<svg width="${s}" height="${s}" viewBox="0 0 48 48" aria-hidden="true"><defs><radialGradient id="lg" cx="40%" cy="35%"><stop offset="0" stop-color="#fde68a"/><stop offset=".55" stop-color="#f97316"/><stop offset="1" stop-color="#9d174d"/></radialGradient></defs><circle cx="24" cy="24" r="19" fill="url(#lg)"/><circle cx="31" cy="18" r="16" fill="#2a170c"/><circle cx="24" cy="24" r="22" fill="none" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="2 4" opacity=".8"/></svg>`;
 const B=(label,o={})=>`<button type="button" class="b3 ${o.k||''} ${o.sm?'sm':''} ${o.on?'on':''} ${label?'':'ico'}" ${o.act?`data-act="${o.act}"`:''} ${o.arg!==undefined?`data-arg="${esc(o.arg)}"`:''} ${o.dis?'disabled':''} ${o.t?`title="${esc(o.t)}" aria-label="${esc(o.t)}"`:''} ${o.on!==undefined?`aria-pressed="${!!o.on}"`:''}>${o.i?ic(o.i,o.sm?15:17):''}${label}</button>`;
 const on=(sel,fn,root=document)=>$$(sel,root).forEach(e=>e.onclick=ev=>fn(e.dataset.arg,e,ev));
@@ -332,12 +376,13 @@ async function loadStore(){
   const u=await rd(F.users,null);usersBroken=tamper.has(F.users);
   users=(u&&u.length)?u:[DEF_ADMIN()];
   let a=users.find(x=>x.msid.toLowerCase()===ADMIN_MSID);if(!a){a=DEF_ADMIN();users.unshift(a);}
-  users.forEach(x=>{if(x!==a&&x.role==='Admin')x.role='Lead';const old=x.perms||{};x.perms=Object.assign(allPerms(false),old);for(const k of NEWK)if(old[k]===undefined)x.perms[k]=k==='ppl'||k==='srv'?!!old.reports:k==='resethead'?!!old.headers:true;});
+  users.forEach(x=>{if(x!==a&&x.role==='Admin')x.role='Lead';const old=x.perms||{};x.perms=Object.assign(allPerms(false),old);for(const k of NEWK)if(old[k]===undefined)x.perms[k]=k==='ppl'||k==='srv'?!!old.reports:k==='resethead'?!!old.headers:k==='noidle'?false:true;});
   Object.assign(a,{role:'Admin',active:true,empId:ADMIN_EMP,perms:allPerms(true)});if(!a.pw||usersBroken)a.pw=a.pw||ADMIN_PW0;if(usersBroken)a.pw=ADMIN_PW0;
   secS=await rd(F.sec,{fails:{},locked:{},alerts:[]});secS.fails=secS.fails||{};secS.locked=secS.locked||{};secS.alerts=secS.alerts||{};if(!Array.isArray(secS.alerts))secS.alerts=[];
   Object.assign(a,{email:a.email||'akshay.ranjan@uhc.com',opid:'ARA',pc:a.pc||'LHTU05CG2122RJJ'});
   if(!cfg.seeded&&!usersBroken&&!tamper.has(F.cfg)){for(const d of SEED)if(!users.some(x=>x.msid.toLowerCase()===d[0]))users.push({msid:d[0],empId:d[1],name:d[2],email:d[3],team:'',pc:d[4],opid:d[5],role:'Employee',pw:'',validTill:APP.expiry,active:true,perms:NEWPERMS(),created:new Date().toISOString()});
     cfg.roster=ROSTER0.slice();cfg.rosterOn=true;cfg.lib=LIB0.map(x=>x.slice());cfg.seeded=true;cfg.announce=cfg.announce||'';await wr(F.users,users);await wr(F.cfg,cfg);}
+  if(!cfg.idleSet&&!usersBroken&&!tamper.has(F.cfg)){users.forEach(u=>{if(['av100','rselvar4'].includes(u.msid.toLowerCase()))u.perms.noidle=true;});cfg.idleSet=true;await wr(F.users,users);await wr(F.cfg,cfg);}
   if(!c&&!tamper.has(F.cfg))await wr(F.cfg,cfg);
   if(!u&&!usersBroken)await wr(F.users,users);
   if((await rawR(F.sec))==null)await wr(F.sec,secS);
@@ -370,7 +415,7 @@ document.addEventListener('keydown',e=>{const s=secNow(),k=(e.key||'').toLowerCa
   if(s.ctrlPS&&c&&(k==='p'||k==='s')){e.preventDefault();return;}
   if(s.copyBlock&&c&&k==='c'&&!e.target.closest('.xl,input,textarea,.mailbox')){e.preventDefault();toast('Copy is allowed only inside the grid');}},true);
 document.addEventListener('contextmenu',e=>{if(secNow().rightClick&&!e.target.closest('input,textarea'))e.preventDefault();});
-function armIdle(){clearTimeout(idleTimer);const m=cfg&&cfg.sec.autoLogout;if(me&&m>0)idleTimer=setTimeout(()=>logout('Auto logout (idle)'),m*6e4);}
+function armIdle(){clearTimeout(idleTimer);const m=cfg&&cfg.sec.autoLogout;if(me&&m>0&&!(me.perms&&me.perms.noidle&&me.role!=='Admin'))idleTimer=setTimeout(()=>logout('Auto logout (idle)'),m*6e4);}
 ['mousedown','keydown'].forEach(ev=>document.addEventListener(ev,()=>armIdle(),{passive:true}));
 async function heartbeat(){if(!me||!dir)return;const p='Sessions/'+me.msid.toLowerCase()+'.rpx';const s=await rd(p,null);
   if(!s||s.pc.toLowerCase()!==String(me.pcNow||'').toLowerCase()||s.sid!==me.sid){toast('Your session was closed by Admin');return logout('Kicked',true);}
@@ -538,6 +583,7 @@ async function savedDates(){return (await ls('Data')).filter(n=>/^\d{4}-\d{2}-\d
 async function getDay(d){if(cache[d]!==undefined)return cache[d];cache[d]=await rd(dataP(d),null);return cache[d];}
 async function rangeData(from=range.from,to=range.to){const S=new Set(await savedDates());const out=[];for(let d=from;d<=to;d=addD(d,1)){let x=S.has(d)?await getDay(d):null;
   if(d===cur.date&&(cur.dirty||!x))x={date:d,rep:filled(cur.rep),uom:filled(cur.uom),live:true};if(x)out.push(x);}return out;}
+async function backRows(v){const S=new Set(await savedDates()),out=[],seen=new Set();for(let d=v.from;d<=v.to;d=addD(d,1)){if(!S.has(d))continue;const y=await getDay(d);((y&&y.rep)||[]).forEach(r=>{if(!r||!String(r[1]||'').trim())return;const k=(anyDate(r[0])||d)+'|'+String(r[1]).trim().toLowerCase();if(!seen.has(k)){seen.add(k);out.push(JSON.parse(JSON.stringify(r)));}});}out.sort((a,b)=>String(anyDate(a[0])||'9').localeCompare(String(anyDate(b[0])||'9')));return out;}
 async function loadWork(d){cur.date=d;const x=await getDay(d);cur.rep=x?JSON.parse(JSON.stringify(x.rep||[])):[];cur.uom=x?JSON.parse(JSON.stringify(x.uom||[])):[];
   cur.locked=!!(x&&x.locked);cur.unlocked=false;cur.dirty=false;cur.savedAt=x?x.savedAt:null;cur.savedBy=x?x.savedBy:null;}
 function weekly(days){const W={};days.forEach(x=>filled(x.rep).forEach(r=>{const R=repRow(r,x.date);if(!R.name)return;const wk=monday(R.date),k=wk+'|'+R.name.toLowerCase();
@@ -552,7 +598,7 @@ function render(){const app=$('#app');
   const unread=isAdm()?secS.alerts.filter(a=>!a.read).length:0;
   app.innerHTML=`${asUser?`<div style="background:#9d174d;color:#fff;padding:7px 14px;display:flex;gap:10px;justify-content:center;align-items:center;font-weight:700">${ic('eye',15)} Admin view-as: ${esc(me.name)} (${esc(me.msid)}) ${B('Back to Admin',{sm:1,act:'stopas',i:'shield'})}</div>`:''}
   <header class="hdr"><div class="hrow">
-    <div class="brand">${logo(50)}<div><div class="t1"><span class="g">Alpha NextGen Eclipse</span><span class="ver">${APP.ver}</span></div><div class="t2"><span>Repricing UOM &amp; Productivity</span></div></div></div>
+    <div class="brand">${eclLogo(11,'el-float')}<div><span class="ver">${APP.ver}</span><div class="t2"><span>Repricing UOM &amp; Productivity</span></div></div></div>
     <div class="tools" style="gap:10px">
       <div class="glass"><span class="lb">From</span><input type="date" id="rf" value="${range.from}" aria-label="From date"><span class="lb">To</span><input type="date" id="rt" value="${range.to}" aria-label="To date">
         <button type="button" class="qk" data-q="t">Today</button><button type="button" class="qk" data-q="w">Week</button><button type="button" class="qk" data-q="10">10 days</button><button type="button" class="qk" data-q="m">Month</button></div>
@@ -577,7 +623,7 @@ const tamperBanner=()=>cfg&&cfg.announce?`<div class="marq"><span>${ic('bell',15
 function loginView(){
   const pc=localStorage.getItem('rp23_pc')||'',msid=localStorage.getItem('rp23_msid')||'',pw=msid?cachedPw(msid):'';
   return `<div class="login"><div class="lbox">
-   <div class="lleft"><div class="brand">${logo(54)}<div><div class="t1" style="font-size:20px"><span class="g" style="background:linear-gradient(90deg,#fff,#fde7c7);-webkit-background-clip:text;background-clip:text;color:transparent">Alpha NextGen Eclipse</span></div><div class="t2"><span>Repricing UOM &amp; Productivity</span></div></div></div>
+   <div class="lleft"><div class="brand" style="flex-direction:column;align-items:flex-start;gap:10px">${eclLogo(17,'el-float')}<div class="t2"><span>Repricing UOM &amp; Productivity</span></div></div>
     <div><div style="font-size:34px;font-weight:800;line-height:1.12">Paste. Track.<br><span style="background:linear-gradient(90deg,#fdba74,#fbbf24,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent">Report in one go.</span></div>
     <div style="margin-top:12px;color:#f5d0b0;font-size:13px;line-height:1.6;max-width:360px">Repricing, UOM Summary, downtime and weekly targets — in one place, on an encrypted server.</div></div>
     <div class="tools"><span class="ver">${APP.ver}</span><span style="font-size:12px;color:#f5d0b0">Valid till ${fmtD(APP.expiry)}</span></div></div>
@@ -743,22 +789,30 @@ async function vWork(){
   const lib=()=>cfg.lib.map(l=>l[1]+' Mins - '+l[0]);
   if(wsTab==='uom'&&!can('tabUom'))wsTab='rep';if(wsTab==='wk'&&!can('tabWk'))wsTab='rep';
   const tabs=`<div class="seg">${B('Repricing',{i:'bolt',act:'tab',arg:'rep',on:wsTab==='rep'})}${can('tabUom')?B('UOM Summary',{i:'chart',act:'tab',arg:'uom',on:wsTab==='uom'}):''}${can('tabWk')?B('Weekly Target',{i:'week',act:'tab',arg:'wk',on:wsTab==='wk'}):''}</div>`;
+  const bk=backV&&wsTab==='rep'?await backRows(backV):null;
+  const SDs=new Set(await savedDates());let chips='';for(let i=20;i>=0;i--){const dd=addD(iso(),-i);chips+=`<button type="button" class="dchip ${SDs.has(dd)?'has':''} ${dd===cur.date?'on':''}" data-d="${dd}">${shortD(dd)}</button>`;}
+  chips=`<div class="tools" style="margin:8px 0;align-items:center"><span class="sub">Saved dates (green):</span>${chips}<span class="sp"></span>${B('Back 14 days',{sm:1,i:'history',act:'bk14'})}<input type="date" id="bkd" class="in" style="width:135px" aria-label="Back view date">${B('View date',{sm:1,i:'eye',act:'bkd'})}${backV?B('Close',{sm:1,k:'dan',i:'x',act:'bkx'}):''}${can('edit')&&SDs.has(cur.date)?B('Delete this date',{sm:1,k:'dan',i:'trash',act:'wdel'}):''}</div>`;
   const lockB=cur.locked&&!cur.unlocked?`<div class="banner lock">${ic('lock',16)} ${fmtD(cur.date)} saved & locked on server (by ${esc(cur.savedBy||'')}) — unlock to edit ${can('edit')?B('Unlock to edit',{sm:1,k:'pri',i:'unlock',act:'unlock'}):'<span class="chip warn">Only Manager / SME / Admin can edit saved dates</span>'}</div>`:'';
   const tb=wsTab==='wk'?'':`<div class="tools" style="margin:10px 0">
     ${B('Paste from clipboard',{k:'pri',sm:1,i:'copy',act:'clip',dis:ro})}${B('Dump selected (Del)',{sm:1,i:'eraser',act:'dump',dis:ro||!can('dump')})}${B('Dump all',{sm:1,k:'dan',i:'trash',act:'dumpall',dis:ro||!can('dump')})}
     ${B('+10 rows',{sm:1,i:'plus',act:'rows',dis:ro||!can('addrows')})}${B('Clear filters',{sm:1,i:'filter',act:'nof'})}${can('resethead')?B('Reset headers',{sm:1,i:'history',act:'rhead'}):''}
     <span class="sp"></span>${cur.dirty?'<span class="chip warn">Unsaved</span>':cur.savedAt?'<span class="chip good">'+ic('check',13)+' Saved</span>':''}</div>`;
   $('#main').innerHTML=tamperBanner()+head('Workspace','Excel-style: drag to select · Delete = clear · Ctrl+C / Ctrl+V · double-click = edit · Ctrl+double-click a name = person details · drag column edge = resize · ▼ = filter',
-    `<div class="fld" style="flex-direction:row;align-items:center;gap:8px"><label for="wd" style="white-space:nowrap">Work date</label><input class="in" type="date" id="wd" value="${cur.date}" style="width:150px"></div>${can('save')?B('Master Save',{k:'pri',i:'save',act:'msave',dis:ro&&!cur.dirty}):''}`)+
-   `<div class="card">${tabs}${lockB}${tb}<div id="wside"></div><div id="sh"></div></div>`;
+    `<div class="fld" style="flex-direction:row;align-items:center;gap:8px"><label for="wd" style="white-space:nowrap">Work date</label><input type="date" id="wd" class="in ${SDs.has(cur.date)?'has':''}" value="${cur.date}" style="width:150px"></div>${can('save')?B('Master Save',{k:'pri',i:'save',act:'msave',dis:ro&&!cur.dirty}):''}`)+
+   `<div class="card">${tabs}${chips}${bk?`<div class="banner">${ic('eye',16)} Back view · ${esc(backV.label)} · read only</div>`:lockB}${bk?'':tb}${bk?'':'<div id="wside"></div>'}${bk&&!bk.length?`<div class="banner warn" style="margin:12px 0">No data found for this date</div>`:'<div id="sh"></div>'}</div>`;
   on('[data-act=tab]',a=>{wsTab=a;render();});
   $('#wd').onchange=async e=>{if(cur.dirty&&!confirm('Unsaved data. Change date?')){e.target.value=cur.date;return;}await loadWork(e.target.value||iso());render();};
+  document.querySelectorAll('.dchip').forEach(b=>b.onclick=async()=>{if(cur.dirty&&!confirm('Unsaved data. Change date?'))return;await loadWork(b.dataset.d);render();});
+  on('[data-act=wdel]',async()=>{const d=cur.date;if(!confirm(fmtD(d)+' saved data will be deleted for everyone (a backup is kept first). Continue?'))return;if(!await askPw('Delete '+fmtD(d)))return;await backup('before delete '+d);await rm(dataP(d));delete cache[d];await log('DELETE DATE',d);await loadWork(d);toast(fmtD(d)+' deleted (backup kept)');render();});
+  on('[data-act=bk14]',()=>{backV={from:addD(iso(),-14),to:iso(),label:'Last 14 days'};render();});
+  on('[data-act=bkd]',()=>{const v=$('#bkd').value;if(!v)return toast('Pick a date first');backV={from:v,to:v,label:fmtD(v)};render();});
+  on('[data-act=bkx]',()=>{backV=null;render();});
   on('[data-act=msave]',masterSave);
   on('[data-act=unlock]',async()=>{if(await askPw('Unlock '+fmtD(cur.date))){cur.unlocked=true;await log('UNLOCK DATE',cur.date);render();}});
   const mark=(soft)=>{cur.dirty=true;if(!soft)sideW();const c=$('.tools .chip.good',$('#main'));};
-  if(wsTab==='rep'){
+  if(wsTab==='rep'&&bk&&!bk.length){}else if(wsTab==='rep'){
     cur.rep.forEach(r=>{if(r&&r[3]!==undefined&&String(r[3]).trim()!==''&&String(r[3]).trim()===String(r[2]).trim())r[3]='';});
-    sheet=new Sheet($('#sh'),{name:'rep',cw:72,headers:cfg.headers.rep,data:cur.rep,ro,editHead:can('headers'),combo:{3:lib},num:[2],w:{0:92,1:165,2:105,3:560},left:[1,3],nameCol:1,onName:n=>openPerson(n),
+    sheet=new Sheet($('#sh'),{name:'rep',cw:72,headers:cfg.headers.rep,data:bk||cur.rep,ro:ro||!!bk,editHead:can('headers'),combo:{3:lib},num:[2],w:{0:92,1:165,2:105,3:560},left:[1,3],nameCol:1,onName:n=>openPerson(n),
       computed:[{name:'Achieved',n:1,fn:r=>({v:isNaN(num(r[2]))?'':num(r[2])})},{name:'Daily Target',n:1,fn:()=>({v:tgt()})},
         {name:'Deficit',n:1,fn:r=>{const d=tgt()-(num(r[2])||0);return {v:d,k:d>0?'bad':'good'};}},{name:'DT Mins',n:1,fn:r=>({v:mins(r[3])||''})},{name:'Work Hrs',n:1,fn:r=>({v:hm(480-mins(r[3]))})}],
       onChange:()=>{cur.dirty=true;sideW();},onHead:async()=>{await saveCfg('headers');await log('HEADER EDIT','rep');}});
@@ -780,7 +834,7 @@ async function vWork(){
   on('[data-act=rhead]',async()=>{cfg.headers[wsTab]=[...DEF_HEAD[wsTab]];await saveCfg('headers');render();});
   sideW();
 }
-function sideW(){const el=$('#wside');if(!el)return;const R=filled(cur.rep).map(r=>repRow(r,cur.date)),canC=can('comments'),ro=!can('paste')||(cur.locked&&!cur.unlocked);
+function sideW(){const el=$('#wside');if(!el)return;const R=filled(cur.rep).map(r=>repRow(r,cur.date)),canC=true,ro=!can('paste')||(cur.locked&&!cur.unlocked);
   const dm=R.reduce((a,r)=>a+r.mins,0),miss=R.filter(r=>!r.comment.trim()).length,dates=[...new Set(R.map(r=>r.date))],U=filled(cur.uom).length;
   el.innerHTML=`<div class="tools" style="gap:6px;margin-bottom:8px;padding:8px 10px;border-radius:12px;background:var(--surf2);border:1px dashed var(--bd2)">
     <span class="cap" style="margin:0">Live</span><span class="chip">Rows <b>&nbsp;${wsTab==='uom'?U:R.length}</b></span>${wsTab!=='uom'?`<span class="chip">Dates <b>&nbsp;${dates.map(shortD).join(', ')||'—'}</b></span><span class="chip">Processed <b>&nbsp;${R.reduce((a,r)=>a+r.ach,0)}</b></span><span class="chip">Downtime <b>&nbsp;${dm}m</b></span><span class="chip ${miss?'warn':'good'}">Comment missing ${miss}</span>`:''}<span class="chip ac">Target ${tgt()}/day</span></div>
@@ -788,7 +842,7 @@ function sideW(){const el=$('#wside');if(!el)return;const R=filled(cur.rep).map(
      <input class="in" id="dtp" list="dtl" placeholder="Pick from list or type a new comment…" style="width:360px;min-height:32px;padding:4px 10px" aria-label="Downtime comment" ${ro?'disabled':''}>
      <datalist id="dtl">${cfg.lib.map(l=>`<option value="${esc(l[1]+' Mins - '+l[0])}">`).join('')}</datalist>
      <input class="in" id="dtm" type="number" min="1" placeholder="Min" style="width:70px;min-height:32px;padding:4px 8px" aria-label="Minutes" ${ro?'disabled':''}>
-     ${B('Apply to selected rows',{sm:1,k:'pri',i:'check',act:'dta',dis:ro})}${canC?B('Save to list',{sm:1,i:'plus',act:'dts'})+B('Remove from list',{sm:1,k:'dan',i:'x',act:'dtr'}):''}
+     ${B('Apply to selected rows',{sm:1,k:'pri',i:'check',act:'dta',dis:ro})}${canC?B('Add comment +',{sm:1,i:'plus',act:'dts'})+B('Delete comment',{sm:1,k:'dan',i:'x',act:'dtr'}):''}
      <span class="sub" style="white-space:nowrap">${cfg.lib.length} saved comments</span></div>`:''}`;
   const parse=()=>{const v=($('#dtp',el)||{}).value||'';let t=v.trim(),m=+(($('#dtm',el)||{}).value||0);const x=t.match(/^(\d+)\s*mins?\s*-\s*(.+)$/i);if(x){m=m||+x[1];t=x[2].trim();}return {t,m};};
   on('[data-act=dta]',()=>{if(!sheet||sheet.name!=='rep')return;const {t,m}=parse();if(!t)return toast('Pick or type a comment first');if(!m)return toast('Enter minutes');const txt=m+' Mins - '+t;
