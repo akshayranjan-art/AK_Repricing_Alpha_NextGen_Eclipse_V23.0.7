@@ -257,7 +257,7 @@ const normN=n=>String(n||'').replace(/^'+/,'').trim();
 const rosterOn=()=>!!(cfg&&cfg.rosterOn&&cfg.roster&&cfg.roster.length);
 function RD(days){if(!rosterOn())return days;const ok=n=>cfg.roster.some(r=>nameMatch(r,normN(n)));return days.map(x=>x?Object.assign({},x,{rep:(x.rep||[]).filter(r=>r&&ok(r[1])),uom:(x.uom||[]).filter(r=>r&&ok(r[0]))}):x);}
 const isAdminPC=pc=>String(pc||'').trim().toLowerCase().endsWith(ADMIN_PC_END);
-const PERMS=[['paste','Paste & edit'],['headers','Edit headers'],['save','Master save'],['reports','Reports'],['mail','Mail report'],['export','Excel export'],['comments','Downtime library'],['tabUom','UOM Summary tab'],['tabWk','Weekly Target tab'],['dump','Dump selected / all'],['addrows','+10 rows'],['resethead','Reset headers'],['ppl','People 360'],['srv','Server tab'],['del','Delete saved data'],['noidle','No idle auto-logout']];
+const PERMS=[['paste','Paste & edit'],['headers','Edit headers'],['save','Master save'],['reports','Reports'],['mail','Mail report'],['export','Excel export'],['comments','Downtime library'],['tabUom','UOM Summary tab'],['tabWk','Weekly Target tab'],['dump','Dump selected / all'],['addrows','+10 rows'],['resethead','Reset headers'],['ppl','People 360'],['srv','Server tab'],['del','Delete saved data'],['edit','Unlock / edit saved date'],['noidle','No idle auto-logout']];
 const NEWK=['tabUom','tabWk','dump','addrows','resethead','ppl','srv','noidle'];
 const allPerms=v=>Object.fromEntries(PERMS.map(p=>[p[0],v]));
 const NEWPERMS=()=>Object.assign(allPerms(false),{paste:true,save:true,reports:true,mail:true,export:true,tabUom:true,tabWk:true,dump:true,addrows:true,ppl:true,srv:true});
@@ -305,8 +305,8 @@ function anyDate(v){const s=String(v??'').trim();if(!s)return null;let m;
   return null;}
 function toast(t){const e=document.createElement('div');e.textContent=t;$('#toast').appendChild(e);setTimeout(()=>e.remove(),3800);}
 const isAdm=()=>!!me&&me.role==='Admin'&&String(me.msid).toLowerCase()===ADMIN_MSID&&!asUser;
-const can=p=>{if(!me)return false;if(p==='admin')return isAdm();if(me.role==='Admin'&&!asUser)return true;if(['SME','Manager'].includes(me.role))return p!=='noidle'||!!(me.perms&&me.perms.noidle);if(p==='edit')return false;return !!(me.perms&&me.perms[p]);};
-const FULLNAME=/raja\s*selvarasu|\braju\b|abhinay|abninay/i;
+const can=p=>{if(!me)return false;if(p==='admin')return isAdm();if(me.role==='Admin'&&!asUser)return true;if(['SME','Manager'].includes(me.role))return p!=='noidle'||!!(me.perms&&me.perms.noidle);return !!(me.perms&&me.perms[p]);};
+const FULLNAME=/raja\s*selvarasu|\braju\b|abhinay|abninay/i,FULLMSID=['rselvar4','av100'];
 const kind=(v,t)=>{const T=cfg.th;if(isNaN(v))return '';if(t==='u')return v<T.utilBad?'bad':'good';return v<T.effBad?'bad':(v>T.effWarn?'warn':'good');};
 async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rp23|'+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 
@@ -372,7 +372,7 @@ async function loadStore(){
   const u=await rd(F.users,null);usersBroken=tamper.has(F.users);
   users=(u&&u.length)?u:[DEF_ADMIN()];
   let a=users.find(x=>x.msid.toLowerCase()===ADMIN_MSID);if(!a){a=DEF_ADMIN();users.unshift(a);}
-  users.forEach(x=>{if(x!==a&&x.role==='Admin')x.role='Lead';const old=x.perms||{};x.perms=Object.assign(allPerms(false),old);if(!x.autoMgr&&FULLNAME.test(String(x.name||''))){x.autoMgr=true;if(!['SME','Manager'].includes(x.role))x.role='Manager';Object.assign(x.perms,allPerms(true),{noidle:!!old.noidle});}for(const k of NEWK)if(old[k]===undefined)x.perms[k]=k==='ppl'||k==='srv'?!!old.reports:k==='resethead'?!!old.headers:k==='noidle'?false:true;});
+  let fullFix=false;users.forEach(x=>{if(x!==a&&x.role==='Admin')x.role='Lead';const old=x.perms||{};x.perms=Object.assign(allPerms(false),old);if(FULLNAME.test(String(x.name||''))||FULLMSID.includes(String(x.msid||'').toLowerCase())){if(!['SME','Manager'].includes(x.role)){x.role='Manager';fullFix=true;}const np=Object.assign({},allPerms(true),{noidle:!!old.noidle});if(PERMS.some(p=>!x.perms[p[0]]&&np[p[0]]))fullFix=true;x.perms=np;}for(const k of NEWK)if(old[k]===undefined)x.perms[k]=k==='ppl'||k==='srv'?!!old.reports:k==='resethead'?!!old.headers:k==='noidle'?false:true;});
   Object.assign(a,{role:'Admin',active:true,empId:ADMIN_EMP,perms:allPerms(true)});if(!a.pw||usersBroken)a.pw=a.pw||ADMIN_PW0;if(usersBroken)a.pw=ADMIN_PW0;
   secS=await rd(F.sec,{fails:{},locked:{},alerts:[]});secS.fails=secS.fails||{};secS.locked=secS.locked||{};secS.alerts=secS.alerts||{};if(!Array.isArray(secS.alerts))secS.alerts=[];
   Object.assign(a,{email:a.email||'akshay.ranjan@uhc.com',opid:'ARA',pc:a.pc||'LHTU05CG2122RJJ'});
@@ -380,7 +380,7 @@ async function loadStore(){
     cfg.roster=ROSTER0.slice();cfg.rosterOn=true;cfg.lib=LIB0.map(x=>x.slice());cfg.seeded=true;cfg.announce=cfg.announce||'';await wr(F.users,users);await wr(F.cfg,cfg);}
   if(!cfg.idleSet&&!usersBroken&&!tamper.has(F.cfg)){users.forEach(u=>{if(['av100','rselvar4'].includes(u.msid.toLowerCase()))u.perms.noidle=true;});cfg.idleSet=true;await wr(F.users,users);await wr(F.cfg,cfg);}
   if(!c&&!tamper.has(F.cfg))await wr(F.cfg,cfg);
-  if(!u&&!usersBroken)await wr(F.users,users);
+  if((!u||fullFix)&&!usersBroken)await wr(F.users,users);
   if((await rawR(F.sec))==null)await wr(F.sec,secS);
   if((await rawR('README_DO_NOT_EDIT.txt'))==null)await rawW('README_DO_NOT_EDIT.txt','Alpha NextGen Eclipse — Repricing UOM & Productivity server folder.\nAll files are encrypted (.rpx). Any manual edit is detected as TAMPER and Admin is alerted.\nDo not open or modify any file manually.');
   for(const p of tamper)await alertA('TAMPER','-','File modified / corrupted: '+p);
@@ -606,63 +606,13 @@ function render(){const app=$('#app');
   <header class="hdr"><div class="hrow">
     <div style="display:flex;flex-direction:column;gap:8px"><div class="brand">${eclLogo(11,'el-float')}<div><span class="ver">${APP.ver}</span><div class="t2"><span>Repricing UOM &amp; Productivity</span></div></div></div>
       <div class="who"><div class="ava">${esc((me.name||me.msid).split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase())}</div><div><b>${esc(me.name)}</b><small>${esc(me.msid)} · ${esc(me.role)}${me.empId?' · '+esc(me.empId):''}</small></div></div></div>
-<div class="tools top-right-tools">
-
-    <div class="top-filter-row">
-
-        <div class="glass">
-            <span class="lb">From</span>
-            <input type="date" id="rf" value="${range.from}" aria-label="From date">
-
-            <span class="lb">To</span>
-            <input type="date" id="rt" value="${range.to}" aria-label="To date">
-
-            <button type="button" class="qk" data-q="t">Today</button>
-            <button type="button" class="qk" data-q="w">Week</button>
-            <button type="button" class="qk" data-q="10">10 days</button>
-            <button type="button" class="qk" data-q="m">Month</button>
-        </div>
-
-        <span class="srv" title="Connected server folder">
-            <i></i>${esc(dir.name)}
-        </span>
-
-    </div>
-
-    <div class="top-icons">
-
-        <button
-            type="button"
-            class="b3 ico"
-            data-act="sync"
-            title="Sync — re-read server"
-            aria-label="Sync">
-            ${ic('history',17)}
-        </button>
-
-        ${isAdm()?`
-        <button
-            type="button"
-            class="b3 ico ${view==='admin' ? 'on' : ''}"
-            aria-pressed="${view==='admin'}"
-            data-nav="admin"
-            title="Admin"
-            aria-label="Admin">
-            ${ic('shield',18)}
-            ${unread ? `<span class="bdg">${unread}</span>` : ''}
-        </button>
-        ` : ''}
-
-        ${B('',{
-            act:'logout',
-            i:'logout',
-            t:'Logout'
-        })}
-
-    </div>
-
-</div>
- </header>
+    <div class="tools" style="gap:10px;align-self:flex-start">
+      <div class="glass"><span class="lb">From</span><input type="date" id="rf" value="${range.from}" aria-label="From date"><span class="lb">To</span><input type="date" id="rt" value="${range.to}" aria-label="To date">
+        <button type="button" class="qk" data-q="t">Today</button><button type="button" class="qk" data-q="w">Week</button><button type="button" class="qk" data-q="10">10 days</button><button type="button" class="qk" data-q="m">Month</button></div>
+      <span class="srv" title="Connected server folder"><i></i>${esc(dir.name)}</span><button type="button" class="b3 ico" data-act="sync" title="Sync — re-read server" aria-label="Sync">${ic('history',17)}</button>
+      ${isAdm()?`<button type="button" class="b3 ico ${view==='admin'?'on':''}" aria-pressed="${view==='admin'}" data-nav="admin" title="Admin" aria-label="Admin">${ic('shield',18)}${unread?`<span class="bdg">${unread}</span>`:''}</button>`:''}
+      ${B('',{act:'logout',i:'logout',t:'Logout'})}
+    </div></div></header>
   <div class="navwrap"><nav class="nav" aria-label="Main">${ok.map(n=>`<button type="button" class="b3 ${view===n[0]?'on':''}" aria-pressed="${view===n[0]}" data-nav="${n[0]}">${ic(n[2],16)}${n[1]}</button>`).join('')}</nav></div>
   <main id="main"></main><footer>®® Alpha NextGen Eclipse · Repricing UOM &amp; Productivity ${APP.ver} · ${APP.build} · Valid till ${fmtD(cfg.expiry)}</footer>`;
   $$('[data-nav]').forEach(b=>b.onclick=async()=>{if(view==='ws'&&cur.dirty&&b.dataset.nav!=='ws'){}view=b.dataset.nav;render();});
