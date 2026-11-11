@@ -266,7 +266,7 @@ const SRV=()=>localStorage.getItem('rp23_srvname')||'Repricing UOM and Productiv
 const F={cfg:'Repricing_Config.rpx',users:'Repricing_Users.rpx',sec:'Repricing_Security.rpx'};
 const DEF_CFG=()=>({ver:APP.ver,expiry:APP.expiry,target:344,
   th:{utilBad:85,effBad:90,effWarn:110},
-  mail:{to:'Kumar, Vinesh',cc:'Chandra, Praveen; M S, Sanketh; Selvarasu, Raja',subject:'Repricing UOM & Productivity — {date}',adminEmail:'',webhook:''},
+  mail:{to:'Kumar, Vinesh',cc:'',subject:'Repricing UOM & Productivity — {date}',adminEmail:'',webhook:''},
   sec:{f12:true,ctrlU:true,rightClick:true,ctrlPS:true,copyBlock:false,onePC:true,oneSession:true,rememberPw:true,autoLogout:0,maxFails:5},
   keep:{logs:30,backups:30},headers:JSON.parse(JSON.stringify(DEF_HEAD)),
   lib:[['NDM issue',30],['NDM freeze + manual resolving',30],['Meeting with manager',30],['One to one',20],['QVC meeting',35],['Doing reports',15],['System restart',15],['Self evaluation',15],['NDM slowness',20]]});
@@ -368,6 +368,7 @@ async function useFolder(h,silent){dir=h;savedH=h;localStorage.setItem('rp23_srv
 async function loadStore(){
   tamper=new Set();
   const c=await rd(F.cfg,null);cfg=Object.assign(DEF_CFG(),c||{});const d=DEF_CFG();
+  if(c&&c.mail&&/praveen|sanketh/i.test(c.mail.cc||''))c.mail.cc=String(c.mail.cc).split(/;/).filter(x=>!/praveen|sanketh/i.test(x)).join(';').trim();
   for(const k of ['th','mail','sec','keep','headers'])cfg[k]=Object.assign(d[k],(c||{})[k]||{});
   const u=await rd(F.users,null);usersBroken=tamper.has(F.users);
   users=(u&&u.length)?u:[DEF_ADMIN()];
@@ -889,7 +890,9 @@ async function delDataModal(){if(!can('del'))return;const S=(await savedDates())
     if(ds.includes(cur.date))await loadWork(cur.date);toast(ds.length+' date(s) deleted · backup kept');render();};}
 
 /* ---------------- REPORTS ---------------- */
-const inMail=n=>!mailSel||[...mailSel].some(x=>nameMatch(x,n));
+const mailTeam=()=>cfg&&cfg.mailLock!==false&&cfg.roster&&cfg.roster.length?cfg.roster:null;
+const inTeam=n=>{const t=mailTeam();return !t||t.some(r=>nameMatch(r,n));};
+const inMail=n=>inTeam(n)&&(!mailSel||[...mailSel].some(x=>nameMatch(x,n)));
 function rpHook(sh){const c=sh.nameCol;if(mailSel){const vals=new Set();sh.data.forEach(r=>{const v=String(r[c]??'').trim();if(v&&inMail(v))vals.add(v);});sh.filters[c]=vals;sh.render();}
   sh.onFilter=(cc,set)=>{if(cc!==c)return;mailSel=set?new Set(set):null;toast(mailSel?mailSel.size+' people selected — Mail will use the same':'All people selected');};return sh;}
 let rsheet=null;
@@ -899,9 +902,12 @@ async function vReports(){rsheet=null;
   const R=days.flatMap(x=>filled(x.rep).map(r=>repRow(r,x.date))).filter(r=>r.name);
   const W=weekly(days);
   const tabs=`<div class="seg">${B('UOM Summary',{i:'chart',act:'rt',arg:'uom',on:rpTab==='uom'})}${B('Reprice Tracker',{i:'bolt',act:'rt',arg:'rep',on:rpTab==='rep'})}${B('Weekly Target',{i:'week',act:'rt',arg:'wk',on:rpTab==='wk'})}${can('mail')?B('Mail',{i:'mail',act:'rt',arg:'mail',on:rpTab==='mail'}):''}</div>`;
-  const wkPick=(rpTab==='wk'||rpTab==='mail')?`<span class="cap" style="margin:0">Week</span><input type="date" class="in" id="rwk" value="${monday(range.from)}" style="width:150px" aria-label="Pick a week">${B('This week',{sm:1,act:'rwt'})}${rpTab==='wk'&&can('mail')?B('Mail this week',{sm:1,k:'mag',i:'mail',act:'rwm'}):''}`:'';
+  const dPick=(rpTab==='mail'||rpTab==='rep'||rpTab==='uom')?`<span class="cap" style="margin:0">From</span><input type="date" class="in" id="rdf" value="${range.from}" style="width:145px" aria-label="From date"><span class="cap" style="margin:0">To</span><input type="date" class="in" id="rdt" value="${range.to}" style="width:145px" aria-label="To date">`:'';
+  const wkPick0=(rpTab==='wk'||rpTab==='mail')?`<span class="cap" style="margin:0">Week</span><input type="date" class="in" id="rwk" value="${monday(range.from)}" style="width:150px" aria-label="Pick a week">${B('This week',{sm:1,act:'rwt'})}${rpTab==='wk'&&can('mail')?B('Mail this week',{sm:1,k:'mag',i:'mail',act:'rwm'}):''}`:'';const wkPick=dPick+wkPick0;
   $('#main').innerHTML=head('Report / Mail',`${fmtD(range.from)} → ${fmtD(range.to)} · set range with From/To above or pick a week · double-click a name for full details`,(can('del')?B('Delete saved data',{k:'dan',i:'trash',act:'rdel'}):'')+(can('export')?B('Excel (all)',{i:'download',act:'xl'}):''))+
     `<div class="card"><div class="tools" style="margin-bottom:10px">${tabs}<span class="sp"></span>${wkPick}${rpTab==='uom'?`<div class="seg">${B('Per day',{sm:1,act:'um',arg:'day',on:uomMode==='day'})}${B('Combined',{sm:1,act:'um',arg:'all',on:uomMode==='all'})}</div>`:''}</div><div id="rs"></div></div>`;
+  const setRR=(f,t)=>{if(!f||!t)return;if(f>t)[f,t]=[t,f];range={from:f,to:t};render();};
+  const rdf=$('#rdf'),rdt=$('#rdt');if(rdf){rdf.onchange=()=>setRR(rdf.value,rdt.value);rdt.onchange=()=>setRR(rdf.value,rdt.value);}
   const rw=$('#rwk');if(rw)rw.onchange=e=>{const m=monday(e.target.value||iso());range={from:m,to:addD(m,6)};render();};
   on('[data-act=rwt]',()=>{const m=monday(iso());range={from:m,to:addD(m,6)};render();});
   on('[data-act=rwm]',()=>{const m=monday(range.from);range={from:m,to:addD(m,6)};window._inc={uom:false,rep:true,wk:true};rpTab='mail';render();});
@@ -945,11 +951,11 @@ function vMail(days,U,R,W){const inc=window._inc||(window._inc={uom:true,rep:tru
    <div class="line"><span style="width:64px" class="sub">Cc</span><input class="in" id="mcc" value="${esc(cfg.mail.cc)}" aria-label="Cc"></div><div class="line"><span style="width:64px" class="sub">Subject</span><input class="in" id="msub" value="${esc(subj)}" aria-label="Subject"></div>
    <div class="mailbox" id="mbody" style="margin-top:10px">${mailHTML(days,R,W,inc)}</div></div>
    <div class="side"><div class="cap">Include</div>${[['uom','UOM Summary'],['rep','Reprice Tracker'],['wk','Weekly Target']].map(x=>`<div class="line"><span>${x[1]}</span><button type="button" class="tg" aria-pressed="${inc[x[0]]}" data-inc="${x[0]}" aria-label="${x[1]}"></button></div>`).join('')}
-   <div class="cap" style="margin-top:14px">People in mail · ${mailSel?mailSel.size+' selected':'All'}</div>
+   <div class="cap" style="margin-top:14px">People in mail · ${mailSel?mailSel.size+' selected':'All'}${mailTeam()?' · '+ic('lock',12)+' team list':''}</div>
    <div class="tools" style="gap:6px;margin-bottom:6px">${B('All',{sm:1,act:'mpa'})}${B('None',{sm:1,act:'mpn'})}</div>
-   <div style="max-height:220px;overflow:auto;border:1px solid var(--bd);border-radius:10px;padding:4px">${(()=>{const n=[];[...U.map(r=>r.name),...R.map(r=>r.name)].forEach(v=>{if(v&&!n.some(z=>nameMatch(z,v)))n.push(v);});return n.sort((a,b)=>a.localeCompare(b));})().map(v=>`<label style="display:flex;gap:7px;align-items:center;padding:4px 6px;font-size:12.5px;cursor:pointer"><input type="checkbox" data-mp="${esc(v)}" ${inMail(v)?'checked':''} style="accent-color:#16a34a">${esc(v)}</label>`).join('')}</div>
+   <div style="max-height:220px;overflow:auto;border:1px solid var(--bd);border-radius:10px;padding:4px">${(()=>{const n=[];[...U.map(r=>r.name),...R.map(r=>r.name)].forEach(v=>{if(v&&inTeam(v)&&!n.some(z=>nameMatch(z,v)))n.push(v);});return n.sort((a,b)=>a.localeCompare(b));})().map(v=>`<label style="display:flex;gap:7px;align-items:center;padding:4px 6px;font-size:12.5px;cursor:pointer"><input type="checkbox" data-mp="${esc(v)}" ${inMail(v)?'checked':''} style="accent-color:#16a34a">${esc(v)}</label>`).join('')}</div>
    <div class="tools" style="flex-direction:column;align-items:stretch;margin-top:12px">${B('Copy for Outlook',{k:'pri',i:'copy',act:'mcopy'})}${B('Open Outlook',{k:'mag',i:'mail',act:'mopen'})}${can('export')?B('Download Excel',{i:'download',act:'xl2'}):''}</div>
-   <div class="sub" style="margin-top:10px">Click Copy → press Ctrl+V in the Outlook body. Download the Excel file and attach it (browsers cannot attach files automatically).</div></div></div>`;
+   <div class="sub" style="margin-top:10px">Open Outlook copies the report automatically — just press Ctrl+V in the mail body. Download the Excel file and attach it (browsers cannot attach files automatically).</div></div></div>`;
   $$('[data-inc]').forEach(b=>b.onclick=()=>{inc[b.dataset.inc]=!inc[b.dataset.inc];vMail(days,U,R,W);});
   ['#mto','#mcc'].forEach(id=>{const el=$(id);if(el)el.oninput=()=>{$('#mbody').innerHTML=mailHTML(days,R,W,inc);};});
   $('#mbody').innerHTML=mailHTML(days,R,W,inc);
@@ -957,7 +963,8 @@ function vMail(days,U,R,W){const inc=window._inc||(window._inc={uom:true,rep:tru
   on('[data-act=mpa]',()=>{mailSel=null;vMail(days,U,R,W);});on('[data-act=mpn]',()=>{mailSel=new Set();vMail(days,U,R,W);});
   on('[data-act=mcopy]',async()=>{const el=$('#mbody');try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([el.innerHTML],{type:'text/html'}),'text/plain':new Blob([el.innerText],{type:'text/plain'})})]);}
     catch(e){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');s.removeAllRanges();}toast('Copied — press Ctrl+V in Outlook');await log('MAIL COPY',range.from+'..'+range.to);});
-  on('[data-act=mopen]',()=>{const q=encodeURIComponent;location.href=`mailto:${q($('#mto').value)}?cc=${q($('#mcc').value)}&subject=${q($('#msub').value)}&body=${q('(Press Ctrl+V to paste the report)')}`;});
+  on('[data-act=mopen]',async()=>{const el=$('#mbody');try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([el.innerHTML],{type:'text/html'}),'text/plain':new Blob([el.innerText],{type:'text/plain'})})]);}catch(e){const r=document.createRange();r.selectNodeContents(el);const g=getSelection();g.removeAllRanges();g.addRange(r);document.execCommand('copy');g.removeAllRanges();}
+    toast('Report copied — in Outlook just press Ctrl+V');log('MAIL OPEN',range.from+'..'+range.to);const q=encodeURIComponent;location.href=`mailto:${q($('#mto').value)}?cc=${q($('#mcc').value)}&subject=${q($('#msub').value)}&body=${q('')}`;});
   on('[data-act=xl2]',()=>exportRange(days));}
 
 /* ---------------- EXCEL ---------------- */
@@ -1002,7 +1009,7 @@ async function vAdmin(){
   if(adTab==='ann'){body=`<div class="cap">Announcement (scrolls left to right on every screen)</div><textarea class="in" id="ann_t" rows="3" style="width:100%" aria-label="Announcement">${esc(cfg.announce||'')}</textarea><div class="tools" style="margin-top:10px">${B('Publish',{k:'pri',i:'bell',act:'asave'})}${B('Clear',{i:'eraser',act:'aclr'})}</div>`;}
   if(adTab==='team'){const seen=new Map();const add=n=>{const t=normN(n);if(t&&!seen.has(t.toLowerCase()))seen.set(t.toLowerCase(),t);};(await rangeData()).forEach(d=>{if(!d)return;(d.rep||[]).forEach(r=>r&&add(r[1]));(d.uom||[]).forEach(r=>r&&add(r[0]));});(cfg.roster||[]).forEach(add);
     const names=[...seen.values()].sort((x,y)=>x.localeCompare(y));
-    body=`<div class="tools" style="margin-bottom:10px"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="ro_on" ${cfg.rosterOn?'checked':''}> Show only ticked names (locked list)</label>${B('Save list',{k:'pri',i:'save',act:'rsave'})}<span class="sp"></span><span class="chip">${(cfg.roster||[]).length} selected</span></div>
+    body=`<div class="tools" style="margin-bottom:10px"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="ro_on" ${cfg.rosterOn?'checked':''}> Show only ticked names (locked list)</label><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="ro_mail" ${cfg.mailLock!==false?'checked':''}> Mail: only these names (locked)</label>${B('Save list',{k:'pri',i:'save',act:'rsave'})}<span class="sp"></span><span class="chip">${(cfg.roster||[]).length} selected</span></div>
     <div class="perm">${names.map(n=>`<label><input type="checkbox" data-rn="${esc(n)}" ${(cfg.roster||[]).some(r=>nameMatch(r,n))?'checked':''}>${esc(n)}</label>`).join('')}</div>
     <div class="tools" style="margin-top:12px"><input class="in" id="ro_new" placeholder="Add a name manually" style="max-width:260px" aria-label="New name">${B('Add',{i:'plus',act:'radd'})}</div>`;}
   if(adTab==='alerts'){const L=Object.entries(secS.locked);
@@ -1046,7 +1053,7 @@ async function vAdmin(){
   on('[data-act=aclr]',async()=>{if(!await askPw('Clear alerts'))return;secS.alerts=[];await saveSec();await log('ALERTS CLEARED','');render();});
   on('[data-act=unl]',async k=>{delete secS.locked[k];secS.fails[k]=0;await saveSec();await log('UNLOCK',k);toast(k+' unlocked');render();});
   on('[data-act=rel]',async k=>{const u=users.find(x=>x.msid.toLowerCase()===k);if(!u)return;u.pc='';await saveUsers('release pc');await rm('Sessions/'+k+'.rpx');await log('RELEASE PC',k);toast(k+' PC released');render();});
-  on('[data-act=rsave]',async()=>{cfg.roster=$$('[data-rn]').filter(c=>c.checked).map(c=>c.dataset.rn);cfg.rosterOn=$('#ro_on').checked;await saveCfg('team list');await log('TEAM LIST',cfg.roster.length+' names');toast('Team list saved');render();});
+  on('[data-act=rsave]',async()=>{cfg.roster=$$('[data-rn]').filter(c=>c.checked).map(c=>c.dataset.rn);cfg.rosterOn=$('#ro_on').checked;cfg.mailLock=$('#ro_mail').checked;await saveCfg('team list');await log('TEAM LIST',cfg.roster.length+' names');toast('Team list saved');render();});
   on('[data-act=radd]',async()=>{const v=normN($('#ro_new').value);if(!v)return;cfg.roster=[...(cfg.roster||[]),v];await saveCfg('team list');render();});
   on('[data-act=asave]',async()=>{cfg.announce=$('#ann_t').value.trim();await saveCfg('announcement');toast('Announcement published');render();});
   on('[data-act=aclr]',async()=>{cfg.announce='';await saveCfg('announcement');toast('Announcement cleared');render();});
